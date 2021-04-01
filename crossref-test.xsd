@@ -5,7 +5,7 @@
   *
   * Copyright (c) 2014-2021 Simon Fraser University
   * Copyright (c) 2003-2021 John Willinsky
-  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
+  * Distributed under The MIT License. For full terms see the file LICENSE.
   *
   * Schema describing crossref test XML export elements
   -->
@@ -16,15 +16,15 @@
 	<include schemaLocation="../../../lib/pkp/xml/importexport.xsd" />
 
 	<element name="article" substitutionGroup="pkp:submission" />
-		
+
 	<element name="articles" substitutionGroup="pkp:submissions" />
-	
+
 	<complexType name="submission">
 		<sequence>
 
 			<!-- Metadata -->
 			<element ref="pkp:title" minOccurs="1" maxOccurs="unbounded" />
-			
+
 		</sequence>
 	</complexType>
 
@@ -36,8 +36,8 @@
 	  - Metadata element types
 	  -->
 	<element name="title" type="pkp:localizedNode" />
-	
-	
+
+
 	<!--
 	  - Composite / root elements
 	  -->
