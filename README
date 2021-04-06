@@ -8,13 +8,13 @@
 
 About
 -----
-This plugin for OJS 3 provides an import/export plugin to generate metadata information for articles 
-and issues for indexing in CrossRef. Details on the XML format and data requirements is available at: 
+This plugin for OJS 3 provides an import/export plugin to generate metadata information for articles
+and issues for indexing in CrossRef. Details on the XML format and data requirements is available at:
 http://www.crossref.org/schema
 
 License
 -------
-This plugin is licensed under the GNU General Public License v2. See the file COPYING for the 
+This plugin is licensed under the MIT License. See the file LICENSE for the
 complete terms of this license.
 
 System Requirements
@@ -26,7 +26,7 @@ Installation
 To install the plugin:
  - copy the crossref folder into OJS/plugins/importexport
 
-The export functionality can then be accessed through: 
+The export functionality can then be accessed through:
  - Tools > Import/Export > CrossRef XML Export Plugin
 
 Contact/Support
