@@ -15,6 +15,7 @@
 
 import('lib.pkp.classes.scheduledTask.ScheduledTask');
 
+use PKP\file\FileManager;
 
 class CrossrefInfoSender extends ScheduledTask {
 	/** @var $_plugin CrossRefExportPlugin */
@@ -112,7 +113,6 @@ class CrossrefInfoSender extends ScheduledTask {
 	 */
 	function _registerObjects($objects, $filter, $journal, $objectsFileNamePart) {
 		$plugin = $this->_plugin;
-		import('lib.pkp.classes.file.FileManager');
 		$fileManager = new FileManager();
 		// The new Crossref deposit API expects one request per object.
 		// On contrary the export supports bulk/batch object export, thus
