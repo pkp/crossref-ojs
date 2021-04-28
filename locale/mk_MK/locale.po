@@ -11,32 +11,36 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n==1 || n%10==1 ? 0 : 1;\n"
 "X-Generator: Weblate 3.9.1\n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
 msgstr ""
-"Користете го CrossRef API за тестирање (околина за тестирање) за DOI "
+"Користете го Crossref API за тестирање (околина за тестирање) за DOI "
 "депозитот. Ве молиме не заборавајте да ја извадите оваа опција за продукција."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
 msgstr ""
-"OJS автоматски ќе ги депонира назначените DOIs во CrossRef. Ве молиме имајте "
+"OJS автоматски ќе ги депонира назначените DOIs во Crossref. Ве молиме имајте "
 "во предвид дека ќе биде потребно малку време после објавување ова да се "
 "процесира (пр. зависно од вашата cronjob конфигурација). Можете да ги "
 "проверите сите нерегистрирани DOIs."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Ве молиме да го внесете корисничкото име кое го добивте од CrossRef."
+msgstr "Ве молиме да го внесете корисничкото име кое го добивте од Crossref."
 
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Корисничко име"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
 msgstr ""
 "Доколку сакате да го користите овој плагин за регистрација на Digital Object "
-"Identifiers (DOIs) директно со CrossRef, ќе ви бидат потрбни корисничко име "
+"Identifiers (DOIs) директно со Crossref, ќе ви бидат потрбни корисничко име "
 "и лозинка (достапни од <a href=\"http://www.crossref.org\" target=\"_blank\""
-">CrossRef</a>) за да го направите тоа. Доколку немате ваши корисничко име и "
-"лозинка, се уште можете да експортирате во CrossRef XML fформат, но не "
-"можете да ги регистрирате вашите DOIs со CrossRef од OJS."
+">Crossref</a>) за да го направите тоа. Доколку немате ваши корисничко име и "
+"лозинка, се уште можете да експортирате во Crossref XML fформат, но не "
+"можете да ги регистрирате вашите DOIs со Crossref од OJS."
 
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
 msgstr "Ве молиме да го внесете и-меилот на депонентот."
@@ -50,8 +54,9 @@ msgstr "И-меил на депонент"
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Име на депонент"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Следните елементи се задолжителни за успешен CrossRef депозит."
+msgstr "Следните елементи се задолжителни за успешен Crossref депозит."
 
 msgid "plugins.importexport.crossref.error.issnNotConfigured"
 msgstr ""
@@ -71,11 +76,13 @@ msgstr "Сите побарувања за плагинот се извршен�
 msgid "plugins.importexport.crossref.requirements"
 msgstr "Побарувања"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Експортирај ги метаподатоците на трудот во CrossRef XML формат."
+msgstr "Експортирај ги метаподатоците на трудот во Crossref XML формат."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Плагин за експортирање на CrossRef XML"
+msgstr "Плагин за експортирање на Crossref XML"
 
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr ""
@@ -106,8 +113,9 @@ msgstr ""
 "{$scriptName} {$pluginName} register [journal_path] articles objectId1 "
 "[objectId2] ...\n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "Автоматска постапка за регистрација во CrossRef"
+msgstr "Автоматска постапка за регистрација во Crossref"
 
 msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "Означи активно"

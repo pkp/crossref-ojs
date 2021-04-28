@@ -35,8 +35,9 @@ msgstr ""
 "{$scriptName} {$pluginName} đăng ký [journal_path] bài báo objectId1 "
 "[objectId2] ...\n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "Nhiệm vụ đăng ký tự động CrossRef"
+msgstr "Nhiệm vụ đăng ký tự động Crossref"
 
 msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "Đánh dấu hoạt động"
@@ -81,29 +82,33 @@ msgid "plugins.importexport.crossref.settings.form.validation"
 msgstr ""
 "Xác thực XML. Sử dụng tùy chọn này để tải xuống XML cho đăng ký DOI thủ công."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
 msgstr ""
-"Sử dụng API thử nghiệm CrossRef (môi trường thử nghiệm) cho ủy thác gửi DOI. "
+"Sử dụng API thử nghiệm Crossref (môi trường thử nghiệm) cho ủy thác gửi DOI. "
 "Xin đừng quên loại bỏ tùy chọn này khi thực hiện xuất bản chính thức."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
 msgstr ""
-"OJS sẽ tự động gửi DOI được chỉ định cho CrossRef. Xin lưu ý rằng việc này "
+"OJS sẽ tự động gửi DOI được chỉ định cho Crossref. Xin lưu ý rằng việc này "
 "có thể mất một khoảng thời gian ngắn sau khi xuất bản để xử lý (ví dụ: tùy "
 "thuộc vào cấu hình cronjob của bạn). Bạn có thể kiểm tra tất cả các DOI chưa "
 "đăng ký."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Vui lòng nhập username bạn nhận được từ CrossRef."
+msgstr "Vui lòng nhập username bạn nhận được từ Crossref."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
 msgstr ""
 "Nếu bạn muốn sử dụng plugin này để đăng ký trực tiếp Nhận dạng đối tượng kỹ "
-"thuật số (DOIs) với CrossRef, bạn sẽ cần username và mật khẩu (có sẵn từ <a "
-"href=\"http://www.crossref.org\" target=\"_blank\">CrossRef</a>) để làm như "
+"thuật số (DOIs) với Crossref, bạn sẽ cần username và mật khẩu (có sẵn từ <a "
+"href=\"http://www.crossref.org\" target=\"_blank\">Crossref</a>) để làm như "
 "vậy. Nếu bạn không có username và mật khẩu của riêng mình, bạn vẫn có thể "
-"xuất sang định dạng CrossRef XML, nhưng bạn không thể đăng ký DOI của mình "
-"với CrossRef từ trong OJS."
+"xuất sang định dạng Crossref XML, nhưng bạn không thể đăng ký DOI của mình "
+"với Crossref từ trong OJS."
 
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
 msgstr "Vui lòng nhập email người gửi."
@@ -117,8 +122,9 @@ msgstr "Email người gửi"
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Tên người gửi"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Các mục sau đây là bắt buộc để gửi DOI cho CrossRef thành công."
+msgstr "Các mục sau đây là bắt buộc để gửi DOI cho Crossref thành công."
 
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr ""
@@ -142,8 +148,10 @@ msgstr "Tất cả các yêu cầu plugin được thỏa mãn."
 msgid "plugins.importexport.crossref.requirements"
 msgstr "Yêu cầu"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Xuất siêu dữ liệu bài báo ở định dạng CrossRef XML."
+msgstr "Xuất siêu dữ liệu bài báo ở định dạng Crossref XML."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Plugin xuất CrossRef XML"
+msgstr "Plugin xuất Crossref XML"

@@ -15,11 +15,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.9.1\n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Mòdul d'exportació a XML de CrossRef"
+msgstr "Mòdul d'exportació a XML de Crossref"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Exporta les metadades de l'article en format XML de CrossRef."
+msgstr "Exporta les metadades de l'article en format XML de Crossref."
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""
@@ -37,8 +39,9 @@ msgstr "Tots els requisits del mòdul han estat satisfets."
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Nom d'usuari"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Són necessaris els següents elements per a un dipòsit CrossRef amb èxit."
+msgstr "Són necessaris els següents elements per a un dipòsit Crossref amb èxit."
 
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Nom del dipositant"
@@ -52,8 +55,9 @@ msgstr "Introduïu el nom del dipositant."
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
 msgstr "Introduïu el correu electrònic del dipositant."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "Tasca de registre automàtic de CrossRef"
+msgstr "Tasca de registre automàtic de Crossref"
 
 msgid "plugins.importexport.crossref.export.error.articleNotFound"
 msgstr "Cap article coincideix amb l'identificador \"{$articleId}\"."
@@ -117,26 +121,27 @@ msgstr ""
 
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
 msgstr ""
-"Utilitzar la API de prova de CrossRef (entorn de prova) per dipositar els "
+"Utilitzar la API de prova de Crossref (entorn de prova) per dipositar els "
 "DOI. No us oblideu de treure aquesta opció en l'entorn de producció."
 
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
 msgstr ""
-"OJS dipositarà els DOI assignats automàticament a CrossRef. Heu de tenir en "
+"OJS dipositarà els DOI assignats automàticament a Crossref. Heu de tenir en "
 "compte que això pot trigar una mica després del procés de publicació (per "
 "exemple, segons la configuració de les tasques cron). Podeu comprovar tots "
 "els DOI no registrats."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Introduïu el nom d'usuari/ària obtingut des de CrossRef."
+msgstr "Introduïu el nom d'usuari/ària obtingut des de Crossref."
 
 msgid "plugins.importexport.crossref.registrationIntro"
 msgstr ""
 "Si voleu utilitzar aquest mòdul per registrar identificadors d'objectes "
-"digitals (DOI) directament amb CrossRef necessitareu un nom d'usuari/ària i "
+"digitals (DOI) directament amb Crossref necessitareu un nom d'usuari/ària i "
 "una contrasenya (disponible a <a href=\"http://www.crossref.org\" target=\""
-"_blank\">CrossRef</a>). Encara que no en tingueu podreu exportar en format "
-"CrossRef XML, però no podreu registrar els vostres DOI amb CrossRef "
+"_blank\">Crossref</a>). Encara que no en tingueu podreu exportar en format "
+"Crossref XML, però no podreu registrar els vostres DOI amb Crossref "
 "directament des de OJS."
 
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"

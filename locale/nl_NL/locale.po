@@ -14,11 +14,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.9.1\n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "CrossRef XML Export Plugin"
+msgstr "Crossref XML Export Plugin"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Exporteer metadata in CrossRef XML formaat."
+msgstr "Exporteer metadata in Crossref XML formaat."
 
 msgid "plugins.importexport.crossref.requirements"
 msgstr "Vereist"
@@ -35,8 +37,9 @@ msgstr "Er werd geen ISSN ingesteld voor dit tijdschrift! Voeg een ISSN toe op d
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr "Er werden geen artikels geselecteerd voor toewijzing van een DOI in de DOI publieke identificatie plugin. Daardoor kan deze plugin ook geen data deponeren of exporteren."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Geef de naam en het e-mailadres van degene die verantwoordlijk is voor de CrossRef DOI deposit."
+msgstr "Geef de naam en het e-mailadres van degene die verantwoordlijk is voor de Crossref DOI deposit."
 
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Depositor naam"
@@ -50,20 +53,24 @@ msgstr "Geef de naam van de depositor."
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
 msgstr "Geef het e-mail adres van de depositor."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
-msgstr "U kan via deze plugin ook rechtstreeks Digitale Object Identificatiecodes (DOI's) laten registreren bij CrossRef. Daarvoor heeft u een gebruikersnaam en wachtwoord (beschikbaar van <a href=\"http://www.crossref.org\" target=\"_blank\">CrossRef</a>) nodig. Als u geen gebruikersnaam en wachtwoord heeft, kan u nog steeds exporteren naar het Crossref XML formaat, maar kan u de DOI's niet via OJS registreren bij CrossRef."
+msgstr "U kan via deze plugin ook rechtstreeks Digitale Object Identificatiecodes (DOI's) laten registreren bij Crossref. Daarvoor heeft u een gebruikersnaam en wachtwoord (beschikbaar van <a href=\"http://www.crossref.org\" target=\"_blank\">Crossref</a>) nodig. Als u geen gebruikersnaam en wachtwoord heeft, kan u nog steeds exporteren naar het Crossref XML formaat, maar kan u de DOI's niet via OJS registreren bij Crossref."
 
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Gebruikersnaam"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Geeft de gebruikersnaam die u van CrossRefe kreeg."
+msgstr "Geeft de gebruikersnaam die u van Crossrefe kreeg."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
-msgstr "OJS zal toegewezen DOI's na publicatie automatisch deponeren bij CrossRef. Dit kan even duren (bv. afhankelijk van uw cronjob instellingen). U kan alle ongeregistreerde DOI's bekijken."
+msgstr "OJS zal toegewezen DOI's na publicatie automatisch deponeren bij Crossref. Dit kan even duren (bv. afhankelijk van uw cronjob instellingen). U kan alle ongeregistreerde DOI's bekijken."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
-msgstr "Gebruik de CrossRef test API (testomgeving) voor de DOI deposit. Vergeet deze test-optie niet te verwijderen voor de uiteindelijke publicatie."
+msgstr "Gebruik de Crossref test API (testomgeving) voor de DOI deposit. Vergeet deze test-optie niet te verwijderen voor de uiteindelijke publicatie."
 
 msgid "plugins.importexport.crossref.issues.description"
 msgstr "Opmerking: Alleen nummers (en niet hun artikels) zullen hier worden geëxporteerd/geregistreerd."
@@ -111,11 +118,13 @@ msgstr "Dien in"
 msgid "plugins.importexport.crossref.action.checkStatus"
 msgstr "Controleer status"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "Automatische registratie bij CrossRef"
+msgstr "Automatische registratie bij Crossref"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.notification.failed"
-msgstr "Het registreren van een DOI is mislukt. Ga naar Hulpmiddelen > Import/export > CrossRef XML Export Plugin om de mislukte deposits te bekijken."
+msgstr "Het registreren van een DOI is mislukt. Ga naar Hulpmiddelen > Import/export > Crossref XML Export Plugin om de mislukte deposits te bekijken."
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""

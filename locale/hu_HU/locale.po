@@ -14,11 +14,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.9.1\n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "CrossRef XML Export Plugin"
+msgstr "Crossref XML Export Plugin"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Cikk metaadat export CrossRef XML formátumban."
+msgstr "Cikk metaadat export Crossref XML formátumban."
 
 msgid "plugins.importexport.crossref.requirements"
 msgstr "Követelmények"
@@ -35,8 +37,9 @@ msgstr "Egy folyóirat ISSN nem lett beállítva! Muszáj hozzáadnia egy ISSN-t
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr "Folyóiratcikkek Articles are not selected for DOI assignment in the DOI public identifier plugin, so there is no deposit or export possibility in this plugin."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "A sikeres CrossRef regisztrációhoz a következőkre van szükség."
+msgstr "A sikeres Crossref regisztrációhoz a következőkre van szükség."
 
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Beküldő (Depositor) neve"
@@ -50,20 +53,24 @@ msgstr "Kérjük, írja be a beküldő nevét."
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
 msgstr "Kérjük, írja be a beküldő e-mail címét."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
-msgstr "Ha használni szeretné ezt a bővítményt a Digital Object Identifiers (DOI-k) regisztrálásához közvetlenül a CrossRef-nél, akkor felhasználónévre és jelszóra lesz szüksége (elérhető a <a href=\"http://www.crossref.org\" target=\"_blank\"> CrossRef </a>). Ha nem rendelkezik saját felhasználónevével és jelszóval, akkor továbbra is exportálhatja a CrossRef XML formátumba, de nem tudja regisztrálni a DOI-t a CrossRef-rel a OJS-n belül."
+msgstr "Ha használni szeretné ezt a bővítményt a Digital Object Identifiers (DOI-k) regisztrálásához közvetlenül a Crossref-nél, akkor felhasználónévre és jelszóra lesz szüksége (elérhető a <a href=\"http://www.crossref.org\" target=\"_blank\"> Crossref </a>). Ha nem rendelkezik saját felhasználónevével és jelszóval, akkor továbbra is exportálhatja a Crossref XML formátumba, de nem tudja regisztrálni a DOI-t a Crossref-rel a OJS-n belül."
 
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Felhasználónév"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Kérjük, írja be a CrossRef-től kapott felhasználónevét."
+msgstr "Kérjük, írja be a Crossref-től kapott felhasználónevét."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
-msgstr "A OJS automatikusan beküldi a hozzárendelt DOI-kat a CrossRef-nek. Felhívjuk figyelmét, hogy a közzététel után a feldolgozáshoz egy kis idő szükséges. Ellenőrizheti az összes regisztrálatlan DOI-t."
+msgstr "A OJS automatikusan beküldi a hozzárendelt DOI-kat a Crossref-nek. Felhívjuk figyelmét, hogy a közzététel után a feldolgozáshoz egy kis idő szükséges. Ellenőrizheti az összes regisztrálatlan DOI-t."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
-msgstr "Használja a CrossRef teszt API-t (tesztkörnyezet) a DOI beküldéshez. Kérjük, ne felejtse el kikapcsolni ezt a beállítást a megjelentetéskor."
+msgstr "Használja a Crossref teszt API-t (tesztkörnyezet) a DOI beküldéshez. Kérjük, ne felejtse el kikapcsolni ezt a beállítást a megjelentetéskor."
 
 msgid "plugins.importexport.crossref.issues.description"
 msgstr "Megjegyzés: Csak folyóiratszámok (és nem azok cikkei) lesznek figyelembevéve az export/regisztráció során."
@@ -111,11 +118,13 @@ msgstr "Beküld"
 msgid "plugins.importexport.crossref.action.checkStatus"
 msgstr "Státusz ellenőrzése"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "CrossRef automatikus regisztrációs feladat"
+msgstr "Crossref automatikus regisztrációs feladat"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.notification.failed"
-msgstr "Egy DOI-t nem sikerült regisztrálni. Menjen az Eszöközök > Import/Export > CrossRef XML Export Plugin-hoz a sikertelen betöltések megtekintéséhez."
+msgstr "Egy DOI-t nem sikerült regisztrálni. Menjen az Eszöközök > Import/Export > Crossref XML Export Plugin-hoz a sikertelen betöltések megtekintéséhez."
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""

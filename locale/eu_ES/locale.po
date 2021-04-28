@@ -14,8 +14,9 @@ msgstr ""
 msgid "plugins.importexport.crossref.displayName"
 msgstr "Crossref XML esportatzeko plugina"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Artikuluen metadatuak esportatu CrossRef XML formatuan."
+msgstr "Artikuluen metadatuak esportatu Crossref XML formatuan."
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""

@@ -11,11 +11,13 @@ msgstr ""
 "PO-Revision-Date: 2019-11-19T11:05:35+00:00\n"
 "Language: \n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "افزونه برون دهی CrossRef XML"
+msgstr "افزونه برون دهی Crossref XML"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "برون دهی فراداده مقاله ئر فرمت CrossRef XML"
+msgstr "برون دهی فراداده مقاله ئر فرمت Crossref XML"
 
 msgid "plugins.importexport.crossref.requirements"
 msgstr "نیازمندی ها"
@@ -32,8 +34,9 @@ msgstr "شاپای مجله مشخص نشده است! شما باید در <a hr
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr "در افزونه DOI، مقالات برای اختصاص DOI انتخاب نشده است، بنابراین هیچ سپرده یا امکان برون دهی در این افزونه وجود ندارد."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "موارد زیر برای ارتباط با CrossRef مورد نیاز است."
+msgstr "موارد زیر برای ارتباط با Crossref مورد نیاز است."
 
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "نام سپرده گذار"
@@ -47,20 +50,24 @@ msgstr "لطفا نام سپرده گذار را وارد کنید"
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
 msgstr "لطفا ایمیل سپرده گذار را وارد کنید"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
-msgstr "اگر می خواهید از این افزونه برای ثبت مستقیم DOI با CrossRef استفاده کنید، به نام کاربری و رمز عبور (از <a href=\"http://www.crossref.org\" target=\"_blank\">CrossRef</a>) نیاز خواهید داشت. اگر شما نام کاربری و رمز عبور خود را ندارید، همچنان می توانید اطلاعات مجله را به فرمت XML CrossRef برون دهی کنید، اما نمی توانیدشناسه DOI خود از طریق CrossRef ثبت کنید."
+msgstr "اگر می خواهید از این افزونه برای ثبت مستقیم DOI با Crossref استفاده کنید، به نام کاربری و رمز عبور (از <a href=\"http://www.crossref.org\" target=\"_blank\">Crossref</a>) نیاز خواهید داشت. اگر شما نام کاربری و رمز عبور خود را ندارید، همچنان می توانید اطلاعات مجله را به فرمت XML Crossref برون دهی کنید، اما نمی توانیدشناسه DOI خود از طریق Crossref ثبت کنید."
 
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "نام کاربری"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "لطفا نام کاربری که از CrossRef دریافت کرده اید وارد کنید"
+msgstr "لطفا نام کاربری که از Crossref دریافت کرده اید وارد کنید"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
-msgstr "سامانه به طور خودکار شناسه DOI را به CrossRefتحویل می دهد. لطفا توجه داشته باشید که ممکن است پس از انتشار زمان کوتاهی برای پردازش سپری شود. شما می توانید تمام DOI های ثبت نشده را تیک بزنید."
+msgstr "سامانه به طور خودکار شناسه DOI را به Crossrefتحویل می دهد. لطفا توجه داشته باشید که ممکن است پس از انتشار زمان کوتاهی برای پردازش سپری شود. شما می توانید تمام DOI های ثبت نشده را تیک بزنید."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
-msgstr "از API تست CrossRef (محیط آزمایش) برای سپرده DOI استفاده کنید. لطفا فراموش نکنید که این گزینه را در زمان انتشار محتوا حذف کنید."
+msgstr "از API تست Crossref (محیط آزمایش) برای سپرده DOI استفاده کنید. لطفا فراموش نکنید که این گزینه را در زمان انتشار محتوا حذف کنید."
 
 msgid "plugins.importexport.crossref.issues.description"
 msgstr "توجه: فقط شماره ها (و نه مقالات آنها) برای برون دهی/ثبت در نظر گرفته می شود."
@@ -97,8 +104,9 @@ msgstr "دانلود XML"
 msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "نشانه گذاری به عنوان فعال"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "وظیفه ثبت خودکار CrossRef"
+msgstr "وظیفه ثبت خودکار Crossref"
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr "نحوه استفاده:  {$scriptName} {$pluginName} export [xmlFileName] [journal_path] articles objectId1 [objectId2] ...  {$scriptName} {$pluginName} register [journal_path] articles objectId1 [objectId2] ..."

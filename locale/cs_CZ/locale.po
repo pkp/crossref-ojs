@@ -14,11 +14,13 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 3.9.1\n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Plugin exportu do XML pro CrossRef"
+msgstr "Plugin exportu do XML pro Crossref"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Export metadat článku v XML formátu CrossRef."
+msgstr "Export metadat článku v XML formátu Crossref."
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""
@@ -30,8 +32,9 @@ msgstr ""
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Uživatelské jméno"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Vložte, prosím, uživatelské jméno, které jste dostali od CrossRef."
+msgstr "Vložte, prosím, uživatelské jméno, které jste dostali od Crossref."
 
 msgid "plugins.importexport.crossref.requirements"
 msgstr "Požadavky"
@@ -39,8 +42,9 @@ msgstr "Požadavky"
 msgid "plugins.importexport.crossref.requirements.satisfied"
 msgstr "Všechna požadavky pluginu byly uspokojeny."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Následujáící položky je třeba pro úspěšné uložení do CrossRef."
+msgstr "Následujáící položky je třeba pro úspěšné uložení do Crossref."
 
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Jméno vkládajícího"
@@ -63,14 +67,16 @@ msgstr "ISSN časopisu nebylo nakonfigurováno! Musíte přidat ISSN na <a href=
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr "Nejsou vybrány články pro přiřazení veřejných identifikátorů DOI, takže v tomto pluginu není žádná možnost uložení nebo exportu."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
-msgstr "Chcete-li tento plugin použít k registraci identifikátorů digitálních objektů (DOI) přímo s CrossRef, budete potřebovat uživatelské jméno a heslo (k dispozici na adrese <a href=\"http://www.crossref.org\" target=\"_blank\"> CrossRef </a>), abyste tak učinili. Pokud nemáte vlastní uživatelské jméno a heslo, můžete exportovat do formátu CrossRef XML, ale nemůžete zaregistrovat své DOI v CrossRef přímo z OJS."
+msgstr "Chcete-li tento plugin použít k registraci identifikátorů digitálních objektů (DOI) přímo s Crossref, budete potřebovat uživatelské jméno a heslo (k dispozici na adrese <a href=\"http://www.crossref.org\" target=\"_blank\"> Crossref </a>), abyste tak učinili. Pokud nemáte vlastní uživatelské jméno a heslo, můžete exportovat do formátu Crossref XML, ale nemůžete zaregistrovat své DOI v Crossref přímo z OJS."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
-msgstr "OJS uloží přiřazené DOI automaticky do CrossRef. Vezměte prosím na vědomí, že to může trvat krátkou dobu po zpracování publikace. Můžete zkontrolovat všechny neregistrované DOI."
+msgstr "OJS uloží přiřazené DOI automaticky do Crossref. Vezměte prosím na vědomí, že to může trvat krátkou dobu po zpracování publikace. Můžete zkontrolovat všechny neregistrované DOI."
 
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
-msgstr "Použijte testovací rozhraní API CrossRef (zkušební prostředí) pro vklad DOI. Nezapomeňte tuto možnost odstranit před reálným používání časopisu."
+msgstr "Použijte testovací rozhraní API Crossref (zkušební prostředí) pro vklad DOI. Nezapomeňte tuto možnost odstranit před reálným používání časopisu."
 
 msgid "plugins.importexport.crossref.issues.description"
 msgstr "Poznámka: Pro účely exportu/registrace zde budou zohledněny pouze čísla (a nikoliv jejich články)."
@@ -104,8 +110,9 @@ msgstr "Export"
 msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "Označit jako aktivní"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "Úloha automatické registrace CrossRef"
+msgstr "Úloha automatické registrace Crossref"
 
 msgid "plugins.importexport.crossref.export.error.issueNotFound"
 msgstr "Žádné číslo neodpovídá tomuto ID čísla: \"{$issueId}\"."

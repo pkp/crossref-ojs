@@ -36,8 +36,9 @@ msgstr ""
 "{$scriptName} {$pluginName} register [journal_path] articles objectId1 "
 "[objectId2] ...\n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "CrossRef-ის ავტომატური რეგისტრაციის ამოცანა"
+msgstr "Crossref-ის ავტომატური რეგისტრაციის ამოცანა"
 
 msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "აქტიურად მონიშვნა"
@@ -84,33 +85,37 @@ msgstr ""
 "XML-ის შემოწმება. გამოიყენეთ ეს პარამეტრი, XML-ის ჩამოსატვირთად DOI-ის ხელით "
 "რეგისტრაციისას."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
 msgstr ""
-"ტექსტური API CrossRef-ის გამოყენება (ტესტირების გარემო) DOI-ის "
+"ტექსტური API Crossref-ის გამოყენება (ტესტირების გარემო) DOI-ის "
 "დეპონირებისათვის. გთხოვთ, არ დაგავიწყდეთ ამ პარამეტრის გათიშვა რეალური "
 "მუშაობისას."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
 msgstr ""
-"OJS განათავსებს მინიჭებულ DOI-ს ავტომატურად CrossRef-ში. მიაქციეთ ყურადღება, "
+"OJS განათავსებს მინიჭებულ DOI-ს ავტომატურად Crossref-ში. მიაქციეთ ყურადღება, "
 "რომ ამას შესაძლოა დასჭირდეს გარკვეული დრო გამოქვეყნებისა და დამუშავების "
 "შემდეგ (მაგალითად, თქვენი cron-ის პარამეტრების მიხედვით). თქვენ შეგიძლიათ "
 "გადაამოწმოთ ყველა არარეგისტრირებული DOI."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "გთხოვთ შეიტანოთ მომხმარებლის სახელი, რომელიც მიიღეთ CrossRef-იდან."
+msgstr "გთხოვთ შეიტანოთ მომხმარებლის სახელი, რომელიც მიიღეთ Crossref-იდან."
 
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "მომხმარებლის სახელი"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
 msgstr ""
 "თუ გსურთ ამ მოდულის გამოყენება ციფრული ობიექტების (DOI) რეგისტრაციისათვის "
-"უშუალოდ CrossRef-ში, ამისათვის საჭირო იქნება მომხმარებლის სახელი და პაროლი ("
+"უშუალოდ Crossref-ში, ამისათვის საჭირო იქნება მომხმარებლის სახელი და პაროლი ("
 "მიღება შესაძლებელია აქ: <a href=\"http://www.crossref.org\" target=\"_blank\""
-">CrossRef</a>). თუ არ გაქვთ მომხმარებლის სახელი და პაროლი, შეგიძლიათ "
-"დააექსპორტოთ CrossRef XML ფორმატში, მაგრამ ვერ შეძლებთ თქვენი DOI-ის "
-"რეგისტრაციას CrossRef-ში OJS-იდან."
+">Crossref</a>). თუ არ გაქვთ მომხმარებლის სახელი და პაროლი, შეგიძლიათ "
+"დააექსპორტოთ Crossref XML ფორმატში, მაგრამ ვერ შეძლებთ თქვენი DOI-ის "
+"რეგისტრაციას Crossref-ში OJS-იდან."
 
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
 msgstr "გთხოვთ, შეიტანოთ დეპოზიტორის ელფოსტა."
@@ -124,9 +129,10 @@ msgstr "დეპოზიტორის ელფოსტა"
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "დეპოზიტორის სახელი"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
 msgstr ""
-"შემდეგი ინფორმაცია აუცილებელია CrossRef დეპოზიტარიუმში წარმატებით "
+"შემდეგი ინფორმაცია აუცილებელია Crossref დეპოზიტარიუმში წარმატებით "
 "გადასაცემად."
 
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
@@ -151,8 +157,10 @@ msgstr "მოდულის ყველა მოთხოვნა შეს
 msgid "plugins.importexport.crossref.requirements"
 msgstr "მოთხოვნები"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "აექსპორტებს სტატიის მეტა-მონაცემებს CrossRef XML ფორმატში."
+msgstr "აექსპორტებს სტატიის მეტა-მონაცემებს Crossref XML ფორმატში."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "მოდული „CrossRef XML-ის ექსპორტი“"
+msgstr "მოდული „Crossref XML-ის ექსპორტი“"
