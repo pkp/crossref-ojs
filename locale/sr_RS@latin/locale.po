@@ -11,11 +11,13 @@ msgstr ""
 "PO-Revision-Date: 2019-11-19T11:05:36+00:00\n"
 "Language: \n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "CrossRef XML dodatak za izvoz"
+msgstr "Crossref XML dodatak za izvoz"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Izvezi metapodatke članaka u CrossRef XML format."
+msgstr "Izvezi metapodatke članaka u Crossref XML format."
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""
@@ -38,8 +40,9 @@ msgstr "ISSN nije podešen, morate ga dodati na <a href=\"{$journalSettingsUrl}\
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr "Članci nisu obeleženi za dodavanje DOI javnog identifikatora pa stoga nema materijala za deponovanje ili izvoz."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Sledeći elementi su neophodni za supešno deponovanje kod CrossRef-a."
+msgstr "Sledeći elementi su neophodni za supešno deponovanje kod Crossref-a."
 
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Ime deponenta"
@@ -56,14 +59,17 @@ msgstr "Unesite imejl adresu deponenta."
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Korisničko ime"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Unesite korisničko ime koje je registrovano kod CrossRef-a."
+msgstr "Unesite korisničko ime koje je registrovano kod Crossref-a."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
-msgstr "OJS će automatski deponovati DOI-je kod CrossRef-a. Imajte na umu da će ovo potrajati neko vreme nakon procesa objavljivanja. U svakom momentu možete proveriti neregistrovane DOI-je."
+msgstr "OJS će automatski deponovati DOI-je kod Crossref-a. Imajte na umu da će ovo potrajati neko vreme nakon procesa objavljivanja. U svakom momentu možete proveriti neregistrovane DOI-je."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
-msgstr "Koristite CrossRef test API (okruženje za testiranje) za deponovanje DOI-ja. Ne zaboravite da isključite ovu opciju u proizvodnom okruženju."
+msgstr "Koristite Crossref test API (okruženje za testiranje) za deponovanje DOI-ja. Ne zaboravite da isključite ovu opciju u proizvodnom okruženju."
 
 msgid "plugins.importexport.crossref.issues.description"
 msgstr "Napomena: samo brojevi (ne i članci) će ući u opciju za izvoz/deponovanje."
@@ -84,8 +90,9 @@ msgstr "Preuzmi XML"
 msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "Obeleži aktivno"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "CrossRef zadatak automatske registracije"
+msgstr "Crossref zadatak automatske registracije"
 
 msgid "plugins.importexport.crossref.cliError"
 msgstr "GREŠKA:"

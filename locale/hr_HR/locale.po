@@ -11,11 +11,13 @@ msgstr ""
 "PO-Revision-Date: 2019-11-19T11:05:35+00:00\n"
 "Language: \n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Dodatak za CrossRef XML iznošenje"
+msgstr "Dodatak za Crossref XML iznošenje"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Koristi se za iznošenje metapodataka članaka u CrossRef XML formatu."
+msgstr "Koristi se za iznošenje metapodataka članaka u Crossref XML formatu."
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""

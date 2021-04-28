@@ -31,12 +31,12 @@
 		<!-- Crossref XML issue output -->
 		<filter
 			inGroup="issue=>crossref-xml"
-			class="plugins.importexport.crossref.filter.IssueCrossrefXmlFilter"
+			class="plugins.generic.crossref.filter.IssueCrossrefXmlFilter"
 			isTemplate="0" />
 		<!-- Crossref XML article output -->
 		<filter
 			inGroup="article=>crossref-xml"
-			class="plugins.importexport.crossref.filter.ArticleCrossrefXmlFilter"
+			class="plugins.generic.crossref.filter.ArticleCrossrefXmlFilter"
 			isTemplate="0" />
 	</filters>
 </filterConfig>

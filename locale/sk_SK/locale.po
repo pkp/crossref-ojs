@@ -32,8 +32,9 @@ msgstr ""
 "{$scriptName} {$pluginName} register [journal_path] articles objectId1 "
 "[objectId2] ...\n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "Úloha automatickej registrácie CrossRef"
+msgstr "Úloha automatickej registrácie Crossref"
 
 msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "Označiť ako aktívne"
@@ -78,31 +79,35 @@ msgstr ""
 "Validácia XML. Túto možnosť použite pre stiahnuté XML pre ručnú registráciu "
 "DOI."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
 msgstr ""
-"Použite testovacie rozhranie API CrossRef (skúšobné prostredie) pre vklad "
+"Použite testovacie rozhranie API Crossref (skúšobné prostredie) pre vklad "
 "DOI. Nezabudnite túto možnosť odstrániť pred reálnym používaním časopisu."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
 msgstr ""
-"OJS uloží priradené DOI automaticky do CrossRef. Upozorňujeme, že to môže "
+"OJS uloží priradené DOI automaticky do Crossref. Upozorňujeme, že to môže "
 "trvať krátku dobu po spracovaní publikácie. Môžete skontrolovať všetky "
 "neregistrované DOI."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Vložte, prosím, používateľské meno, ktoré ste dostali od CrossRef."
+msgstr "Vložte, prosím, používateľské meno, ktoré ste dostali od Crossref."
 
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Používateľské meno"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
 msgstr ""
 "Ak chcete tento plugin použiť na registráciu identifikátorov digitálnych "
-"objektov (DOI) priamo s CrossRef, budete potrebovať používateľské meno a "
+"objektov (DOI) priamo s Crossref, budete potrebovať používateľské meno a "
 "heslo (k dispozícii na adrese <a href=\"http://www.crossref.org\" target=\""
-"_blank\"> CrossRef </a>), aby ste tak urobili. Ak nemáte vlastné "
-"používateľské meno a heslo, môžete exportovať do formátu CrossRef XML, ale "
-"nemôžete zaregistrovať svoje DOI v CrossRef priamo z OJS."
+"_blank\"> Crossref </a>), aby ste tak urobili. Ak nemáte vlastné "
+"používateľské meno a heslo, môžete exportovať do formátu Crossref XML, ale "
+"nemôžete zaregistrovať svoje DOI v Crossref priamo z OJS."
 
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
 msgstr "Vložte, prosím, e-mail vkladajúceho."
@@ -116,8 +121,9 @@ msgstr "Email vkladajúceho"
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Meno vkladajúceho"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Nasledujúce položky sú potrebné pre úspešné uloženie do CrossRef."
+msgstr "Nasledujúce položky sú potrebné pre úspešné uloženie do Crossref."
 
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr ""
@@ -141,11 +147,13 @@ msgstr "Všetky požiadavky pluginu boli uspokojené."
 msgid "plugins.importexport.crossref.requirements"
 msgstr "Požadavky"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Export metadát článku v XML formáte CrossRef."
+msgstr "Export metadát článku v XML formáte Crossref."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Plugin exportu do XML pre CrossRef"
+msgstr "Plugin exportu do XML pre Crossref"
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Overiť iba export. Nesťahujte súbor."
