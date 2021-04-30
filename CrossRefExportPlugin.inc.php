@@ -34,6 +34,7 @@ define('CROSSREF_API_STATUS_URL_DEV', 'https://test.crossref.org/servlet/submiss
 define('CROSSREF_DEPOSIT_STATUS', 'depositStatus');
 
 use PKP\file\FileManager;
+use PKP\linkAction\LinkAction;
 
 class CrossRefExportPlugin extends DOIPubIdExportPlugin {
 
