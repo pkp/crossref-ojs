@@ -36,6 +36,11 @@ define('CROSSREF_DEPOSIT_STATUS', 'depositStatus');
 use PKP\file\FileManager;
 use PKP\linkAction\LinkAction;
 
+use APP\submission\Submission;
+
+// FIXME: Add namespacing
+use Issue;
+
 class CrossRefExportPlugin extends DOIPubIdExportPlugin {
 
 	/**
@@ -369,7 +374,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin {
 	 * @param $failedMsg string (opitonal)
 	 */
 	function updateDepositStatus($context, $object, $status, $batchId, $failedMsg = null) {
-		assert(is_a($object, 'Submission') or is_a($object, 'Issue'));
+		assert($object instanceof Submission || $object instanceof Issue);
 		// remove the old failure message, if exists
 		$object->setData($this->getFailedMsgSettingName(), null);
 		$object->setData($this->getDepositStatusSettingName(), $status);

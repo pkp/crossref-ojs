@@ -13,8 +13,9 @@
  * @brief Form for journal managers to setup CrossRef plugin
  */
 
-
-import('lib.pkp.classes.form.Form');
+use PKP\form\Form;
+use PKP\linkAction\request\AjaxModal;
+use PKP\linkAction\LinkAction;
 
 class CrossRefSettingsForm extends Form {
 
@@ -64,7 +65,6 @@ class CrossRefSettingsForm extends Form {
 			$application = Application::get();
 			$request = $application->getRequest();
 			$dispatcher = $application->getDispatcher();
-			import('lib.pkp.classes.linkAction.request.AjaxModal');
 			$doiPluginSettingsLinkAction = new LinkAction(
 				'settings',
 				new AjaxModal(
@@ -78,10 +78,10 @@ class CrossRefSettingsForm extends Form {
 		}
 
 		// Add form validation checks.
-		$this->addCheck(new FormValidator($this, 'depositorName', 'required', 'plugins.importexport.crossref.settings.form.depositorNameRequired'));
-		$this->addCheck(new FormValidatorEmail($this, 'depositorEmail', 'required', 'plugins.importexport.crossref.settings.form.depositorEmailRequired'));
-		$this->addCheck(new FormValidatorPost($this));
-		$this->addCheck(new FormValidatorCSRF($this));
+		$this->addCheck(new \PKP\form\validation\FormValidator($this, 'depositorName', 'required', 'plugins.importexport.crossref.settings.form.depositorNameRequired'));
+		$this->addCheck(new \PKP\form\validation\FormValidatorEmail($this, 'depositorEmail', 'required', 'plugins.importexport.crossref.settings.form.depositorEmailRequired'));
+		$this->addCheck(new \PKP\form\validation\FormValidatorPost($this));
+		$this->addCheck(new \PKP\form\validation\FormValidatorCSRF($this));
 	}
 
 

@@ -15,6 +15,8 @@
 
 import('plugins.importexport.crossref.filter.IssueCrossrefXmlFilter');
 
+use APP\submission\Submission;
+
 class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter {
 	/**
 	 * Constructor
@@ -45,7 +47,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter {
 	function createJournalNode($doc, $pubObject) {
 		$deployment = $this->getDeployment();
 		$journalNode = parent::createJournalNode($doc, $pubObject);
-		assert(is_a($pubObject, 'Submission'));
+		assert($pubObject instanceof Submission);
 		$journalNode->appendChild($this->createJournalArticleNode($doc, $pubObject));
 		return $journalNode;
 	}
@@ -60,7 +62,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter {
 		$deployment = $this->getDeployment();
 		$context = $deployment->getContext();
 		$cache = $deployment->getCache();
-		assert(is_a($submission, 'Submission'));
+		assert($submission instanceof Submission);
 		$issueId = $submission->getCurrentPublication()->getData('issueId');
 		if ($cache->isCached('issues', $issueId)) {
 			$issue = $cache->get('issues', $issueId);
