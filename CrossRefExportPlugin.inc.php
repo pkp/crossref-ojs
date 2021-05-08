@@ -39,7 +39,7 @@ use PKP\linkAction\LinkAction;
 use APP\submission\Submission;
 
 // FIXME: Add namespacing
-use Issue;
+// use Issue;
 
 class CrossRefExportPlugin extends DOIPubIdExportPlugin {
 
