@@ -35,6 +35,7 @@ define('CROSSREF_DEPOSIT_STATUS', 'depositStatus');
 
 use PKP\file\FileManager;
 use PKP\linkAction\LinkAction;
+use PKP\notification\PKPNotification;
 
 use APP\submission\Submission;
 
@@ -240,13 +241,13 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin {
 					$this->_sendNotification(
 						$request->getUser(),
 						'plugins.importexport.crossref.register.error.mdsError',
-						NOTIFICATION_TYPE_ERROR
+						PKPNotification::NOTIFICATION_TYPE_ERROR
 					);
 				} else {
 					$this->_sendNotification(
 						$request->getUser(),
 						$this->getDepositSuccessNotificationMessageKey(),
-						NOTIFICATION_TYPE_SUCCESS
+						PKPNotification::NOTIFICATION_TYPE_SUCCESS
 					);
 				}
 			} else {
@@ -256,7 +257,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin {
 						$this->_sendNotification(
 							$request->getUser(),
 							$error[0],
-							NOTIFICATION_TYPE_ERROR,
+							PKPNotification::NOTIFICATION_TYPE_ERROR,
 							(isset($error[1]) ? $error[1] : null)
 						);
 					}
