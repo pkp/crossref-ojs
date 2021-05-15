@@ -13,8 +13,8 @@
  * @brief Scheduled task to send deposits to Crossref and update statuses.
  */
 
-import('lib.pkp.classes.scheduledTask.ScheduledTask');
-
+use PKP\scheduledTask\ScheduledTask;
+use PKP\scheduledTask\ScheduledTaskHelper;
 use PKP\file\FileManager;
 
 class CrossrefInfoSender extends ScheduledTask {
@@ -97,7 +97,7 @@ class CrossrefInfoSender extends ScheduledTask {
 			if ($doiPrefix) {
 				$journals[] = $journal;
 			} else {
-				$this->addExecutionLogEntry(__('plugins.importexport.common.senderTask.warning.noDOIprefix', array('path' => $journal->getPath())), SCHEDULED_TASK_MESSAGE_TYPE_WARNING);
+				$this->addExecutionLogEntry(__('plugins.importexport.common.senderTask.warning.noDOIprefix', array('path' => $journal->getPath())), ScheduledTaskHelper::SCHEDULED_TASK_MESSAGE_TYPE_WARNING);
 			}
 		}
 		return $journals;
@@ -147,7 +147,7 @@ class CrossrefInfoSender extends ScheduledTask {
 				assert(is_array($error) && count($error) >= 1);
 				$this->addExecutionLogEntry(
 					__($error[0], array('param' => (isset($error[1]) ? $error[1] : null))),
-					SCHEDULED_TASK_MESSAGE_TYPE_WARNING
+					ScheduledTaskHelper::SCHEDULED_TASK_MESSAGE_TYPE_WARNING
 				);
 			}
 		}
