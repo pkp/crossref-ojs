@@ -13,6 +13,8 @@
  * @brief CrossRef/MEDLINE XML metadata export plugin
  */
 
+use APP\facades\Repo;
+
 import('classes.plugins.DOIPubIdExportPlugin');
 
 // The status of the Crossref DOI.
@@ -115,8 +117,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin {
 		// if the failure occured on request and the message was saved
 		// return that message
 		$articleId = $request->getUserVar('articleId');
-		$submissionDao = DAORegistry::getDAO('SubmissionDAO'); /* @var $submissionDao SubmissionDAO */
-		$article = $submissionDao->getByid($articleId);
+		$article = Repo::submission()->get((int) $articleId);
 		$failedMsg = $article->getData($this->getFailedMsgSettingName());
 		if (!empty($failedMsg)) {
 			return $failedMsg;
