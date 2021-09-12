@@ -47,7 +47,7 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
             // If the system isn't installed, or is performing an upgrade, don't
             // register hooks. This will prevent DB access attempts before the
             // schema is installed.
-            if (!Config::getVar('general', 'installed') || defined('RUNNING_UPGRADE')) {
+            if (Application::isUnderMaintenance()) {
                 return true;
             }
 

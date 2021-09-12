@@ -51,7 +51,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
         if ($success) {
             // register hooks. This will prevent DB access attempts before the
             // schema is installed.
-            if (!Config::getVar('general', 'installed') || defined('RUNNING_UPGRADE')) {
+            if (Application::isUnderMaintenance()) {
                 return true;
             }
         }

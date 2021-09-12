@@ -17,6 +17,7 @@ import('plugins.generic.crossref.filter.IssueCrossrefXmlFilter');
 
 use APP\facades\Repo;
 use APP\submission\Submission;
+use PKP\i18n\LocaleConversion;
 
 class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 {
@@ -138,7 +139,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
             // Check if both givenName and familyName is set for the submission language.
             if (!empty($familyNames[$locale]) && !empty($givenNames[$locale])) {
-                $personNameNode->setAttribute('language', PKPLocale::getIso1FromLocale($locale));
+                $personNameNode->setAttribute('language', LocaleConversion::getIso1FromLocale($locale));
                 $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'given_name', htmlspecialchars(ucfirst($givenNames[$locale]), ENT_COMPAT, 'UTF-8')));
                 $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($familyNames[$locale]), ENT_COMPAT, 'UTF-8')));
                 $hasAltName = false;
@@ -157,7 +158,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                         }
 
                         $nameNode = $doc->createElementNS($deployment->getNamespace(), 'name');
-                        $nameNode->setAttribute('language', PKPLocale::getIso1FromLocale($otherLocal));
+                        $nameNode->setAttribute('language', LocaleConversion::getIso1FromLocale($otherLocal));
 
                         $nameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($familyName), ENT_COMPAT, 'UTF-8')));
                         if (isset($givenNames[$otherLocal]) && !empty($givenNames[$otherLocal])) {
