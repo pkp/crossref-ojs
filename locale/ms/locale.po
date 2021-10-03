@@ -1,8 +1,31 @@
 # Ga Ja Poh <gajapo2932@decorbuz.com>, 2021.
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2021-10-05 09:06+0000\n"
+"Last-Translator: Ga Ja Poh <gajapo2932@decorbuz.com>\n"
+"Language-Team: Malay <http://translate.pkp.sfu.ca/projects/plugins/crossref/"
+"ms/>\n"
 "Language: ms\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Weblate\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 3.9.1\n"
+
+msgid "plugins.importexport.crossref.error.publisherNotConfigured"
+msgstr ""
+"Penerbit jurnal belum dikonfigurasi! Anda mesti menambah institusi penerbit "
+"di <a href=\"{$journalSettingsUrl}\" target=\"_blank\"> Halaman Tetapan "
+"Jurnal </a>."
+
+msgid "plugins.importexport.crossref.requirements.satisfied"
+msgstr "Semua syarat plugin dipenuhi."
+
+msgid "plugins.importexport.crossref.requirements"
+msgstr "Keperluan"
+
+msgid "plugins.importexport.crossref.description"
+msgstr "Eksport metadata artikel dalam format CrossRef XML."
+
+msgid "plugins.importexport.crossref.displayName"
+msgstr "Plugin Export CrossRef XML"
