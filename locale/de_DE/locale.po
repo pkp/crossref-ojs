@@ -1,12 +1,13 @@
+# Pia Piontkowitz <pia.piontkowitz@rub.de>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-30T06:56:43-07:00\n"
-"PO-Revision-Date: 2020-12-15 09:06+0000\n"
-"Last-Translator: Heike Riegler <heike.riegler@julius-kuehn.de>\n"
-"Language-Team: German <http://translate.pkp.sfu.ca/projects/ojs/"
-"importexport-crossref/de_DE/>\n"
+"PO-Revision-Date: 2021-10-21 09:07+0000\n"
+"Last-Translator: Pia Piontkowitz <pia.piontkowitz@rub.de>\n"
+"Language-Team: German <http://translate.pkp.sfu.ca/projects/plugins/crossref/"
+"de_DE/>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -93,7 +94,6 @@ msgstr ""
 "\t\t<p>Es wird nur der Status des letzten Übermittlungsversuchs angezeigt.</p>\n"
 "\t\t<p>Wenn eine Ablieferung fehlgeschlagen ist, beheben Sie bitte die Ursache und versuchen Sie erneut, den DOI zu registrieren.</p>"
 
-#, fuzzy
 msgid "plugins.importexport.crossref.action.export"
 msgstr "XML herunterladen"
 
