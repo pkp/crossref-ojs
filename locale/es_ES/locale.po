@@ -27,13 +27,13 @@ msgid "plugins.importexport.crossref.requirements.satisfied"
 msgstr "Se satisfacen todas las dependencias de módulos."
 
 msgid "plugins.importexport.crossref.error.publisherNotConfigured"
-msgstr "No se ha definido la editorial de la revista! Debe añadir la institución editora en la pàgina de <a href=\"{$journalSettingsUrl}\" target=\"_blank\">Preferencias de la Revista</a>."
+msgstr "¡No se ha definido la editorial de la revista! Debe añadir la institución editora en la página de <a href=\"{$journalSettingsUrl}\" target=\"_blank\">Preferencias de la Revista</a>."
 
 msgid "plugins.importexport.crossref.error.issnNotConfigured"
-msgstr "No se ha definido un ISSN para la revista! Debe añadir un ISSN en la página de <a href=\"{$journalSettingsUrl}\" target=\"_blank\">Preferencias de la Revista</a>."
+msgstr "¡No se ha definido un ISSN para la revista! Debe añadir un ISSN en la página de <a href=\"{$journalSettingsUrl}\" target=\"_blank\">Preferencias de la Revista</a>."
 
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
-msgstr "No se han seleccionado artículos a los que asignar un idenficador público DOI, por lo tanto, el módulo no puede depositar o exportar nada."
+msgstr "¡No se han seleccionado artículos a los que asignar un identificador público DOI, por lo tanto, el módulo no puede depositar o exportar nada."
 
 msgid "plugins.importexport.crossref.settings.depositorIntro"
 msgstr "Para un correcto depósito en CrossRef, se requieren los siguientes ítems."
@@ -47,13 +47,13 @@ msgstr ""
 "registro manual del DOI."
 
 msgid "plugins.importexport.crossref.settings.form.depositorEmail"
-msgstr "Email del depositario"
+msgstr "Correo electrónico del depositario"
 
 msgid "plugins.importexport.crossref.settings.form.depositorNameRequired"
 msgstr "Introduzca el nombre del depositario."
 
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
-msgstr "Introduzca el email del depositario."
+msgstr "Introduzca el correo electrónico del depositario."
 
 msgid "plugins.importexport.crossref.registrationIntro"
 msgstr "Si quiere usar este módulo para registrar Identificadores Digitales de Objeto (Digital Object Identifiers - DOI, en inglés) directamente con CrossRef, necesita un usuario y contraseña (disponible en <a href=\"http://www.crossref.org\" target=\"_blank\">CrossRef</a>). Si no dispone de su propio usuario y contraseña, todavía puede exportar en formato XML de CrossRef, pero no podrá registrar sus DOIs en CrossRef directamente desde OJS."
@@ -68,7 +68,7 @@ msgid "plugins.importexport.crossref.settings.form.automaticRegistration.descrip
 msgstr "OJS depositará los DOIs asignados en CrossRef de forma automática. Esto puede tomar un poco de tiempo de proceso tras la publicación. Puede comprobar todos los DOIs no registrados."
 
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
-msgstr "Usar la API de pruebas de CrossRef (entorno de testing) para depositar los DOIs. No olvide desactivar esta opción cuando pase a producción."
+msgstr "Usar la API de pruebas de CrossRef (entorno de testeo) para depositar los DOIs. No olvide desactivar esta opción cuando pase a producción."
 
 msgid "plugins.importexport.crossref.issues.description"
 msgstr "Nota: Solo los números (y no sus artículos) se toman en consideración para la exportación/registro."
@@ -87,13 +87,13 @@ msgstr ""
 "\n"
 "\t\t<p>Estados de depósito:</p>\n"
 "\t\t<p>\n"
-"\t\t- No depositado: no se ha hecho ningún intento de deposito para este DOI.<br />\n"
+"\t\t- No depositado: no se ha hecho ningún intento de depósito para este DOI.<br />\n"
 "\t\t- Activo: el DOI se ha depositado y se resuelve correctamente.<br />\n"
-"\t\t- Fallo: el deposito del DOI ha fallado.<br />\n"
-"\t\t- Marcado activo: el DOI fué marcado manualmente como activo.\n"
+"\t\t- Fallo: el depósito del DOI ha fallado.<br />\n"
+"\t\t- Marcado activo: el DOI fue marcado manualmente como activo.\n"
 "\t\t</p>\n"
 "\t\t<p>Solo se muestran los estados de los últimos intentos de depósito.</p>\n"
-"\t\t<p>Si un deposito fallase, resuelva el problema e intente registrar el DOI de nuevo.</p>"
+"\t\t<p>Si un depósito fallase, resuelva el problema e intente registrar el DOI de nuevo.</p>"
 
 #, fuzzy
 msgid "plugins.importexport.crossref.action.export"
@@ -122,7 +122,7 @@ msgid "plugins.importexport.crossref.export.error.articleNotFound"
 msgstr "No existe ningún artículo con el ID \"{$articleId}\"."
 
 msgid "plugins.importexport.crossref.register.error.mdsError"
-msgstr "El registro no pudo realizarse! El servidor de registro de DOI retornó un error."
+msgstr "¡El registro no pudo realizarse! El servidor de registro de DOI retornó un error."
 
 msgid "plugins.importexport.crossref.register.success.warning"
 msgstr "El registro se realizó satisfactoriamente. Sin embargo, ocurrieron las siguientes advertencias: '{$param}'."
