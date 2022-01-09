@@ -188,7 +188,7 @@ class IssueCrossrefXmlFilter extends NativeExportFilter {
 			$journalVolumeNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'volume', htmlspecialchars($issue->getVolume(), ENT_COMPAT, 'UTF-8')));
 			$journalIssueNode->appendChild($journalVolumeNode);
 		}
-		if ($issue->getNumber() && $issue->getShowNumber()) {
+		if ($issue->getNumber()) {
 			$journalIssueNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'issue', htmlspecialchars($issue->getNumber(), ENT_COMPAT, 'UTF-8')));
 		}
 		if ($issue->getDatePublished() && $issue->getStoredPubId('doi')) {
