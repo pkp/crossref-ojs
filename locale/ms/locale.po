@@ -1,0 +1,159 @@
+# Ga Ja Poh <gajapo2932@decorbuz.com>, 2021.
+# Studiorimau <studiorimau@gmail.com>, 2021.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2021-10-26 00:23+0000\n"
+"Last-Translator: Studiorimau <studiorimau@gmail.com>\n"
+"Language-Team: Malay <http://translate.pkp.sfu.ca/projects/plugins/crossref/"
+"ms/>\n"
+"Language: ms\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 3.9.1\n"
+
+msgid "plugins.importexport.crossref.error.publisherNotConfigured"
+msgstr ""
+"Penerbit jurnal belum dikonfigurasi! Anda mesti menambah institusi penerbit "
+"di <a href=\"{$journalSettingsUrl}\" target=\"_blank\"> Halaman Tetapan "
+"Jurnal </a>."
+
+msgid "plugins.importexport.crossref.requirements.satisfied"
+msgstr "Semua syarat plugin dipenuhi."
+
+msgid "plugins.importexport.crossref.requirements"
+msgstr "Keperluan"
+
+msgid "plugins.importexport.crossref.description"
+msgstr "Eksport metadata artikel dalam format CrossRef XML."
+
+msgid "plugins.importexport.crossref.displayName"
+msgstr "Plugin Export CrossRef XML"
+
+msgid "plugins.importexport.crossref.export.error.articleNotFound"
+msgstr ""
+"Tidak ada artikel yang sesuai dengan ID artikel yang ditentukan \""
+"{$articleId}\"."
+
+msgid "plugins.importexport.crossref.export.error.issueNotFound"
+msgstr ""
+"Tidak ada terbiran yang sepadan dengan ID terbitan yang ditentukan \""
+"{$issueId}\"."
+
+msgid "plugins.importexport.crossref.register.success.warning"
+msgstr "Pendaftaran berjaya tetapi amaran berikut berlaku: '{$ param}'."
+
+msgid "plugins.importexport.crossref.register.error.mdsError"
+msgstr ""
+"Pendaftaran tidak berjaya sepenuhnya! Pelayan pendaftaran DOI mengembalikan "
+"ralat."
+
+msgid "plugins.importexport.crossref.cliUsage"
+msgstr ""
+"Penggunaan:\n"
+"{$scriptName} {$pluginName} eksport [xmlFileName] [journal_path] artikel "
+"objectId1 [objectId2] ...\n"
+"{$scriptName} {$pluginName} daftar [journal_path] artikel objectId1 "
+"[objectId2] ...\n"
+
+msgid "plugins.importexport.crossref.senderTask.name"
+msgstr "Tugas pendaftaran automatik CrossRef"
+
+msgid "plugins.importexport.crossref.action.markRegistered"
+msgstr "Tandakan aktif"
+
+msgid "plugins.importexport.crossref.action.export"
+msgstr "Eksport"
+
+msgid "plugins.importexport.crossref.statusLegend"
+msgstr ""
+"\n"
+"\t\t<p> Status deposit: </p>\n"
+"\t\t<p>\n"
+"\t\t- Tidak didepositkan: tiada percubaan deposit untuk DOI ini. <br />\n"
+"\t\t- Aktif: DOI telah disimpan, dan diselesaikan dengan betul. <br />\n"
+"\t\t- Gagal: deposit DOI telah gagal. <br />\n"
+"\t\t- Ditandakan aktif: DOI secara manual ditandakan sebagai aktif.\n"
+"\t\t</p>\n"
+"\t\t<p> Hanya status percubaan deposit terakhir yang ditampilkan. </p>\n"
+"\t\t<p> Sekiranya deposit gagal, selesaikan masalahnya dan cuba mendaftarkan "
+"DOI sekali lagi. </p>"
+
+msgid "plugins.importexport.crossref.action.register"
+msgstr "Deposit"
+
+msgid "plugins.importexport.crossref.status.markedRegistered"
+msgstr "Ditanda aktif"
+
+msgid "plugins.importexport.crossref.status.registered"
+msgstr "Aktif"
+
+msgid "plugins.importexport.crossref.status.failed"
+msgstr "Gagal"
+
+msgid "plugins.importexport.crossref.issues.description"
+msgstr ""
+"Catatan: Hanya terbitan(dan bukan artikel mereka) yang akan dipertimbangkan "
+"untuk eksport/pendaftaran di sini."
+
+msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
+msgstr "Hanya mengesahkan eksport. Jangan muat turun fail."
+
+msgid "plugins.importexport.crossref.settings.form.validation"
+msgstr ""
+"Sahkan XML. Gunakan pilihan ini untuk muat turun XML untuk pendaftaran DOI "
+"manual."
+
+msgid "plugins.importexport.crossref.settings.form.testMode.description"
+msgstr ""
+"Gunakan API ujian CrossRef (testing environment) untuk deposit DOI. Jangan "
+"lupa untuk membuang pilihan ini untuk pengeluaran."
+
+msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
+msgstr ""
+"OJS akan mendepositkan DOI yang diberikan secara automatik ke CrossRef. "
+"Harap maklum bahawa proses ini mungkin memerlukan sedikit masa selepas "
+"penerbitan (mis. Bergantung pada konfigurasi cronjob anda). Anda boleh "
+"memeriksa semua DOI yang tidak berdaftar."
+
+msgid "plugins.importexport.crossref.settings.form.usernameRequired"
+msgstr "Sila masukkan nama pengguna yang anda dapat dari CrossRef."
+
+msgid "plugins.importexport.crossref.settings.form.username"
+msgstr "Nama pengguna"
+
+msgid "plugins.importexport.crossref.registrationIntro"
+msgstr ""
+"Sekiranya anda ingin menggunakan plugin ini untuk mendaftarkan Pengenalpasto "
+"Objek Digital (DOI) secara langsung dengan CrossRef, anda memerlukan nama "
+"pengguna dan kata laluan (tersedia dari <a href=\"http://www.crossref.org\" "
+"target=\"_blank\"> CrossRef </a>) untuk melakukannya. Sekiranya anda tidak "
+"mempunyai nama pengguna dan kata laluan anda sendiri, anda masih boleh "
+"mengeksport ke format CrossRef XML, tetapi anda tidak dapat mendaftarkan DOI "
+"anda dengan CrossRef dari dalam OJS."
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
+msgstr "Sila masukkan e-mel pendeposit."
+
+msgid "plugins.importexport.crossref.settings.form.depositorNameRequired"
+msgstr "Sila masukkan nama pendeposit."
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail"
+msgstr "E-mel pendeposit"
+
+msgid "plugins.importexport.crossref.settings.form.depositorName"
+msgstr "Nama pendeposit"
+
+msgid "plugins.importexport.crossref.settings.depositorIntro"
+msgstr "Item berikut diperlukan untuk deposit CrossRef yang berjaya."
+
+msgid "plugins.importexport.crossref.error.noDOIContentObjects"
+msgstr ""
+"Artikel tidak dipilih untuk penugasan DOI dalam plugin pengenalpasti umum "
+"DOI, jadi tiada deposit atau eksport dalam plugin ini."
+
+msgid "plugins.importexport.crossref.error.issnNotConfigured"
+msgstr ""
+"Jurnal ISSN belum dikonfigurasi! Anda mesti menambahkan ISSN di <a href=\""
+"{$journalSettingsUrl}\" target=\"_blank\"> Halaman Tetapan Jurnal </a>."
