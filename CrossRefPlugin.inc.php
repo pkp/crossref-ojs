@@ -14,13 +14,16 @@
  *
  */
 
+use APP\core\Application;
 use APP\plugins\IDoiRegistrationAgency;
 use PKP\context\Context;
 use PKP\core\JSONMessage;
 use PKP\form\Form;
+use PKP\linkAction\LinkAction;
 use PKP\linkAction\request\AjaxModal;
-
-import('lib.pkp.classes.plugins.GenericPlugin');
+use PKP\plugins\GenericPlugin;
+use PKP\plugins\HookRegistry;
+use PKP\plugins\PluginRegistry;
 
 class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
 {
@@ -87,7 +90,7 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
         $this->import('CrossRefExportPlugin');
         PluginRegistry::register('importexport', new CrossRefExportPlugin(), $this->getPluginPath());
 
-        HookRegistry::register('Template::doiManagement', array($this, 'callbackShowDoiManagementTabs'));
+        HookRegistry::register('Template::doiManagement', [$this, 'callbackShowDoiManagementTabs']);
         HookRegistry::register('DoiSettingsForm::setEnabledRegistrationAgencies', [$this, 'addAsRegistrationAgencyOption']);
         HookRegistry::register('Schema::get::doi', [$this, 'addToSchema']);
 
@@ -98,8 +101,8 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     /**
      * Extend the website settings tabs to include static pages
      *
-     * @param $hookName string The name of the invoked hook
-     * @param $args array Hook parameters
+     * @param string $hookName The name of the invoked hook
+     * @param array $args Hook parameters
      * @return boolean Hook handling status
      */
     public function callbackShowDoiManagementTabs($hookName, $args)
@@ -150,8 +153,8 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     /**
      * Includes plugin in list of configurable registration agencies for DOI depositing functionality
      *
-     * @param $hookName string DoiSettingsForm::setEnabledRegistrationAgencies
-     * @param $args array [
+     * @param string $hookName DoiSettingsForm::setEnabledRegistrationAgencies
+     * @param array $args [
      *      @option $enabledRegistrationAgencies array
      * ]
      */
@@ -208,8 +211,8 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
         $filterName = $exportPlugin->getSubmissionFilter();
         $xmlErrors = [];
 
-       $temporaryFileId =  $exportPlugin->exportAsDownload($context, $submissions, $filterName, 'articles', null, $xmlErrors);
-       return ['temporaryFileId' => $temporaryFileId, 'xmlErrors' => $xmlErrors];
+        $temporaryFileId =  $exportPlugin->exportAsDownload($context, $submissions, $filterName, 'articles', null, $xmlErrors);
+        return ['temporaryFileId' => $temporaryFileId, 'xmlErrors' => $xmlErrors];
     }
 
     /**
@@ -286,17 +289,17 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     {
         $router = $request->getRouter();
         return array_merge(
-            $this->getEnabled() ? array(
+            $this->getEnabled() ? [
                 new LinkAction(
                     'settings',
                     new AjaxModal(
-                        $router->url($request, null, null, 'manage', null, array('verb' => 'settings', 'plugin' => $this->getName(), 'category' => 'generic')),
+                        $router->url($request, null, null, 'manage', null, ['verb' => 'settings', 'plugin' => $this->getName(), 'category' => 'generic']),
                         $this->getDisplayName()
                     ),
                     __('manager.plugins.settings'),
                     null
                 ),
-            ) : array(),
+            ] : [],
             parent::getActions($request, $verb)
         );
     }

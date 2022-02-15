@@ -14,8 +14,6 @@
  */
 
 use PKP\form\Form;
-use PKP\linkAction\request\AjaxModal;
-use PKP\linkAction\LinkAction;
 
 class CrossRefSettingsForm extends Form
 {
@@ -53,8 +51,8 @@ class CrossRefSettingsForm extends Form
     //
     /**
      * Constructor
-     * @param $plugin \PKP\plugins\Plugin
-     * @param $contextId integer
+     * @param \PKP\plugins\Plugin $plugin
+     * @param integer $contextId
      */
     public function __construct($plugin, $contextId)
     {
@@ -117,23 +115,23 @@ class CrossRefSettingsForm extends Form
      */
     public function getFormFields()
     {
-        return array(
+        return [
             'depositorName' => 'string',
             'depositorEmail' => 'string',
             'username' => 'string',
             'password' => 'string',
             'automaticRegistration' => 'bool',
             'testMode' => 'bool'
-        );
+        ];
     }
 
     /**
      * Is the form field optional
-     * @param $settingName string
+     * @param string $settingName
      * @return boolean
      */
     public function isOptional($settingName)
     {
-        return in_array($settingName, array('username', 'password', 'automaticRegistration', 'testMode'));
+        return in_array($settingName, ['username', 'password', 'automaticRegistration', 'testMode']);
     }
 }

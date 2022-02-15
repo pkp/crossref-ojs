@@ -13,10 +13,6 @@
  * @brief CrossRef/MEDLINE XML metadata export plugin
  */
 
-use APP\facades\Repo;
-
-import('classes.plugins.DOIPubIdExportPlugin');
-
 // The status of the Crossref DOI.
 // any, notDeposited, and markedRegistered are reserved
 define('CROSSREF_STATUS_FAILED', 'failed');
@@ -35,10 +31,15 @@ define('CROSSREF_API_STATUS_URL_DEV', 'https://test.crossref.org/servlet/submiss
 // The name of the setting used to save the registered DOI and the URL with the deposit status.
 define('CROSSREF_DEPOSIT_STATUS', 'depositStatus');
 
-use PKP\doi\Doi;
-use PKP\file\TemporaryFileManager;
-
+use APP\core\Application;
+use APP\facades\Repo;
+use APP\plugins\DOIPubIdExportPlugin;
 use APP\submission\Submission;
+use PKP\doi\Doi;
+use PKP\file\FileManager;
+use PKP\file\TemporaryFileManager;
+use PKP\plugins\HookRegistry;
+use PKP\plugins\PluginRegistry;
 
 // FIXME: Add namespacing
 // use Issue;
@@ -133,7 +134,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
             if ($e->hasResponse()) {
                 $returnMessage = $e->getResponse()->getBody(true) . ' (' .$e->getResponse()->getStatusCode() . ' ' . $e->getResponse()->getReasonPhrase() . ')';
             }
-            return __('plugins.importexport.common.register.error.mdsError', array('param' => $returnMessage));
+            return __('plugins.importexport.common.register.error.mdsError', ['param' => $returnMessage]);
         }
 
         return (string) $response->getBody();
@@ -145,10 +146,10 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
      */
     protected function _getObjectAdditionalSettings()
     {
-        return array_merge(parent::_getObjectAdditionalSettings(), array(
+        return array_merge(parent::_getObjectAdditionalSettings(), [
             $this->getDepositBatchIdSettingName(),
             $this->getFailedMsgSettingName(),
-        ));
+        ]);
     }
 
     /**
@@ -177,10 +178,8 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
 
     public function exportAndDeposit($context, $objects, $filter, $objectsFileNamePart, string &$responseMessage, $noValidation = null) : bool
     {
-        $path = array('plugin', $this->getName());
-
         $fileManager = new FileManager();
-        $resultErrors = array();
+        $resultErrors = [];
 
         assert($filter != null);
         // Errors occured will be accessible via the status link
@@ -198,7 +197,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
             // Get the XML
             // Supply an exportErrors array because otherwise exportXML() will echo out export errors
             $exportErrors = [];
-            $exportXml = $this->exportXML(array($object), $filter, $context, $noValidation, $exportErrors);
+            $exportXml = $this->exportXML([$object], $filter, $context, $noValidation, $exportErrors);
             // Write the XML to a file.
             // export file name example: crossref-20160723-160036-articles-1-1.xml
             $objectsFileNamePart = $objectsFileNamePart . '-' . $object->getId();
@@ -261,9 +260,9 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
     }
 
     /**
-     * @param $objects Submission
-     * @param $context Context
-     * @param $filename string Export XML filename
+     * @param Submission $objects
+     * @param Context $context
+     * @param string $filename Export XML filename
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @see PubObjectsExportPlugin::depositXML()
@@ -345,10 +344,10 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
             $warningCountNode = $xmlDoc->getElementsByTagName('warning_count')->item(0);
             $warningCount = (int) $warningCountNode->nodeValue;
             if ($warningCount > 0) {
-                $result = array(array('plugins.importexport.crossref.register.success.warning', htmlspecialchars($response->getBody())));
+                $result = [['plugins.importexport.crossref.register.success.warning', htmlspecialchars($response->getBody())]];
             }
             // A possibility for other plugins (e.g. reference linking) to work with the response
-            HookRegistry::call('crossrefexportplugin::deposited', array($this, $response->getBody(), $objects));
+            HookRegistry::call('crossrefexportplugin::deposited', [$this, $response->getBody(), $objects]);
         }
 
         // Update the status
@@ -361,11 +360,11 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
 
     /**
      * Check the Crossref APIs, if deposits and registration have been successful
-     * @param $context Context
-     * @param $object DataObject The object getting deposited
-     * @param $status int
-     * @param $batchId string
-     * @param $failedMsg string (opitonal)
+     * @param Context $context
+     * @param DataObject $object The object getting deposited
+     * @param int $status
+     * @param string $batchId
+     * @param string $failedMsg (opitonal)
      */
     public function updateDepositStatus($context, $object, $status, $batchId = null, $failedMsg = null)
     {
@@ -401,7 +400,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
             if ($object instanceof Submission) {
                 $doiIds = Repo::doi()->getDoisForSubmission($object->getId());
             } else {
-               $doiIds = Repo::doi()->getDoisForIssue($object->getId, true);
+                $doiIds = Repo::doi()->getDoisForIssue($object->getId, true);
             }
 
             foreach ($doiIds as $doiId) {
@@ -454,7 +453,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
             case 'register':
                 PluginRegistry::loadCategory('generic', true, $context->getId());
                 $fileManager = new FileManager();
-                $resultErrors = array();
+                $resultErrors = [];
                 // Errors occured will be accessible via the status link
                 // thus do not display all errors notifications (for every article),
                 // just one general.
@@ -468,7 +467,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
                 // the export and filter to work.
                 foreach ($objects as $object) {
                     // Get the XML
-                    $exportXml = $this->exportXML(array($object), $filter, $context);
+                    $exportXml = $this->exportXML([$object], $filter, $context);
                     // Write the XML to a file.
                     // export file name example: crossref-20160723-160036-articles-1-1.xml
                     $objectsFileNamePartId = $objectsFileNamePart . '-' . $object->getId();
@@ -497,7 +496,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
                     foreach ($resultErrors as $errors) {
                         foreach ($errors as $error) {
                             assert(is_array($error) && count($error) >= 1);
-                            $errorMessage = __($error[0], array('param' => (isset($error[1]) ? $error[1] : null)));
+                            $errorMessage = __($error[0], ['param' => $error[1] ?? null]);
                             echo "*** $errorMessage\n";
                         }
                     }
