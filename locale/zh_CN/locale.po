@@ -14,11 +14,13 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 3.9.1\n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "CrossRef XML导出插件"
+msgstr "Crossref XML导出插件"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "导出文章元数据为CrossRef XML格式。"
+msgstr "导出文章元数据为Crossref XML格式。"
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""
@@ -30,11 +32,13 @@ msgstr ""
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "用户名"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "请输入CrossRef为您配置的用户名。"
+msgstr "请输入Crossref为您配置的用户名。"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "请输入CrossRef DOI存储负责人的姓名和邮箱。"
+msgstr "请输入Crossref DOI存储负责人的姓名和邮箱。"
 
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "存储名"
@@ -82,8 +86,9 @@ msgstr "注册成功，但是发生以下警告：'{$param}'。"
 msgid "plugins.importexport.crossref.register.error.mdsError"
 msgstr "注册未完全成功！ DOI注册服务器返回了错误。"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "CrossRef自动注册任务"
+msgstr "Crossref自动注册任务"
 
 msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "标记为启用"
@@ -119,16 +124,19 @@ msgstr "失败"
 msgid "plugins.importexport.crossref.settings.form.validation"
 msgstr "验证XML。 使用此选项进行XML下载以进行手动DOI注册。"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
-msgstr "使用CrossRef测试API（测试环境）来存储DOI。 请不要忘记在生产环境中删除此选项。"
+msgstr "使用Crossref测试API（测试环境）来存储DOI。 请不要忘记在生产环境中删除此选项。"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
 msgstr ""
-"OJS会将分配的DOI自动保存到CrossRef。 请注意，这可能在发布后需要一段时间处理（例如，取决于您的cronjob配置）。 "
+"OJS会将分配的DOI自动保存到Crossref。 请注意，这可能在发布后需要一段时间处理（例如，取决于您的cronjob配置）。 "
 "您可以检查所有未注册的DOI。"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
 msgstr ""
-"如果您想使用此插件直接向CrossRef注册数字对象标识符（DOI），则需要一个用户名和密码（可从<a href=\""
-"http://www.crossref.org\" target=\"_blank\">CrossRef </a>获得）。 如果您没有自己的用户名和密码，"
-"则仍然可以导出为CrossRef XML格式，但是无法从OJS中使用CrossRef注册DOI。"
+"如果您想使用此插件直接向Crossref注册数字对象标识符（DOI），则需要一个用户名和密码（可从<a href=\""
+"http://www.crossref.org\" target=\"_blank\">Crossref </a>获得）。 如果您没有自己的用户名和密码，"
+"则仍然可以导出为Crossref XML格式，但是无法从OJS中使用Crossref注册DOI。"

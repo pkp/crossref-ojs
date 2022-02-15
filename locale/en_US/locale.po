@@ -12,10 +12,16 @@ msgstr ""
 "Language: \n"
 
 msgid "plugins.importexport.crossref.displayName"
-msgstr "CrossRef XML Export Plugin"
+msgstr "Crossref XML Export Plugin"
 
 msgid "plugins.importexport.crossref.description"
-msgstr "Export article metadata in CrossRef XML format."
+msgstr "Export article metadata in Crossref XML format."
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Crossref Manager Plugin"
+
+msgid "plugins.generic.crossref.description"
+msgstr "Handles depositing and exporting Crossref metadata"
 
 msgid "plugins.importexport.crossref.requirements"
 msgstr "Requirements"
@@ -32,8 +38,11 @@ msgstr "A journal ISSN has not been configured! You must add an ISSN on the <a h
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr "Articles are not selected for DOI assignment in the DOI public identifier plugin, so there is no deposit or export possibility in this plugin."
 
+msgid "plugins.importexport.crossref.settings"
+msgstr "Crossref Settings"
+
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "The following items are required for a successful CrossRef deposit."
+msgstr "The following items are required for a successful Crossref deposit."
 
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Depositor name"
@@ -48,19 +57,19 @@ msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
 msgstr "Please enter the depositor email."
 
 msgid "plugins.importexport.crossref.registrationIntro"
-msgstr "If you would like to use this plugin to register Digital Object Identifiers (DOIs) directly with CrossRef you will need a username and password (available from <a href=\"http://www.crossref.org\" target=\"_blank\">CrossRef</a>) in order to do so. If you do not have your own username and password you can still export into the CrossRef XML format, but you cannot register your DOIs with CrossRef from within OJS."
+msgstr "If you would like to use this plugin to register Digital Object Identifiers (DOIs) directly with Crossref you will need a username and password (available from <a href=\"http://www.crossref.org\" target=\"_blank\">Crossref</a>) in order to do so. If you do not have your own username and password you can still export into the Crossref XML format, but you cannot register your DOIs with Crossref from within OJS."
 
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Username"
 
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Please enter the username you got from CrossRef."
+msgstr "Please enter the username you got from Crossref."
 
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
-msgstr "OJS will deposit assigned DOIs automatically to CrossRef. Please note that this may take a short amount of time after publication to process  (e.g. depending on your cronjob configuration). You can check for all unregistered DOIs."
+msgstr "OJS will deposit assigned DOIs automatically to Crossref. Please note that this may take a short amount of time after publication to process  (e.g. depending on your cronjob configuration). You can check for all unregistered DOIs."
 
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
-msgstr "Use the CrossRef test API (testing environment) for the DOI deposit. Please do not forget to remove this option for the production."
+msgstr "Use the Crossref test API (testing environment) for the DOI deposit. Please do not forget to remove this option for the production."
 
 msgid "plugins.importexport.crossref.settings.form.validation"
 msgstr "Validate XML. Use this option for the XML download for the manual DOI registration."
@@ -79,6 +88,9 @@ msgstr "Active"
 
 msgid "plugins.importexport.crossref.status.markedRegistered"
 msgstr "Marked active"
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "Not deposited"
 
 msgid "plugins.importexport.crossref.action.register"
 msgstr "Deposit"
@@ -103,7 +115,7 @@ msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "Mark active"
 
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "CrossRef automatic registration task"
+msgstr "Crossref automatic registration task"
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""
@@ -123,3 +135,6 @@ msgstr "No issue matched the specified issue ID \"{$issueId}\"."
 
 msgid "plugins.importexport.crossref.export.error.articleNotFound"
 msgstr "No article matched the specified article ID \"{$articleId}\"."
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"

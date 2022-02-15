@@ -15,11 +15,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 3.9.1\n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Plugiciel d'exportation CrossRef XML"
+msgstr "Plugiciel d'exportation Crossref XML"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Exporter les métadonnées de l'article en format CrossRef XML."
+msgstr "Exporter les métadonnées de l'article en format Crossref XML."
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""
@@ -35,8 +37,9 @@ msgstr "Exigences"
 msgid "plugins.importexport.crossref.requirements.satisfied"
 msgstr "Toutes les exigences du plugiciel sont satisfaites."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Les éléments suivants sont requis pour un dépôt CrossRef réussi."
+msgstr "Les éléments suivants sont requis pour un dépôt Crossref réussi."
 
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Nom du déposant"
@@ -53,13 +56,15 @@ msgstr "Veuillez inscrire le courriel du déposant."
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Nom d'utilisateur-trice"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
 msgstr ""
 "Veuillez entrer le nom d'utilisateur-trice que vous avez obtenu auprès de "
-"CrossRef."
+"Crossref."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "Tâche automatique d'enregistrement de CrossRef"
+msgstr "Tâche automatique d'enregistrement de Crossref"
 
 msgid "plugins.importexport.crossref.error.publisherNotConfigured"
 msgstr ""
@@ -76,26 +81,29 @@ msgstr ""
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr "Les articles n'ont pas été sélectionnés pour l'attribution d'un DOI dans le plugiciel d'identifiant public DOI, conséquemment le dépôt et l'exportation sont impossibles à partir de ce plugiciel."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
 msgstr ""
 "Si vous souhaitez utiliser ce plugiciel pour enregistrer des DOIs (Digital "
-"Object Identifiers) directement avec CrossRef, vous aurez besoin d'un nom d"
+"Object Identifiers) directement avec Crossref, vous aurez besoin d'un nom d"
 "'utilisateur-trice et d'un mot de passe (disponible sur <a href=\""
-"http://www.crossref.org\" target=\"_blank\"> CrossRef </a>). Si vous n'avez "
+"http://www.crossref.org\" target=\"_blank\"> Crossref </a>). Si vous n'avez "
 "pas votre propre nom d'utilisateur-trice et mot de passe, vous pouvez "
-"toujours exporter en format XML CrossRef, mais vous ne pouvez pas "
-"enregistrer vos DOI avec CrossRef à partir d'OJS."
+"toujours exporter en format XML Crossref, mais vous ne pouvez pas "
+"enregistrer vos DOI avec Crossref à partir d'OJS."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
 msgstr ""
-"OJS déposera automatiquement les DOI assignés chez CrossRef. Veuillez noter "
+"OJS déposera automatiquement les DOI assignés chez Crossref. Veuillez noter "
 "que cela peut prendre un peu de temps après la publication pour le "
 "traitement (par exemple, en fonction de votre configuration cronjob). Vous "
 "pouvez vérifier tous les DOI non enregistrés."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
 msgstr ""
-"Utiliser l'API CrossRef Test (environnement de test) pour le dépôt de DOIs. "
+"Utiliser l'API Crossref Test (environnement de test) pour le dépôt de DOIs. "
 "Ne pas oublier pas d'enlever cette option une fois le site en production."
 
 msgid "plugins.importexport.crossref.issues.description"
@@ -144,8 +152,9 @@ msgstr "Soumis"
 msgid "plugins.importexport.crossref.action.checkStatus"
 msgstr "Vérifier le statut"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.notification.failed"
-msgstr "Un DOI n'a pas pu être enregistré. Pour voir les dépôts ayant échoué, allez dans Outils > Importer/Exporter > Plugiciel d'exportation CrossRef XML."
+msgstr "Un DOI n'a pas pu être enregistré. Pour voir les dépôts ayant échoué, allez dans Outils > Importer/Exporter > Plugiciel d'exportation Crossref XML."
 
 msgid "plugins.importexport.crossref.register.error.mdsError"
 msgstr ""

@@ -1,5 +1,5 @@
 {**
- * plugins/importexport/crossref/templates/settingsForm.tpl
+ * plugins/generic/crossref/templates/settingsForm.tpl
  *
  * Copyright (c) 2014-2021 Simon Fraser University
  * Copyright (c) 2003-2021 John Willinsky
@@ -14,15 +14,29 @@
 		$('#crossrefSettingsForm').pkpHandler('$.pkp.controllers.form.AjaxFormHandler');
 	{rdelim});
 </script>
+
+<div class="pkp_notification" id="crossrefConfigurationErrors">
+	{foreach from=$configurationErrors item=configurationError}
+		{if $configurationError == $smarty.const.DOI_EXPORT_CONFIG_ERROR_DOIPREFIX}
+			{include file="controllers/notification/inPlaceNotificationContent.tpl" notificationId=crossrefConfigurationErrors notificationStyleClass="notifyWarning" notificationTitle="plugins.importexport.common.missingRequirements"|translate notificationContents="plugins.importexport.common.error.DOIsNotAvailable"|translate}
+		{elseif $configurationError == $smarty.const.EXPORT_CONFIG_ERROR_SETTINGS}
+			{include file="controllers/notification/inPlaceNotificationContent.tpl" notificationId=crossrefConfigurationErrors notificationStyleClass="notifyWarning" notificationTitle="plugins.importexport.common.missingRequirements"|translate notificationContents="plugins.importexport.common.error.pluginNotConfigured"|translate}
+		{/if}
+	{/foreach}
+	{if !$currentContext->getData('publisherInstitution')}
+		{capture assign=journalSettingsUrl}{url router=\PKP\core\PKPApplication::ROUTE_PAGE page="management" op="settings" path="context" escape=false}{/capture}
+		{capture assign=missingPublisherMessage}{translate key="plugins.importexport.crossref.error.publisherNotConfigured" journalSettingsUrl=$journalSettingsUrl}{/capture}
+		{include file="controllers/notification/inPlaceNotificationContent.tpl" notificationId=crossrefConfigurationErrors notificationStyleClass="notifyWarning" notificationTitle="plugins.importexport.common.missingRequirements"|translate notificationContents=$missingPublisherMessage}
+	{/if}
+	{if !$currentContext->getData('onlineIssn') && !$currentContext->getData('printIssn')}
+		{capture assign=journalSettingsUrl}{url router=\PKP\core\PKPApplication::ROUTE_PAGE page="management" op="settings" path="context" escape=false}{/capture}
+		{capture assign=missingIssnMessage}{translate key="plugins.importexport.crossref.error.issnNotConfigured" journalSettingsUrl=$journalSettingsUrl}{/capture}
+		{include file="controllers/notification/inPlaceNotificationContent.tpl" notificationId=crossrefConfigurationErrors notificationStyleClass="notifyWarning" notificationTitle="plugins.importexport.common.missingRequirements"|translate notificationContents=$missingIssnMessage}
+	{/if}
+</div>
+
 <form class="pkp_form" id="crossrefSettingsForm" method="post" action="{url router=\PKP\core\PKPApplication::ROUTE_COMPONENT op="manage" plugin="CrossRefExportPlugin" category="importexport" verb="save"}">
 	{csrf}
-	{if $doiPluginSettingsLinkAction}
-		{fbvFormArea id="doiPluginSettingsLink"}
-			{fbvFormSection}
-				{include file="linkAction/linkAction.tpl" action=$doiPluginSettingsLinkAction}
-			{/fbvFormSection}
-		{/fbvFormArea}
-	{/if}
 	{fbvFormArea id="crossrefSettingsFormArea"}
 		<p class="pkp_help">{translate key="plugins.importexport.crossref.settings.depositorIntro"}</p>
 		{fbvFormSection}

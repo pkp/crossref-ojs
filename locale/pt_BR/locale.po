@@ -14,11 +14,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 3.9.1\n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Exportação CrossRef em XML"
+msgstr "Exportação Crossref em XML"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Exporta metadados dos artigos no formato CrossRef XML."
+msgstr "Exporta metadados dos artigos no formato Crossref XML."
 
 msgid "plugins.importexport.crossref.requirements"
 msgstr "Requisitos"
@@ -50,20 +52,24 @@ msgstr "Por favor digite o nome do depositante."
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
 msgstr "Por favor digite o email do depositante."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
-msgstr "Se você quiser usar este plugin para registrar Digital Object Identifiers (DOIs) diretamente com o CrossRef, você precisará de um nome de usuário e senha (disponível em <a href=\"http://www.crossref.org\" target=\"_blank\"> CrossRef </a>). Se você não tiver seu próprio nome de usuário e senha, ainda poderá exportar para o formato CrossRef XML, mas não poderá registrar os nomes DOI com a CrossRef a partir do OJS."
+msgstr "Se você quiser usar este plugin para registrar Digital Object Identifiers (DOIs) diretamente com o Crossref, você precisará de um nome de usuário e senha (disponível em <a href=\"http://www.crossref.org\" target=\"_blank\"> Crossref </a>). Se você não tiver seu próprio nome de usuário e senha, ainda poderá exportar para o formato Crossref XML, mas não poderá registrar os nomes DOI com a Crossref a partir do OJS."
 
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Nome de usuário"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Por favor, informe o nome de usuário que você revcebeu da CrossRef."
+msgstr "Por favor, informe o nome de usuário que você revcebeu da Crossref."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
-msgstr "O OJS depositará automaticamente os metadados dos DOIs atribuídos na CrossRef. Observe que isso pode levar um curto período de tempo após a publicação do processo. Você pode verificar todas os DOIs não registrados."
+msgstr "O OJS depositará automaticamente os metadados dos DOIs atribuídos na Crossref. Observe que isso pode levar um curto período de tempo após a publicação do processo. Você pode verificar todas os DOIs não registrados."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
-msgstr "Use a API de teste CrossRef (ambiente de teste) para o depósito DOI. Não se esqueça de remover esta opção para a produção."
+msgstr "Use a API de teste Crossref (ambiente de teste) para o depósito DOI. Não se esqueça de remover esta opção para a produção."
 
 msgid "plugins.importexport.crossref.issues.description"
 msgstr "Nota: Somente as edições (e não seus artigos) serão considerados para exportação/registro aqui."
@@ -96,8 +102,9 @@ msgstr "Exportar"
 msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "Marcar como Ativo"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "Dados CrossRef do remetente"
+msgstr "Dados Crossref do remetente"
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""

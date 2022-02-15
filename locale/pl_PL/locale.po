@@ -15,11 +15,13 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 3.9.1\n"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Eksportuj lub zarejestruj metadane artykułu w formacie CrossRef."
+msgstr "Eksportuj lub zarejestruj metadane artykułu w formacie Crossref."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Wtyczka eksportu/rejestracji CrossRef"
+msgstr "Wtyczka eksportu/rejestracji Crossref"
 
 msgid "plugins.importexport.crossref.requirements"
 msgstr "Wymagania"
@@ -30,8 +32,9 @@ msgstr "Wszystkie wymagania wtyczki zostały spełnione."
 msgid "plugins.importexport.crossref.error.publisherNotConfigured"
 msgstr "Organizacja wydająca czasopismo nie została skonfigurowana! Musisz uzupełnić brakujące elementy <a href=\"{$journalSettingsUrl}\" target=\"_blank\">na stronie konfiguracji czasopisma</a> w kroku 1.5."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Elementy wymagane dla poprawnego deponowania CrossRef."
+msgstr "Elementy wymagane dla poprawnego deponowania Crossref."
 
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Nazwa organizacji deponującej"
@@ -48,17 +51,21 @@ msgstr "Podaj email organizacji deponującej."
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Nazwa użytkownika"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Podaj nazwę użytkownika którą otrzymałeś od CrossRef."
+msgstr "Podaj nazwę użytkownika którą otrzymałeś od Crossref."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "Zadanie automatycznej rejestracji CrossRef"
+msgstr "Zadanie automatycznej rejestracji Crossref"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
-msgstr "OJS deponuje DOI automatycznie do CrossRef w momencie publikacji artykułów. Pamiętaj, że proces deponowania może zająć chwilę. Możesz sprawdzić wszystkie niezarejestrowane teksty <a href=\"{$unregisteredURL}\">tutaj</a>."
+msgstr "OJS deponuje DOI automatycznie do Crossref w momencie publikacji artykułów. Pamiętaj, że proces deponowania może zająć chwilę. Możesz sprawdzić wszystkie niezarejestrowane teksty <a href=\"{$unregisteredURL}\">tutaj</a>."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
-msgstr "Wtyczka może zostać skonfigurowana do automatycznego rejestrowania DOI z CrossRef. W tym celu będziesz potrzebował nazwę użytkownika oraz hasło (możesz je uzyskać od <a href=\"http://www.crossref.org\" target=\"_blank\">CrossRef</a>. Jeżeli nie posiadasz nazwy użytkownika oraz hasła, możesz eksportować pozycje do formatu CrossRef XML, ale nie będziesz mógł rejestrować DOI z CrossRef za pomocą OJS."
+msgstr "Wtyczka może zostać skonfigurowana do automatycznego rejestrowania DOI z Crossref. W tym celu będziesz potrzebował nazwę użytkownika oraz hasło (możesz je uzyskać od <a href=\"http://www.crossref.org\" target=\"_blank\">Crossref</a>. Jeżeli nie posiadasz nazwy użytkownika oraz hasła, możesz eksportować pozycje do formatu Crossref XML, ale nie będziesz mógł rejestrować DOI z Crossref za pomocą OJS."
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""
@@ -74,8 +81,9 @@ msgstr "ISSN czasopisma nie został skonfigurowany! Musisz dodać ISSN na <a hre
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr "Artykuły nie zostały skonfigurowane do współpracy z DOI - eksport nie jest możliwy."
 
+#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
-msgstr "Wykorzystaj API CrossRef (środowisko testowe) dla testowania DOI. Nie zapomnij usunąć tego ustawienia przed finalnym zdeponowaniem DOI."
+msgstr "Wykorzystaj API Crossref (środowisko testowe) dla testowania DOI. Nie zapomnij usunąć tego ustawienia przed finalnym zdeponowaniem DOI."
 
 msgid "plugins.importexport.crossref.issues.description"
 msgstr "Uwaga: Tylko numery (nie artykuły) zostaną uwzględnione do eksportu/rejestracji."
@@ -108,8 +116,9 @@ msgstr "Prześlij"
 msgid "plugins.importexport.crossref.action.checkStatus"
 msgstr "Sprawdź status"
 
+#,fuzzy
 msgid "plugins.importexport.crossref.notification.failed"
-msgstr "Błąd rejestracji DOI. Przejdź do Narzędzia -> Import/Eksport > CrossRef XML aby sprawdzić błędy."
+msgstr "Błąd rejestracji DOI. Przejdź do Narzędzia -> Import/Eksport > Crossref XML aby sprawdzić błędy."
 
 msgid "plugins.importexport.crossref.register.error.mdsError"
 msgstr "Przesyłanie nieudane! Serwer DOI zwrócił błąd: '{$param}'."
