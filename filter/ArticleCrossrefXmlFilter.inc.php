@@ -15,15 +15,19 @@
 
 import('plugins.generic.crossref.filter.IssueCrossrefXmlFilter');
 
+use APP\core\Application;
 use APP\facades\Repo;
 use APP\submission\Submission;
+use PKP\core\PKPApplication;
+use PKP\db\DAORegistry;
+use PKP\i18n\LocaleConversion;
 
 class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 {
     /**
      * Constructor
      *
-     * @param $filterGroup FilterGroup
+     * @param FilterGroup $filterGroup
      */
     public function __construct($filterGroup)
     {
@@ -61,8 +65,8 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Create and return the journal issue node 'journal_issue'.
      *
-     * @param $doc DOMDocument
-     * @param $submission Submission
+     * @param DOMDocument $doc
+     * @param Submission $submission
      *
      * @return DOMElement
      */
@@ -89,8 +93,8 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Create and return the journal article node 'journal_article'.
      *
-     * @param $doc DOMDocument
-     * @param $submission Submission
+     * @param DOMDocument $doc
+     * @param Submission $submission
      *
      * @return DOMElement
      */
@@ -138,7 +142,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
             // Check if both givenName and familyName is set for the submission language.
             if (!empty($familyNames[$locale]) && !empty($givenNames[$locale])) {
-                $personNameNode->setAttribute('language', PKPLocale::getIso1FromLocale($locale));
+                $personNameNode->setAttribute('language', LocaleConversion::getIso1FromLocale($locale));
                 $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'given_name', htmlspecialchars(ucfirst($givenNames[$locale]), ENT_COMPAT, 'UTF-8')));
                 $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($familyNames[$locale]), ENT_COMPAT, 'UTF-8')));
                 $hasAltName = false;
@@ -157,7 +161,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                         }
 
                         $nameNode = $doc->createElementNS($deployment->getNamespace(), 'name');
-                        $nameNode->setAttribute('language', PKPLocale::getIso1FromLocale($otherLocal));
+                        $nameNode->setAttribute('language', LocaleConversion::getIso1FromLocale($otherLocal));
 
                         $nameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($familyName), ENT_COMPAT, 'UTF-8')));
                         if (isset($givenNames[$otherLocal]) && !empty($givenNames[$otherLocal])) {
@@ -239,7 +243,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $pdfGalleyInArticleLocale = null;
         // get immediatelly also supplementary files for component list
         $componentGalleys = [];
-        $genreDao = DAORegistry::getDAO('GenreDAO'); /* @var $genreDao GenreDAO */
+        $genreDao = DAORegistry::getDAO('GenreDAO'); /** @var GenreDAO $genreDao */
         foreach ($galleys as $galley) {
             // filter supp files with DOI
             if (!$galley->getRemoteURL()) {
@@ -292,10 +296,10 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Append the collection node 'collection property="crawler-based"' to the doi data node.
      *
-     * @param $doc DOMDocument
-     * @param $doiDataNode DOMElement
-     * @param $submission Submission
-     * @param $galleys array of galleys
+     * @param DOMDocument $doc
+     * @param DOMElement $doiDataNode
+     * @param Submission $submission
+     * @param array $galleys of galleys
      */
     public function appendAsCrawledCollectionNodes($doc, $doiDataNode, $submission, $galleys)
     {
@@ -310,7 +314,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             $doiDataNode->appendChild($crawlerBasedCollectionNode);
         }
         foreach ($galleys as $galley) {
-            $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', array($submission->getBestId(), $galley->getBestGalleyId()), null, null, true);
+            $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', [$submission->getBestId(), $galley->getBestGalleyId()], null, null, true);
             // iParadigms crawler based collection element
             $crawlerBasedCollectionNode = $doc->createElementNS($deployment->getNamespace(), 'collection');
             $crawlerBasedCollectionNode->setAttribute('property', 'crawler-based');
@@ -325,10 +329,10 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Append the collection node 'collection property="text-mining"' to the doi data node.
      *
-     * @param $doc DOMDocument
-     * @param $doiDataNode DOMElement
-     * @param $submission Submission
-     * @param $galleys array of galleys
+     * @param DOMDocument $doc
+     * @param DOMElement $doiDataNode
+     * @param Submission $submission
+     * @param array $galleys of galleys
      */
     public function appendTextMiningCollectionNodes($doc, $doiDataNode, $submission, $galleys)
     {
@@ -341,7 +345,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $textMiningCollectionNode = $doc->createElementNS($deployment->getNamespace(), 'collection');
         $textMiningCollectionNode->setAttribute('property', 'text-mining');
         foreach ($galleys as $galley) {
-            $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', array($submission->getBestId(), $galley->getBestGalleyId()), null, null, true);            // text-mining collection item
+            $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', [$submission->getBestId(), $galley->getBestGalleyId()], null, null, true); // text-mining collection item
             $textMiningItemNode = $doc->createElementNS($deployment->getNamespace(), 'item');
             $resourceNode = $doc->createElementNS($deployment->getNamespace(), 'resource', $resourceURL);
             if (!$galley->getRemoteURL()) {
@@ -356,9 +360,9 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Create and return component list node 'component_list'.
      *
-     * @param $doc DOMDocument
-     * @param $submission Submission
-     * @param $componentGalleys array
+     * @param DOMDocument $doc
+     * @param Submission $submission
+     * @param array $componentGalleys
      *
      * @return DOMElement
      */
@@ -384,7 +388,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                 $componentNode->appendChild($titlesNode);
             }
             // DOI data node
-            $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', array($submission->getBestId(), $componentGalley->getBestGalleyId()), null, null, true);
+            $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', [$submission->getBestId(), $componentGalley->getBestGalleyId()], null, null, true);
             $componentNode->appendChild($this->createDOIDataNode($doc, $componentGalley->getStoredPubId('doi'), $resourceURL));
             $componentListNode->appendChild($componentNode);
         }

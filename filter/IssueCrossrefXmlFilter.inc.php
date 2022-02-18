@@ -13,13 +13,16 @@
  * @brief Class that converts an Issue to a Crossref XML document.
  */
 
+use APP\core\Application;
+use PKP\core\PKPApplication;
+
 import('lib.pkp.plugins.importexport.native.filter.NativeExportFilter');
 
 class IssueCrossrefXmlFilter extends NativeExportFilter
 {
     /**
      * Constructor
-     * @param $filterGroup FilterGroup
+     * @param FilterGroup $filterGroup
      */
     public function __construct($filterGroup)
     {
@@ -43,7 +46,7 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
     //
     /**
      * @see Filter::process()
-     * @param $pubObjects array Array of Issues or Submissions
+     * @param array $pubObjects Array of Issues or Submissions
      * @return DOMDocument
      */
     public function &process(&$pubObjects)
@@ -79,7 +82,7 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
     //
     /**
      * Create and return the root node 'doi_batch'.
-     * @param $doc DOMDocument
+     * @param DOMDocument $doc
      * @return DOMElement
      */
     public function createRootNode($doc)
@@ -96,7 +99,7 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create and return the head node 'head'.
-     * @param $doc DOMDocument
+     * @param DOMDocument $doc
      * @return DOMElement
      */
     public function createHeadNode($doc)
@@ -126,8 +129,8 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create and return the journal node 'journal'.
-     * @param $doc DOMDocument
-     * @param $pubObject object Issue or Submission
+     * @param DOMDocument $doc
+     * @param object $pubObject Issue or Submission
      * @return DOMElement
      */
     public function createJournalNode($doc, $pubObject)
@@ -141,7 +144,7 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create and return the journal metadata node 'journal_metadata'.
-     * @param $doc DOMDocument
+     * @param DOMDocument $doc
      * @return DOMElement
      */
     public function createJournalMetadataNode($doc)
@@ -178,8 +181,8 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create and return the journal issue node 'journal_issue'.
-     * @param $doc DOMDocument
-     * @param $issue Issue
+     * @param DOMDocument $doc
+     * @param Issue $issue
      * @return DOMElement
      */
     public function createJournalIssueNode($doc, $issue)
@@ -211,8 +214,8 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create and return the publication date node 'publication_date'.
-     * @param $doc DOMDocument
-     * @param $objectPublicationDate string
+     * @param DOMDocument $doc
+     * @param string $objectPublicationDate
      * @return DOMElement
      */
     public function createPublicationDateNode($doc, $objectPublicationDate)
@@ -233,9 +236,9 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create and return the DOI date node 'doi_data'.
-     * @param $doc DOMDocument
-     * @param $doi string
-     * @param $url string
+     * @param DOMDocument $doc
+     * @param string $doi
+     * @param string $url
      * @return DOMElement
      */
     public function createDOIDataNode($doc, $doi, $url)
