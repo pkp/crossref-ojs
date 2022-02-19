@@ -146,7 +146,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                 $givenName = $givenNames[$locale];
                 $familyName = $this->getDefaultSurname($givenName, $familyNames[$locale]);
                 $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'given_name', htmlspecialchars(ucfirst($givenName), ENT_COMPAT, 'UTF-8')));
-				$personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($familyName), ENT_COMPAT, 'UTF-8')));
+		$personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($familyName), ENT_COMPAT, 'UTF-8')));
                 $hasAltName = false;
 
                 if ($author->getData('orcid')) {
