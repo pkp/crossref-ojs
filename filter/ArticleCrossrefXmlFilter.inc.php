@@ -143,8 +143,10 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             // Check if both givenName and familyName is set for the submission language.
             if (!empty($familyNames[$locale]) && !empty($givenNames[$locale])) {
                 $personNameNode->setAttribute('language', LocaleConversion::getIso1FromLocale($locale));
-                $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'given_name', htmlspecialchars(ucfirst($givenNames[$locale]), ENT_COMPAT, 'UTF-8')));
-                $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($familyNames[$locale]), ENT_COMPAT, 'UTF-8')));
+                $givenName = $givenNames[$locale];
+                $familyName = $this->getDefaultSurname($givenName, $familyNames[$locale]);
+                $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'given_name', htmlspecialchars(ucfirst($givenName), ENT_COMPAT, 'UTF-8')));
+				$personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($familyName), ENT_COMPAT, 'UTF-8')));
                 $hasAltName = false;
 
                 if ($author->getData('orcid')) {
@@ -162,7 +164,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
                         $nameNode = $doc->createElementNS($deployment->getNamespace(), 'name');
                         $nameNode->setAttribute('language', LocaleConversion::getIso1FromLocale($otherLocal));
-
+                        $familyName = $this->getDefaultSurname($givenName, $familyName);
                         $nameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($familyName), ENT_COMPAT, 'UTF-8')));
                         if (isset($givenNames[$otherLocal]) && !empty($givenNames[$otherLocal])) {
                             $nameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'given_name', htmlspecialchars(ucfirst($givenNames[$otherLocal]), ENT_COMPAT, 'UTF-8')));
@@ -291,6 +293,30 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         }
 
         return $journalArticleNode;
+    }
+
+    /**
+     * get default surname within given name, and family name
+     * will be use last given name if family name is empty
+     * 
+     * @param string $givenName
+     * @param string $familyName
+     *
+     * @return string
+     */
+    function getDefaultSurname($givenName, $familyName)
+    {
+        $splitGivenName = explode(" ", $givenName);
+        $lenSplitGivenName = count($splitGivenName);
+        if ($lenSplitGivenName != 0) {
+            $givenName = $splitGivenName[$lenSplitGivenName - 1];
+        }
+        $familyName = str_replace(" ", "", $familyName);
+        // if empty string
+        if ($familyName == null || strlen($familyName) == 0) {
+            $familyName = $givenName;
+        }
+        return $familyName;
     }
 
     /**
