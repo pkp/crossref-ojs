@@ -1,0 +1,161 @@
+# Cyril Kamburov <cc@intermedia.bg>, 2022.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2022-04-03 13:57+0000\n"
+"Last-Translator: Cyril Kamburov <cc@intermedia.bg>\n"
+"Language-Team: Bulgarian <http://translate.pkp.sfu.ca/projects/plugins/"
+"crossref/bg_BG/>\n"
+"Language: bg_BG\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.9.1\n"
+
+msgid "plugins.importexport.crossref.requirements"
+msgstr "Изисквания"
+
+msgid "plugins.importexport.crossref.displayName"
+msgstr "Добавка (плъгин) за CrossRef XML експорт"
+
+msgid "plugins.importexport.crossref.description"
+msgstr "Експортиране на метаданни на статия в CrossRef XML формат."
+
+msgid "plugins.importexport.crossref.export.error.issueNotFound"
+msgstr ""
+"Нито едно издание не съответства на посочения идентификатор на издание \""
+"{$issueId}\"."
+
+msgid "plugins.importexport.crossref.export.error.articleNotFound"
+msgstr ""
+"Нито една статия не съответства на посочения идентификатор на статия "
+"„{$articleId}“."
+
+msgid "plugins.importexport.crossref.cliUsage"
+msgstr ""
+"Употреба:\n"
+"{$scriptName} {$pluginName} export [xmlFileName] [journal_path] articles "
+"objectId1 [objectId2] ...\n"
+"{$scriptName} {$pluginName} register [journal_path] articles objectId1 "
+"[objectId2] ...\n"
+
+msgid "plugins.importexport.crossref.action.export"
+msgstr "Експорт"
+
+msgid "plugins.importexport.crossref.issues.description"
+msgstr ""
+"Забележка: Само броеве (а не техните статии) ще бъдат разглеждани за експорт/"
+"регистрация тук."
+
+msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
+msgstr "Потвърдете само експортирането. Не изтегляйте файла."
+
+msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
+msgstr ""
+"Системата ще депозира присвоените DOI автоматично в CrossRef. Моля, имайте "
+"предвид, че това може да отнеме кратко време след публикуването за обработка "
+"(например в зависимост от конфигурацията на cronjob). Можете да проверите за "
+"всички нерегистрирани DOI."
+
+msgid "plugins.importexport.crossref.registrationIntro"
+msgstr ""
+"Ако искате да използвате тази добавка (плъгин) за регистриране на цифрови "
+"идентификатори на обекти (DOI) директно с CrossRef, за да го направите, ще "
+"ви трябва потребителско име и парола (достъпни от <a href=\""
+"http://www.crossref.org\" target=\"_blank\"> CrossRef</a>). Ако нямате "
+"собствено потребителско име и парола, все още можете да експортирате във "
+"формат CrossRef XML, но не можете да регистрирате вашите DOI с CrossRef от "
+"тази система."
+
+msgid "plugins.importexport.crossref.register.success.warning"
+msgstr ""
+"Регистрацията беше успешна, но се появи следното предупреждение: '{$param}'."
+
+msgid "plugins.importexport.crossref.register.error.mdsError"
+msgstr ""
+"Регистрацията не беше напълно успешна! Сървърът за регистрация на DOI върна "
+"грешка."
+
+msgid "plugins.importexport.crossref.senderTask.name"
+msgstr "CrossRef задача за автоматична регистрация"
+
+msgid "plugins.importexport.crossref.action.markRegistered"
+msgstr "Маркиране като активен"
+
+msgid "plugins.importexport.crossref.statusLegend"
+msgstr ""
+"\n"
+"\t\t<p>Депозитен статус:</p>\n"
+"\t\t<p>\n"
+"\t\t- Не е депозирано: не е направен опит за депозит за този DOI.<br />\n"
+"\t\t- Активен: DOI е депозиран и се достъпва правилно.<br />\n"
+"\t\t- Неуспешно: депозитът на DOI не е успешен.<br />\n"
+"\t\t- Маркиран като активен: DOI е ръчно маркиран като активен.\n"
+"\t\t</p>\n"
+"\t\t<p>Показва се само състоянието на последния опит за депозит.</p>\n"
+"\t\t<p>Ако депозитът е неуспешен, моля, решете проблема и опитайте отново да "
+"регистрирате DOI.</p>"
+
+msgid "plugins.importexport.crossref.action.register"
+msgstr "Депозиране"
+
+msgid "plugins.importexport.crossref.status.markedRegistered"
+msgstr "Маркиран като активен"
+
+msgid "plugins.importexport.crossref.status.registered"
+msgstr "Активен"
+
+msgid "plugins.importexport.crossref.status.failed"
+msgstr "Грешка"
+
+msgid "plugins.importexport.crossref.settings.form.validation"
+msgstr ""
+"Потвърдете XML. Използвайте тази опция за изтегляне на XML за ръчната "
+"регистрация на DOI."
+
+msgid "plugins.importexport.crossref.settings.form.testMode.description"
+msgstr ""
+"Използвайте CrossRef тестовия API (среда за тестване) за депозита на DOI. "
+"Моля, не забравяйте да премахнете тази опция при работа в реалната среда."
+
+msgid "plugins.importexport.crossref.settings.form.usernameRequired"
+msgstr "Моля, въведете потребителското име, което сте получили от CrossRef."
+
+msgid "plugins.importexport.crossref.settings.form.username"
+msgstr "Потребител"
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
+msgstr "Моля, въведете имейл на депозиращия."
+
+msgid "plugins.importexport.crossref.settings.form.depositorNameRequired"
+msgstr "Моля, въведете име на депозиращия."
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail"
+msgstr "Имейл на депозиращия"
+
+msgid "plugins.importexport.crossref.settings.form.depositorName"
+msgstr "Име на депозиращия"
+
+msgid "plugins.importexport.crossref.settings.depositorIntro"
+msgstr "Следните елементи са необходими за успешен CrossRef депозит."
+
+msgid "plugins.importexport.crossref.error.noDOIContentObjects"
+msgstr ""
+"Статиите не са избрани за присвояване на DOI в добавката (плъгин) за "
+"публичен идентификатор на DOI, така че няма възможност за депозиране или "
+"експортиране в този плъгин."
+
+msgid "plugins.importexport.crossref.error.issnNotConfigured"
+msgstr ""
+"ISSN за списание не е конфигуриран! Трябва да добавите ISSN на <a href=\""
+"{$journalSettingsUrl}\" target=\"_blank\">страницата с настройки на "
+"списанието</a>."
+
+msgid "plugins.importexport.crossref.error.publisherNotConfigured"
+msgstr ""
+"Издател на списание не е конфигуриран! Трябва да добавите институция издател "
+"на <a href=\"{$journalSettingsUrl}\" target=\"_blank\">страницата с "
+"настройки на списанието</a>."
+
+msgid "plugins.importexport.crossref.requirements.satisfied"
+msgstr "Всички изисквания за тази добавка (плъгин) са изпълнени."
