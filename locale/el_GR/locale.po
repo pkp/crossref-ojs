@@ -1,9 +1,10 @@
+# Manolis Saldaris <omanos@gmail.com>, 2022.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-11-17 18:56+0000\n"
-"Last-Translator: Evangelos Papakirykou <vpapakir@gmail.com>\n"
-"Language-Team: Greek <http://translate.pkp.sfu.ca/projects/ojs/"
-"importexport-crossref/el_GR/>\n"
+"PO-Revision-Date: 2022-05-25 20:11+0000\n"
+"Last-Translator: Manolis Saldaris <omanos@gmail.com>\n"
+"Language-Team: Greek <http://translate.pkp.sfu.ca/projects/plugins/crossref/"
+"el_GR/>\n"
 "Language: el_GR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,7 +16,6 @@ msgstr ""
 msgid "plugins.importexport.crossref.description"
 msgstr "Εξαγωγή των μεταδεδομένων του άρθρου σε μορφή Crossref XML."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
 msgstr "Πρόσθετο εξαγωγής Crossref XML"
 
