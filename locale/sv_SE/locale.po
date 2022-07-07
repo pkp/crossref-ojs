@@ -1,9 +1,10 @@
+# Viveka Svensson <viveka.svensson@lnu.se>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-19T11:05:37+00:00\n"
-"PO-Revision-Date: 2021-04-13 18:55+0000\n"
+"PO-Revision-Date: 2022-07-08 01:56+0000\n"
 "Last-Translator: Viveka Svensson <viveka.svensson@lnu.se>\n"
 "Language-Team: Swedish <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/sv_SE/>\n"
@@ -14,13 +15,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.9.1\n"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Plugin för export av Crossref-XML"
+msgstr "Plugin för export av Crossref XML"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Exporterar artikelmetadata i Crossrefs XML-format."
+msgstr "Exporterar artikelmetadata i Crossref XML-format."
 
 msgid "plugins.importexport.crossref.requirements"
 msgstr "Krav"
@@ -37,7 +36,6 @@ msgstr "Ett ISSN saknas för tidskriften! Lägg till ett ISSN i <a href=\"{$jour
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr "Inga artiklar har valts för tilldelning av DOI i DOI-pluginet, därför är det inte möjligt att deponera eller exportera via pluginet."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
 msgstr "Följande objekt krävs för att deponeringen till Crossref ska fungera."
 
@@ -53,24 +51,31 @@ msgstr "Ange deponerarens namn."
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
 msgstr "Ange deponerarens e-post."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
-msgstr "Om du vill använda det här pluginet för att registrera Digital Object Identifiers (DOIs) direkt hos Crossref behöver du användarnamn och lösenord (finns att få på <a href=\"http://www.crossref.org\" target=\"_blank\">Crossref</a>). Om du inte har ett eget användarnamn och lösenord kan du ändå exportera i XML format, men du kan inte registrera dina DOI:er hos Crossref via OJS."
+msgstr ""
+"Om du vill använda det här pluginet för att registrera Digital Object "
+"Identifiers (DOIs) direkt hos Crossref behöver du användarnamn och lösenord ("
+"finns att få på <a href=\"https://www.crossref.org\" target=\"_blank\""
+">Crossref</a>). Om du inte har ett eget användarnamn och lösenord kan du "
+"ändå exportera i XML format, men du kan inte registrera dina DOI:er hos "
+"Crossref via OJS."
 
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Användarnamn"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Logga in med ditt användarnamn från från Crossref."
+msgstr "Logga in med ditt användarnamn som du fått från Crossref."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
-msgstr "OJS deponerar automatiskt tilldelade DOI:er till Crossref. Det kan ta ett kort tag efter publiceringen innan deponeringen behandlas. Du kan kontrollera alla oregistrerade DOI:er."
+msgstr ""
+"OJS deponerar automatiskt tilldelade DOI:er till Crossref. Det kan ta ett "
+"kort tag efter publiceringen innan deponeringen behandlas (t ex. beroende på "
+"cronjob configuration). Du kan kontrollera alla oregistrerade DOI:er."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
-msgstr "Använd Crossrefs test-API (testmiljö) för DOI-deponering. Kom ihåg att ta bort alternativet när tidskriften går i produktion."
+msgstr ""
+"Använd Crossrefs test-API (testmiljö) för DOI-deponering. Kom ihåg att ta "
+"bort alternativet när tidskriften går i produktion."
 
 msgid "plugins.importexport.crossref.issues.description"
 msgstr "Observera: Bara nummer (inte deras artiklar) kommer att exporteras/registreras här."
@@ -103,7 +108,6 @@ msgstr "Export"
 msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "Markera som aktiv"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
 msgstr "Crossrefs automatiska registreringsfunktion"
 
@@ -140,3 +144,18 @@ msgstr ""
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Validera enbart exporten. Ladda inte ner filen."
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "Inte deponerad"
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Inställningar för Crossref"
+
+msgid "plugins.generic.crossref.description"
+msgstr "Hantera deponering och export av Crossref metadata"
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Crossref Manager Plugin"
