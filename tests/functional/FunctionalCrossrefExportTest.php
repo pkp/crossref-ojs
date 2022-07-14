@@ -13,9 +13,9 @@
  * @brief Test CrossRef export.
  */
 
-import('lib.pkp.tests.functional.plugins.importexport.FunctionalImportExportBaseTestCase');
+use PKP\tests\PKPTestCase;
 
-class FunctionalCrossrefExportTest extends FunctionalImportExportBaseTestCase
+class FunctionalCrossrefExportTest extends PKPTestCase
 {
 
     /**
@@ -35,6 +35,8 @@ class FunctionalCrossrefExportTest extends FunctionalImportExportBaseTestCase
      */
     public function testDoi()
     {
+        $this->markTestSkipped('Broken test due to missing class FunctionalImportExportBaseTestCase');
+
         $export = $this->getXpathOnExport('CrossRefExportPlugin/exportArticle/1');
         $export->registerNamespace('cr', 'http://www.crossref.org/schema/4.3.0');
 
