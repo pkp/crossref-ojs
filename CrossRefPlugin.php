@@ -1,18 +1,18 @@
 <?php
 
 /**
- * @file plugins/generic/crossref/CrossRefPlugin.inc.php
+ * @file plugins/generic/crossref/CrossRefPlugin.php
  *
- * Copyright (c) 2014-2021 Simon Fraser University
- * Copyright (c) 2003-2021 John Willinsky
+ * Copyright (c) 2014-2022 Simon Fraser University
+ * Copyright (c) 2003-2022 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
- * @package plugins.generic.crossRefPlugin
  * @class CrossRefPlugin
- *
- * Plugin to let managers deposit DOIs and metadata to Crossref
+ * @brief Plugin to let managers deposit DOIs and metadata to Crossref
  *
  */
+
+namespace APP\plugins\generic\crossref;
 
 use APP\core\Application;
 use APP\plugins\IDoiRegistrationAgency;
@@ -87,7 +87,6 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
      */
     private function _pluginInitialization()
     {
-        $this->import('CrossRefExportPlugin');
         PluginRegistry::register('importexport', new CrossRefExportPlugin(), $this->getPluginPath());
 
         HookRegistry::register('Template::doiManagement', [$this, 'callbackShowDoiManagementTabs']);
@@ -174,8 +173,7 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
      */
     public function isPluginConfigured(Context $context): bool
     {
-        $this->import('classes.form.CrossRefSettingsForm');
-        $form = new CrossRefSettingsForm($this->_getExportPlugin(), $context->getId());
+        $form = new classes\form\CrossRefSettingsForm($this->_getExportPlugin(), $context->getId());
         $configurationErrors = $this->_getConfigurationErrors($context, $form);
 
         if (!empty($configurationErrors)) {
@@ -316,8 +314,7 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
             case 'settings':
                 $context = $request->getContext();
 
-                $this->import('classes.form.CrossRefSettingsForm');
-                $form = new CrossRefSettingsForm($this->_getExportPlugin(), $context->getId());
+                $form = new classes\form\CrossRefSettingsForm($this->_getExportPlugin(), $context->getId());
                 $form->initData();
 
                 // Check for configuration errors

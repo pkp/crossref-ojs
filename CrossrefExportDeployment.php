@@ -1,21 +1,18 @@
 <?php
-/**
- * @defgroup plugins_generic_crossref Crossref export plugin
- */
 
 /**
- * @file plugins/generic/crossref/CrossrefExportDeployment.inc.php
+ * @file plugins/generic/crossref/CrossrefExportDeployment.php
  *
- * Copyright (c) 2014-2021 Simon Fraser University
- * Copyright (c) 2000-2021 John Willinsky
+ * Copyright (c) 2014-2022 Simon Fraser University
+ * Copyright (c) 2000-2022 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefExportDeployment
- * @ingroup plugins_generic_crossref
- *
  * @brief Base class configuring the crossref export process to an
  * application's specifics.
  */
+
+namespace APP\plugins\generic\crossref;
 
 // XML attributes
 define('CROSSREF_XMLNS', 'http://www.crossref.org/schema/4.3.6');
@@ -43,8 +40,8 @@ class CrossrefExportDeployment
 
     /**
      * Constructor
-     * @param Context $context
-     * @param DOIPubIdExportPlugin $plugin
+     * @param \PKP\context\Context $context
+     * @param \PKP\plugins\Plugin $plugin
      */
     public function __construct($context, $plugin)
     {
@@ -132,7 +129,7 @@ class CrossrefExportDeployment
     //
     /**
      * Set the import/export context.
-     * @param Context $context
+     * @param \PKP\context\Context $context
      */
     public function setContext($context)
     {
@@ -141,7 +138,7 @@ class CrossrefExportDeployment
 
     /**
      * Get the import/export context.
-     * @return Context
+     * @return \PKP\context\Context
      */
     public function getContext()
     {
@@ -150,7 +147,7 @@ class CrossrefExportDeployment
 
     /**
      * Set the import/export plugin.
-     * @param ImportExportPlugin $plugin
+     * @param \PKP\plugins\Plugin $plugin
      */
     public function setPlugin($plugin)
     {
@@ -159,7 +156,7 @@ class CrossrefExportDeployment
 
     /**
      * Get the import/export plugin.
-     * @return ImportExportPlugin
+     * @return \PKP\plugins\Plugin
      */
     public function getPlugin()
     {
@@ -168,7 +165,7 @@ class CrossrefExportDeployment
 
     /**
      * Set the import/export issue.
-     * @param Issue $issue
+     * @param \APP\issue\Issue $issue
      */
     public function setIssue($issue)
     {
@@ -177,7 +174,7 @@ class CrossrefExportDeployment
 
     /**
      * Get the import/export issue.
-     * @return Issue
+     * @return \APP\issue\Issue
      */
     public function getIssue()
     {

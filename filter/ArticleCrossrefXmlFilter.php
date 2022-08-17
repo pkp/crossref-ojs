@@ -13,7 +13,7 @@
  * @brief Class that converts an Article to a Crossref XML document.
  */
 
-import('plugins.generic.crossref.filter.IssueCrossrefXmlFilter');
+namespace APP\plugins\generic\crossref\filter;
 
 use APP\core\Application;
 use APP\facades\Repo;
@@ -27,7 +27,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Constructor
      *
-     * @param FilterGroup $filterGroup
+     * @param \PKP\filter\FilterGroup $filterGroup
      */
     public function __construct($filterGroup)
     {
@@ -38,12 +38,9 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     //
     // Implement template methods from PersistableFilter
     //
-    /**
-     * @copydoc PersistableFilter::getClassName()
-     */
     public function getClassName()
     {
-        return 'plugins.generic.crossref.filter.ArticleCrossrefXmlFilter';
+        return (string) self::class;
     }
 
 
@@ -75,7 +72,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $cache = $deployment->getCache();
-        assert($submission instanceof Submission);
+        assert($submission instanceof \APP\submission\Submission);
         $issueId = $submission->getCurrentPublication()->getData('issueId');
         if ($cache->isCached('issues', $issueId)) {
             $issue = $cache->get('issues', $issueId);
@@ -93,10 +90,10 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Create and return the journal article node 'journal_article'.
      *
-     * @param DOMDocument $doc
-     * @param Submission $submission
+     * @param \DOMDocument $doc
+     * @param \APP\submission\Submission $submission
      *
-     * @return DOMElement
+     * @return \DOMElement
      */
     public function createJournalArticleNode($doc, $submission)
     {
@@ -296,10 +293,10 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Append the collection node 'collection property="crawler-based"' to the doi data node.
      *
-     * @param DOMDocument $doc
-     * @param DOMElement $doiDataNode
-     * @param Submission $submission
-     * @param array $galleys of galleys
+     * @param \DOMDocument $doc
+     * @param \DOMElement $doiDataNode
+     * @param \APP\submission\Submission $submission
+     * @param array $galleys of \PKP\galley\Galley objects
      */
     public function appendAsCrawledCollectionNodes($doc, $doiDataNode, $submission, $galleys)
     {
@@ -329,10 +326,10 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Append the collection node 'collection property="text-mining"' to the doi data node.
      *
-     * @param DOMDocument $doc
-     * @param DOMElement $doiDataNode
-     * @param Submission $submission
-     * @param array $galleys of galleys
+     * @param \DOMDocument $doc
+     * @param \DOMElement $doiDataNode
+     * @param \APP\submission\Submission $submission
+     * @param array $galleys of \PKP\galley\Galley objects
      */
     public function appendTextMiningCollectionNodes($doc, $doiDataNode, $submission, $galleys)
     {
@@ -360,11 +357,11 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Create and return component list node 'component_list'.
      *
-     * @param DOMDocument $doc
-     * @param Submission $submission
+     * @param \DOMDocument $doc
+     * @param \APP\submission\Submission $submission
      * @param array $componentGalleys
      *
-     * @return DOMElement
+     * @return \DOMElement
      */
     public function createComponentListNode($doc, $submission, $componentGalleys)
     {

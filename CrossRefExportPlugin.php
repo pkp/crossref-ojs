@@ -1,17 +1,17 @@
 <?php
 
 /**
- * @file plugins/generic/crossref/CrossRefExportPlugin.inc.php
+ * @file plugins/generic/crossref/CrossRefExportPlugin.php
  *
- * Copyright (c) 2014-2021 Simon Fraser University
- * Copyright (c) 2003-2021 John Willinsky
+ * Copyright (c) 2014-2022 Simon Fraser University
+ * Copyright (c) 2003-2022 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossRefExportPlugin
- * @ingroup plugins_generic_crossref
- *
  * @brief CrossRef/MEDLINE XML metadata export plugin
  */
+
+namespace APP\plugins\generic\crossref;
 
 // The status of the Crossref DOI.
 // any, notDeposited, and markedRegistered are reserved
@@ -40,9 +40,7 @@ use PKP\file\FileManager;
 use PKP\file\TemporaryFileManager;
 use PKP\plugins\HookRegistry;
 use PKP\plugins\PluginRegistry;
-
-// FIXME: Add namespacing
-// use Issue;
+use APP\issue\Issue;
 
 class CrossRefExportPlugin extends DOIPubIdExportPlugin
 {
@@ -165,7 +163,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
      */
     public function getSettingsFormClassName()
     {
-        return 'CrossRefSettingsForm';
+        return (string) \APP\plugins\generic\crossref\classes\form\CrossRefSettingsForm::class;
     }
 
     /**

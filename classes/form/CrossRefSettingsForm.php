@@ -13,6 +13,8 @@
  * @brief Form for journal managers to setup CrossRef plugin
  */
 
+namespace APP\plugins\generic\crossref\classes\form;
+
 use PKP\form\Form;
 
 class CrossRefSettingsForm extends Form
@@ -33,12 +35,12 @@ class CrossRefSettingsForm extends Form
         return $this->_contextId;
     }
 
-    /** @var CrossRefExportPlugin */
+    /** @var \PKP\plugins\Plugin */
     public $_plugin;
 
     /**
      * Get the plugin.
-     * @return CrossRefExportPlugin
+     * @return \PKP\plugins\Plugin
      */
     public function _getPlugin()
     {

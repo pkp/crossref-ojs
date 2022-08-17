@@ -1,28 +1,26 @@
 <?php
 
 /**
- * @file plugins/generic/crossref/filter/IssueCrossrefXmlFilter.inc.php
+ * @file plugins/generic/crossref/filter/IssueCrossrefXmlFilter.php
  *
- * Copyright (c) 2014-2021 Simon Fraser University
- * Copyright (c) 2000-2021 John Willinsky
+ * Copyright (c) 2014-2022 Simon Fraser University
+ * Copyright (c) 2000-2022 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class IssueCrossrefXmlFilter
- * @ingroup plugins_generic_crossref
- *
  * @brief Class that converts an Issue to a Crossref XML document.
  */
+
+namespace APP\plugins\generic\crossref\filter;
 
 use APP\core\Application;
 use PKP\core\PKPApplication;
 
-import('lib.pkp.plugins.importexport.native.filter.NativeExportFilter');
-
-class IssueCrossrefXmlFilter extends NativeExportFilter
+class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\NativeExportFilter
 {
     /**
      * Constructor
-     * @param FilterGroup $filterGroup
+     * @param \PKP\filter\FilterGroup $filterGroup
      */
     public function __construct($filterGroup)
     {
@@ -33,26 +31,23 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
     //
     // Implement template methods from PersistableFilter
     //
-    /**
-     * @copydoc PersistableFilter::getClassName()
-     */
     public function getClassName()
     {
-        return 'plugins.generic.crossref.filter.IssueCrossrefXmlFilter';
+        return (string) self::class;
     }
 
     //
     // Implement template methods from Filter
     //
     /**
-     * @see Filter::process()
+     * @see \PKP\filter\Filter::process()
      * @param array $pubObjects Array of Issues or Submissions
-     * @return DOMDocument
+     * @return \DOMDocument
      */
     public function &process(&$pubObjects)
     {
         // Create the XML document
-        $doc = new DOMDocument('1.0', 'utf-8');
+        $doc = new \DOMDocument('1.0', 'utf-8');
         $doc->preserveWhiteSpace = false;
         $doc->formatOutput = true;
         $deployment = $this->getDeployment();
@@ -82,8 +77,8 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
     //
     /**
      * Create and return the root node 'doi_batch'.
-     * @param DOMDocument $doc
-     * @return DOMElement
+     * @param \DOMDocument $doc
+     * @return \DOMElement
      */
     public function createRootNode($doc)
     {
@@ -99,8 +94,8 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create and return the head node 'head'.
-     * @param DOMDocument $doc
-     * @return DOMElement
+     * @param \DOMDocument $doc
+     * @return \DOMElement
      */
     public function createHeadNode($doc)
     {
@@ -129,9 +124,9 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create and return the journal node 'journal'.
-     * @param DOMDocument $doc
-     * @param object $pubObject Issue or Submission
-     * @return DOMElement
+     * @param \DOMDocument $doc
+     * @param Object $pubObject Issue or Submission
+     * @return \DOMElement
      */
     public function createJournalNode($doc, $pubObject)
     {
@@ -144,8 +139,8 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create and return the journal metadata node 'journal_metadata'.
-     * @param DOMDocument $doc
-     * @return DOMElement
+     * @param \DOMDocument $doc
+     * @return \DOMElement
      */
     public function createJournalMetadataNode($doc)
     {
@@ -181,9 +176,9 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create and return the journal issue node 'journal_issue'.
-     * @param DOMDocument $doc
-     * @param Issue $issue
-     * @return DOMElement
+     * @param \DOMDocument $doc
+     * @param \APP\issue\Issue $issue
+     * @return \DOMElement
      */
     public function createJournalIssueNode($doc, $issue)
     {
@@ -214,9 +209,9 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create and return the publication date node 'publication_date'.
-     * @param DOMDocument $doc
+     * @param \DOMDocument $doc
      * @param string $objectPublicationDate
-     * @return DOMElement
+     * @return \DOMElement
      */
     public function createPublicationDateNode($doc, $objectPublicationDate)
     {
@@ -236,10 +231,10 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create and return the DOI date node 'doi_data'.
-     * @param DOMDocument $doc
+     * @param \DOMDocument $doc
      * @param string $doi
      * @param string $url
-     * @return DOMElement
+     * @return \DOMElement
      */
     public function createDOIDataNode($doc, $doi, $url)
     {
@@ -254,7 +249,6 @@ class IssueCrossrefXmlFilter extends NativeExportFilter
      * Helper to ensure dispatcher is available even when called from CLI tools
      *
      * @param \APP\core\Request $request
-     *
      * @return \PKP\core\Dispatcher
      */
     protected function _getDispatcher(\APP\core\Request $request): \PKP\core\Dispatcher
