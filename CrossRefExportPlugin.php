@@ -171,7 +171,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
      */
     public function getExportDeploymentClassName()
     {
-        return (string) CrossrefExportDeployment::class;
+        return (string) \APP\plugins\generic\crossref\CrossrefExportDeployment::class;
     }
 
     public function exportAndDeposit($context, $objects, $filter, $objectsFileNamePart, string &$responseMessage, $noValidation = null) : bool
