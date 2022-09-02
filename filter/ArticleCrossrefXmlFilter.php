@@ -31,9 +31,9 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
      */
     public function __construct($filterGroup)
     {
-        $this->setDisplayName('Crossref XML article export');
         parent::__construct($filterGroup);
-        }
+        $this->setDisplayName('Crossref XML article export');
+    }
 
     //
     // Implement template methods from PersistableFilter
