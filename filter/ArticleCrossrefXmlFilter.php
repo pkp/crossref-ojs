@@ -33,7 +33,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     {
         $this->setDisplayName('Crossref XML article export');
         parent::__construct($filterGroup);
-    }
+        }
 
     //
     // Implement template methods from PersistableFilter
@@ -109,7 +109,6 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
         $journalArticleNode = $doc->createElementNS($deployment->getNamespace(), 'journal_article');
         $journalArticleNode->setAttribute('publication_type', 'full_text');
-        $journalArticleNode->setAttribute('metadata_distribution_opts', 'any');
 
 
         // title
