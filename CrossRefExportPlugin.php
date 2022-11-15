@@ -35,6 +35,7 @@ use APP\core\Application;
 use APP\facades\Repo;
 use APP\plugins\DOIPubIdExportPlugin;
 use APP\submission\Submission;
+use GuzzleHttp\Exception\GuzzleException;
 use PKP\doi\Doi;
 use PKP\file\FileManager;
 use PKP\file\TemporaryFileManager;
@@ -262,7 +263,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
      * @param Context $context
      * @param string $filename Export XML filename
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @see PubObjectsExportPlugin::depositXML()
      *
      */
@@ -299,7 +300,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
                     ]
                 ]
             );
-        } catch (GuzzleHttp\Exception\RequestException $e) {
+        } catch (GuzzleException $e) {
             $returnMessage = $e->getMessage();
             if ($e->hasResponse()) {
                 $eResponseBody = $e->getResponse()->getBody(true);
