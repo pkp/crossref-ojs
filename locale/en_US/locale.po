@@ -138,3 +138,8 @@ msgstr "No article matched the specified article ID \"{$articleId}\"."
 
 msgid "plugins.generic.crossref.registrationAgency.name"
 msgstr "Crossref"
+
+msgid "plugins.generic.crossref.successMessage"
+msgstr ""
+"The metadata for this item has been deposited with Crossref. "
+"To view further details, see the submission in the <a href=\"https://doi.crossref.org/servlet/submissionAdmin?sf=detail&submissionID={$submissionId}\">Crossref admin panel</a>."
