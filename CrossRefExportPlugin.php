@@ -388,6 +388,10 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
                 $this->getSuccessMsgSettingName() => $successMsg,
             ];
 
+            if ($status === Doi::STATUS_REGISTERED) {
+                $editParams['registrationAgency'] = $this->getName();
+            }
+
             Repo::doi()->edit($doi, $editParams);
         }
     }
