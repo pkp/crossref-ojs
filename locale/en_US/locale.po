@@ -47,8 +47,14 @@ msgstr "The following items are required for a successful Crossref deposit."
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Depositor name"
 
+msgid "plugins.importexport.crossref.settings.form.depositorName.description"
+msgstr "Name of the organization registering the DOIs. It is included with deposited metadata and used to record who submitted the deposit."
+
 msgid "plugins.importexport.crossref.settings.form.depositorEmail"
 msgstr "Depositor email"
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail.description"
+msgstr "Email address of the individual responsible for registering content with Crossref. It is included with the deposited metadata and used when sending the deposit confirmation email."
 
 msgid "plugins.importexport.crossref.settings.form.depositorNameRequired"
 msgstr "Please enter the depositor name."
@@ -57,10 +63,20 @@ msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
 msgstr "Please enter the depositor email."
 
 msgid "plugins.importexport.crossref.registrationIntro"
-msgstr "If you would like to use this plugin to register Digital Object Identifiers (DOIs) directly with Crossref you will need a username and password (available from <a href=\"http://www.crossref.org\" target=\"_blank\">Crossref</a>) in order to do so. If you do not have your own username and password you can still export into the Crossref XML format, but you cannot register your DOIs with Crossref from within OJS."
+msgstr ""
+"<p>If you would like to use this plugin to register Digital Object Identifiers (DOIs) directly with <a href=\"http://www.crossref.org/\">Crossref</a>, you will need to add your <a href=\"https://www.crossref.org/documentation/member-setup/account-credentials/\">Crossref account credentials</a> into the username and password fields below.</p>"
+"<p>Depending on your Crossref membership, there are two ways to enter your username and password:</p>"
+"<ul>"
+"<li>If you are using an organizational account, add your <a href=\"https://www.crossref.org/documentation/member-setup/account-credentials/#00376\">shared username and password</a></li>"
+"<li>If you are using a <a href=\"https://www.crossref.org/documentation/member-setup/account-credentials/#00368\">personal account</a>, enter your email address and the role in the username field. The username will look like: email@example.com/role</li>"
+"<li>If you do not know or have access to your Crossref credentials, you can contact <a href=\"https://support.crossref.org/\">Crossref support</a> for assistance. Without credentials, you may still export metadata into the Crossref XML format, but you cannot register your DOIs with Crossref from OJS.</li>"
+"</ul>"
 
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Username"
+
+msgid "plugins.importexport.crossref.settings.form.username.description"
+msgstr "The Crossref username that will be used to authenticate your deposits. If you are using a personal account, please see the advice above."
 
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
 msgstr "Please enter the username you got from Crossref."
@@ -68,8 +84,9 @@ msgstr "Please enter the username you got from Crossref."
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
 msgstr "OJS will deposit assigned DOIs automatically to Crossref. Please note that this may take a short amount of time after publication to process  (e.g. depending on your cronjob configuration). You can check for all unregistered DOIs."
 
+#, fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
-msgstr "Use the Crossref test API (testing environment) for the DOI deposit. Please do not forget to remove this option for the production."
+msgstr "Use the Crossref test API (testing environment) for the DOI deposit. Please do not forget to remove this option in production."
 
 msgid "plugins.importexport.crossref.settings.form.validation"
 msgstr "Validate XML. Use this option for the XML download for the manual DOI registration."

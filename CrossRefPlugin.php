@@ -15,20 +15,22 @@
 namespace APP\plugins\generic\crossref;
 
 use APP\core\Application;
+use APP\core\Services;
+use APP\plugins\generic\crossref\classes\CrossrefSettings;
 use APP\plugins\IDoiRegistrationAgency;
+use Illuminate\Support\Collection;
 use PKP\context\Context;
-use PKP\core\JSONMessage;
+use PKP\doi\RegistrationAgencySettings;
 use PKP\form\Form;
-use PKP\linkAction\LinkAction;
-use PKP\linkAction\request\AjaxModal;
 use PKP\plugins\GenericPlugin;
 use PKP\plugins\Hook;
-use PKP\plugins\HookRegistry;
 use PKP\plugins\PluginRegistry;
+use PKP\services\PKPSchemaService;
 
 class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
 {
 
+    private CrossrefSettings $_settingsObject;
     private ?CrossRefExportPlugin $_exportPlugin = null;
 
     public function getDisplayName() : string
@@ -88,36 +90,13 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
      */
     private function _pluginInitialization()
     {
-        PluginRegistry::register('importexport', new CrossRefExportPlugin(), $this->getPluginPath());
+        PluginRegistry::register('importexport', new CrossRefExportPlugin($this), $this->getPluginPath());
 
-        Hook::add('Template::doiManagement', [$this, 'callbackShowDoiManagementTabs']);
         Hook::add('DoiSettingsForm::setEnabledRegistrationAgencies', [$this, 'addAsRegistrationAgencyOption']);
         Hook::add('Schema::get::doi', [$this, 'addToSchema']);
 
         Hook::add('Doi::markRegistered', [$this, 'editMarkRegisteredParams']);
         Hook::add('DoiListPanel::setConfig', [$this, 'addRegistrationAgencyName']);
-    }
-
-    /**
-     * Extend the website settings tabs to include static pages
-     *
-     * @param string $hookName The name of the invoked hook
-     * @param array $args Hook parameters
-     * @return boolean Hook handling status
-     */
-    public function callbackShowDoiManagementTabs($hookName, $args)
-    {
-        $templateMgr = $args[1];
-        $output =& $args[2];
-        $request = Application::get()->getRequest();
-        $context = $request->getContext();
-
-        if ($context->getData('registrationAgency') === $this->getName()) {
-            $output .= $templateMgr->fetch($this->getTemplateResource('crossrefSettingsTab.tpl'));
-        }
-
-        // Permit other plugins to continue interacting with this hook
-        return false;
     }
 
     /**
@@ -161,11 +140,9 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
      */
     public function addAsRegistrationAgencyOption($hookName, $args)
     {
+        /** @var Collection<IDoiRegistrationAgency> $enabledRegistrationAgencies */
         $enabledRegistrationAgencies = &$args[0];
-        $enabledRegistrationAgencies[] = [
-            'value' => $this->getName(),
-            'label' => 'Crossref'
-        ];
+        $enabledRegistrationAgencies->add($this);
     }
 
     /**
@@ -192,10 +169,21 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
      */
     public function isPluginConfigured(Context $context): bool
     {
-        $form = new classes\form\CrossRefSettingsForm($this->_getExportPlugin(), $context->getId());
-        $configurationErrors = $this->_getConfigurationErrors($context, $form);
+        $settingsObject = $this->getSettingsObject();
 
-        if (!empty($configurationErrors)) {
+        /** @var PKPSchemaService $schemaService */
+        $schemaService = Services::get('schema');
+        $requiredProps = $schemaService->getRequiredProps($settingsObject::class);
+
+        foreach ($requiredProps as $requiredProp) {
+            $settingValue = $this->getSetting($context->getId(), $requiredProp);
+            if (empty($settingValue)) {
+                return false;
+            }
+        }
+
+        $doiPrefix = $context->getData(Context::SETTING_DOI_PREFIX);
+        if (empty($doiPrefix)) {
             return false;
         }
 
@@ -301,58 +289,6 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     }
 
     /**
-     * @copydoc Plugin::getActions()
-     */
-    public function getActions($request, $verb)
-    {
-        $router = $request->getRouter();
-        return array_merge(
-            $this->getEnabled() ? [
-                new LinkAction(
-                    'settings',
-                    new AjaxModal(
-                        $router->url($request, null, null, 'manage', null, ['verb' => 'settings', 'plugin' => $this->getName(), 'category' => 'generic']),
-                        $this->getDisplayName()
-                    ),
-                    __('manager.plugins.settings'),
-                    null
-                ),
-            ] : [],
-            parent::getActions($request, $verb)
-        );
-    }
-
-    /**
-     * @copydoc Plugin::manage()
-     */
-    public function manage($args, $request)
-    {
-        switch ($request->getUserVar('verb')) {
-
-            // Return a JSON response containing the
-            // settings form
-            case 'settings':
-                $context = $request->getContext();
-
-                $form = new classes\form\CrossRefSettingsForm($this->_getExportPlugin(), $context->getId());
-                $form->initData();
-
-                // Check for configuration errors
-                $configurationErrors = $this->_getConfigurationErrors($context, $form);
-
-                $templateMgr = \APP\template\TemplateManager::getManager($request);
-                $templateMgr->assign(
-                    [
-                        'configurationErrors' => $configurationErrors
-                    ]
-                );
-
-                return new JSONMessage(true, $form->fetch($request));
-        }
-        return parent::manage($args, $request);
-    }
-
-    /**
      * Get request failed message setting name.
      * NB: Change from 3.3.x to camelCase (over crossref::failedMsg)
      *
@@ -395,34 +331,6 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     }
 
     /**
-     * @param Context $context
-     * @param Form|null $form
-     *
-     * @return array
-     */
-    private function _getConfigurationErrors(Context $context, Form $form = null): array
-    {
-        $configurationErrors = [];
-
-        foreach ($form->getFormFields() as $fieldName => $fieldType) {
-            if ($form->isOptional($fieldName)) {
-                continue;
-            }
-            $pluginSetting = $this->_getExportPlugin()->getSetting($context->getId(), $fieldName);
-            if (empty($pluginSetting)) {
-                $configurationErrors[] = EXPORT_CONFIG_ERROR_SETTINGS;
-                break;
-            }
-        }
-        $doiPrefix = $context->getData(Context::SETTING_DOI_PREFIX);
-        if (empty($doiPrefix)) {
-            $configurationErrors[] = DOI_EXPORT_CONFIG_ERROR_DOIPREFIX;
-        }
-
-        return $configurationErrors;
-    }
-
-    /**
      * @inheritDoc
      */
     public function getErrorMessageKey(): ?string
@@ -436,5 +344,14 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     public function getRegisteredMessageKey(): ?string
     {
         return $this->_getSuccessMsgSettingName();
+    }
+
+    public function getSettingsObject(): RegistrationAgencySettings
+    {
+        if (!isset($this->_settingsObject)) {
+            $this->_settingsObject = new CrossrefSettings($this);
+        }
+
+        return $this->_settingsObject;
     }
 }
