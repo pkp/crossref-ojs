@@ -16,12 +16,13 @@ namespace APP\plugins\generic\crossref;
 
 use APP\core\Application;
 use APP\core\Services;
+use APP\facades\Repo;
 use APP\plugins\generic\crossref\classes\CrossrefSettings;
 use APP\plugins\IDoiRegistrationAgency;
+use APP\services\ContextService;
 use Illuminate\Support\Collection;
 use PKP\context\Context;
 use PKP\doi\RegistrationAgencySettings;
-use PKP\form\Form;
 use PKP\plugins\GenericPlugin;
 use PKP\plugins\Hook;
 use PKP\plugins\PluginRegistry;
@@ -93,6 +94,8 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
         PluginRegistry::register('importexport', new CrossRefExportPlugin($this), $this->getPluginPath());
 
         Hook::add('DoiSettingsForm::setEnabledRegistrationAgencies', [$this, 'addAsRegistrationAgencyOption']);
+        Hook::add('DoiSetupSettingsForm::getObjectTypes', [$this, 'addAllowedObjectTypes']);
+        Hook::add('Context::validate', [$this, 'validateAllowedPubObjectTypes']);
         Hook::add('Schema::get::doi', [$this, 'addToSchema']);
 
         Hook::add('Doi::markRegistered', [$this, 'editMarkRegisteredParams']);
@@ -150,16 +153,78 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
      * DOI was registered.
      *
      * @param string $hookName DoiListPanel::setConfig
-     * @param $args [
+     * @param array $args [
      *      @option $config array
      * ]
-     * @return void
+     * @return bool
      */
     public function addRegistrationAgencyName(string $hookName, array $args): bool {
         $config = &$args[0];
         $config['registrationAgencyNames'][$this->_getExportPlugin()->getName()] = $this->getRegistrationAgencyName();
 
         return HOOK::CONTINUE;
+    }
+
+    /**
+     * Adds self to "allowed" list of pub object types that can be assigned DOIs for this registration agency.
+     *
+     * @param string $hookName DoiSetupSettingsForm::getObjectTypes
+     * @param array $args [
+     *      @option array &$objectTypeOptions
+     * ]
+     * @return bool
+     */
+    public function addAllowedObjectTypes(string $hookName, array $args): bool {
+        $objectTypeOptions = &$args[0];
+        $allowedTypes = $this->getAllowedDoiTypes();
+
+        $objectTypeOptions = array_map(function($option) use ($allowedTypes) {
+            if (in_array($option['value'], $allowedTypes)) {
+                $option['allowedBy'][] = $this->getName();
+            }
+            return $option;
+        }, $objectTypeOptions);
+
+        return Hook::CONTINUE;
+    }
+
+    /**
+     * Add validation rule to Context for restriction of allowed pubObject types for DOI registration.
+     *
+     * @param string $hookName
+     * @param array $args
+     * @return bool
+     * @throws \Exception
+     */
+    public function validateAllowedPubObjectTypes(string $hookName, array $args): bool
+    {
+        $errors = &$args[0];
+        $props = $args[2];
+
+        if (!isset($props['enabledDoiTypes'])) {
+            return Hook::CONTINUE;
+        }
+
+        $contextId = $props['id'];
+        if (empty($contextId)) {
+            throw new \Exception("A context ID must be present to edit context settings");
+        }
+
+        /** @var ContextService $contextService */
+        $contextService = Services::get('context');
+        $context = $contextService->get($contextId);
+        $enabledRegistrationAgency = $context->getConfiguredDoiAgency();
+        if (!$enabledRegistrationAgency instanceof $this) {
+            return Hook::CONTINUE;
+        }
+
+        $allowedTypes = $enabledRegistrationAgency->getAllowedDoiTypes();
+
+        if (!empty(array_diff($props['enabledDoiTypes'], $allowedTypes))) {
+            $errors['enabledDoiTypes'] = [__('doi.manager.settings.enabledDoiTypes.error')];
+        }
+
+        return Hook::CONTINUE;
     }
 
     /**
@@ -346,6 +411,9 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
         return $this->_getSuccessMsgSettingName();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getSettingsObject(): RegistrationAgencySettings
     {
         if (!isset($this->_settingsObject)) {
@@ -353,5 +421,13 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
         }
 
         return $this->_settingsObject;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAllowedDoiTypes(): array
+    {
+        return [Repo::doi()::TYPE_PUBLICATION, Repo::doi()::TYPE_ISSUE];
     }
 }
