@@ -1,2 +1,178 @@
+# Bobir Bobayev <bobayevbobirnasrullayevich1986@gmail.com>, 2022.
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2022-10-25 10:05+0000\n"
+"Last-Translator: Bobir Bobayev <bobayevbobirnasrullayevich1986@gmail.com>\n"
+"Language-Team: Uzbek <http://translate.pkp.sfu.ca/projects/plugins/crossref/"
+"uz_UZ@latin/>\n"
+"Language: uz_UZ@latin\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.13.1\n"
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Crossref menejeri plagini"
+
+msgid "plugins.importexport.crossref.requirements"
+msgstr "Talablar"
+
+msgid "plugins.importexport.crossref.error.publisherNotConfigured"
+msgstr ""
+"Jurnal nashriyotchisi sozlanmagan! <a href=\"{$journalSettingsUrl}\" target="
+"\"_blank\">Jurnal sozlamalari sahifasiga</a> nashriyot muassasasini "
+"kiritishingiz kerak."
+
+msgid "plugins.importexport.crossref.error.issnNotConfigured"
+msgstr ""
+"ISSN jurnali sozlanmagan! <a href=\"{$journalSettingsUrl}\" target=\"_blank\""
+">Jurnal sozlamalari sahifasiga</a> ISSN qo‘shishingiz kerak."
+
+msgid "plugins.importexport.crossref.settings.form.depositorName"
+msgstr "Omonatchi nomi"
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail"
+msgstr "Omonatchining elektron pochtasi"
+
+msgid "plugins.importexport.crossref.settings.form.depositorNameRequired"
+msgstr "Iltimos, omonatchi nomini kiriting."
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
+msgstr "Iltimos, omonatchining elektron pochta manzilini kiriting."
+
+msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
+msgstr ""
+"OJS tayinlangan DOI-larni avtomatik ravishda Crossref-ga omonat qiladi. "
+"Iltimos, e'tibor bering, nashrdan keyin buni qayta ishlash uchun qisqa vaqt "
+"ketishi mumkin (masalan, cronjob konfiguratsiyasiga qarab). Siz ro'yxatdan "
+"o'tmagan barcha DOIlarni tekshirishingiz mumkin."
+
+msgid "plugins.importexport.crossref.settings.form.validation"
+msgstr ""
+"XMLni tasdiqlash. DOI-ni qo'lda ro'yxatdan o'tkazish uchun XML yuklab olish "
+"uchun ushbu parametrdan foydalaning."
+
+msgid "plugins.importexport.crossref.status.failed"
+msgstr "Muvaffaqiyatsiz"
+
+msgid "plugins.importexport.crossref.statusLegend"
+msgstr ""
+"\n"
+"\t\t<p>Depozit holati:</p>\n"
+"<p>\n"
+"- Depozitga kiritilmagan: bu DOI uchun hech qanday depozitga urinilmagan.<br "
+"/>\n"
+"- Faol: DOI saqlangan va to'g'ri hal qilinmoqda.<br />\n"
+"- Muvaffaqiyatsiz: DOI depoziti bajarilmadi.<br />\n"
+"- Faol deb belgilandi: DOI qo'lda faol deb belgilandi.\n"
+"</p>\n"
+"<p>Faqat oxirgi depozitga urinish holati ko'rsatiladi.</p>\n"
+"<p>Agar depozit amalga oshmasa, muammoni hal qiling va DOI-ni qayta "
+"roʻyxatdan oʻtkazishga urinib koʻring.</p>"
+
+msgid "plugins.importexport.crossref.action.markRegistered"
+msgstr "Faol deb belgilang"
+
+msgid "plugins.importexport.crossref.cliUsage"
+msgstr ""
+"Foydalanish:\n"
+"{$scriptName} {$pluginName} eksporti [xmlFileName] [journal_path] maqolalari "
+"objectId1 [objectId2] ...\n"
+"{$scriptName} {$pluginName} [journal_path] maqolalarini obyektId1 [objectId2]"
+" roʻyxatdan oʻtkazing ...\n"
+
+msgid "plugins.importexport.crossref.register.success.warning"
+msgstr ""
+"Roʻyxatdan oʻtish muvaffaqiyatli boʻldi, lekin quyidagi ogohlantirish paydo "
+"boʻldi: '{$param}'."
+
+msgid "plugins.importexport.crossref.export.error.issueNotFound"
+msgstr ""
+"Belgilangan “{$issueId}” identifikatoriga hech qanday muammo mos kelmadi."
+
+msgid "plugins.importexport.crossref.export.error.articleNotFound"
+msgstr ""
+"Belgilangan maqola identifikatori “{$articleId}”ga mos keladigan maqola "
+"topilmadi."
+
+msgid "plugins.importexport.crossref.displayName"
+msgstr "Crossref XML eksport plagini"
+
+msgid "plugins.importexport.crossref.description"
+msgstr "Maqola metamaʼlumotlarini Crossref XML formatida eksport qiling."
+
+msgid "plugins.importexport.crossref.requirements.satisfied"
+msgstr "Barcha plagin talablari qondirildi."
+
+msgid "plugins.importexport.crossref.settings.form.testMode.description"
+msgstr ""
+"DOI depoziti uchun Crossref test API (sinov muhiti) dan foydalaning. "
+"Iltimos, ishlab chiqarish uchun ushbu parametrni olib tashlashni unutmang."
+
+msgid "plugins.importexport.crossref.status.markedRegistered"
+msgstr "Faol deb belgilangan"
+
+msgid "plugins.importexport.crossref.action.export"
+msgstr "Eksport"
+
+msgid "plugins.importexport.crossref.issues.description"
+msgstr ""
+"Eslatma: Bu yerda eksport/ro‘yxatdan o‘tish uchun faqat masalalar (ularning "
+"maqolalari emas) ko‘rib chiqiladi."
+
+msgid "plugins.importexport.crossref.action.register"
+msgstr "Depozit"
+
+msgid "plugins.importexport.crossref.senderTask.name"
+msgstr "Crossref avtomatik ro'yxatga olish vazifasi"
+
+msgid "plugins.importexport.crossref.settings.depositorIntro"
+msgstr ""
+"Muvaffaqiyatli Crossref depoziti uchun quyidagi elementlar talab qilinadi."
+
+msgid "plugins.importexport.crossref.register.error.mdsError"
+msgstr ""
+"Ro'yxatdan o'tish to'liq muvaffaqiyatli bo'lmadi! DOI roʻyxatga olish "
+"serveri xatolik yuz berdi."
+
+msgid "plugins.importexport.crossref.error.noDOIContentObjects"
+msgstr ""
+"Maqolalar DOI umumiy identifikatori plaginida DOI tayinlash uchun "
+"tanlanmagan, shuning uchun bu plaginda depozit yoki eksport qilish "
+"imkoniyati yo'q."
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "Depozitga kiritilmagan"
+
+msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
+msgstr "Faqat eksportni tasdiqlang. Faylni yuklab olmang."
+
+msgid "plugins.importexport.crossref.registrationIntro"
+msgstr ""
+"Agar siz ushbu plagindan Digital Object Identifiers (DOI)larni bevosita "
+"Crossref’da ro‘yxatdan o‘tkazish uchun foydalanmoqchi bo‘lsangiz, sizga "
+"foydalanuvchi nomi va parol kerak bo‘ladi (<a href=\"https://www.crossref."
+"org\" target=\"_blank\"> Buning uchun Crossref</a>). Agar sizda o'z "
+"foydalanuvchi nomingiz va parolingiz bo'lmasa, siz hali ham Crossref XML "
+"formatiga eksport qilishingiz mumkin, lekin siz DOI'laringizni OJS ichidan "
+"Crossref bilan ro'yxatdan o'tkaza olmaysiz."
+
+msgid "plugins.generic.crossref.description"
+msgstr ""
+"Crossref metama'lumotlarini saqlash va eksport qilish bilan shug'ullanadi"
+
+msgid "plugins.importexport.crossref.settings.form.usernameRequired"
+msgstr "Iltimos, Crossref-dan olgan foydalanuvchi nomini kiriting."
+
+msgid "plugins.importexport.crossref.settings.form.username"
+msgstr "Foydalanuvchi nomi"
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Krossref sozlamalari"
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
+
+msgid "plugins.importexport.crossref.status.registered"
+msgstr "Faol"

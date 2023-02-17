@@ -1,10 +1,10 @@
-# Ramli Baharuddin <ramli.baharuddin@relawanjurnal.id>, 2021.
+# Ramli Baharuddin <ramli.baharuddin@relawanjurnal.id>, 2021, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-19T11:05:36+00:00\n"
-"PO-Revision-Date: 2021-07-15 06:03+0000\n"
+"PO-Revision-Date: 2022-05-13 14:58+0000\n"
 "Last-Translator: Ramli Baharuddin <ramli.baharuddin@relawanjurnal.id>\n"
 "Language-Team: Indonesian <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/id_ID/>\n"
@@ -15,13 +15,11 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 3.9.1\n"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Plugin Ekspor Crossref XML"
+msgstr "Plugin Ekspor ke XML Crossref"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Ekspor metadata artikel dalam format Crossref XML."
+msgstr "Ekspor metadata artikel dalam formatXML Crossref."
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""
@@ -52,9 +50,8 @@ msgstr ""
 "Registrasi tidak sepenuhnya berhasil! Server registrasi DOI memberikan pesan "
 "kesalahan."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "Tugas registrasi otomatis Crossref"
+msgstr "Tugas pendaftaran otomatis Crossref"
 
 msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "Tandai sebagai aktif"
@@ -101,13 +98,11 @@ msgstr ""
 "Validasi XML. Gunakan pilihan ini untuk unduhan XML dalam proses registrasi "
 "DOI secara manual."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
 msgstr ""
 "Gunakan API ujicoba Crossref (dalam lingkungan ujicoba) untuk menyetorkan "
 "DOI. Jangan lupa untuk menghapus pilihan ini pada sistem produksi."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
 msgstr ""
 "OJS akan mendepositokan nomor DOI yang telah diberikan secara otomatis ke "
@@ -115,19 +110,17 @@ msgstr ""
 "pada konfigurasi cronjob Anda). Anda dapat memeriksa semua DOI yang belum "
 "didaftarkan."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Masukkan nama pengguna yang Anda peroleh dari Crossref."
+msgstr "Masukkan nama pengguna yang didapat dari Crossref."
 
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Nama pengguna"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
 msgstr ""
 "Jika Anda bermaksud menggunakan plugin ini untuk mendaftarkan Digital Object "
 "Identifiers (DOI) secara langsung ke Crossref Anda memerlukan nama pengguna "
-"dan kata sandi (tersedia di  <a href=\"http://www.crossref.org\" target=\""
+"dan kata sandi (tersedia di <a href=\"http://www.crossref.org\" target=\""
 "_blank\">Crossref</a>). Jika belum punya, Anda tetap dapat mengekspor "
 "artikel ke format XML Crossref, namun tidak dapat mendaftarkan nomor DOI-nya "
 "melalui aplikasi OJS."
@@ -144,11 +137,9 @@ msgstr "Surel depositor"
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Nama depositor"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
 msgstr ""
-"Hal-hal berikut ini diperlukan agar pendepositoan Crossref berhasil "
-"dilakukan."
+"Hal-hal berikut ini diperlukan agar proses deposit ke Crossref berhasil."
 
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr ""
@@ -171,3 +162,18 @@ msgstr "Semua persyaratan plugin telah dipenuhi."
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Hanya memvalidasi ekspor. Jangan unduk filenya."
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "Belum didepositkan"
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Pengaturan Crossref"
+
+msgid "plugins.generic.crossref.description"
+msgstr "Menangani pendepositoan dan ekspor metadata Crossref"
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Plugin Pengelola Crossref"

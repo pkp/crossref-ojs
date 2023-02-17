@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-19T11:05:37+00:00\n"
-"PO-Revision-Date: 2022-02-22 11:06+0000\n"
+"PO-Revision-Date: 2022-05-14 22:20+0000\n"
 "Last-Translator: Petro Bilous <petrobilous@ukr.net>\n"
 "Language-Team: Ukrainian <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/uk_UA/>\n"
@@ -16,13 +16,11 @@ msgstr ""
 "4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 3.9.1\n"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Модуль експорту у Crossref XML"
+msgstr "Плагін експорту XML у Crossref"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Експорт метаданих статті у формат Crossref XML."
+msgstr "Експорт метаданих статті у формат XML для Crossref."
 
 msgid "plugins.importexport.crossref.requirements"
 msgstr "Вимоги"
@@ -39,7 +37,6 @@ msgstr "ISSN журналу не налаштований! Ви маєте до�
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr "Не вибрано статті для присвоєння DOI в модулі відкритих ідентифікаторів DOI, тому немає можливості подання у депозитарій або експортування у цьому модулі."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
 msgstr "Для успішного подання в депозитарій Crossref потрібна така інформація."
 
@@ -55,24 +52,32 @@ msgstr "Будь ласка, введіть ім'я депонента."
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
 msgstr "Будь ласка, введіть електронну адресу депонента."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
-msgstr "Якщо ви хочете використовувати цей модуль для реєстрації ідентифікаторів цифрових об'єктів (DOI) безпосередньо в Crossref, вам знадобиться ім'я користувача та пароль (можна отримати на <a href=\"http://www.crossref.org\" target=\"_blank\">Crossref</a>). Якщо у вас немає власного імені користувача та пароля, ви все одно зможете експортувати в Crossref XML, але ви не можете зареєструвати свої DOI в Crossref з OJS."
+msgstr ""
+"Якщо ви хочете використовувати цей модуль для реєстрації ідентифікаторів "
+"цифрових об'єктів (DOI) безпосередньо в Crossref, вам знадобиться ім'я "
+"користувача та пароль (можна отримати на <a href=\"http://www.crossref.org\" "
+"target=\"_blank\">Crossref</a>). Якщо у вас немає власного імені користувача "
+"та пароля, ви все одно зможете експортувати в Crossref XML, але ви не можете "
+"зареєструвати свої DOI в Crossref з OJS."
 
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Ім'я користувача"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
 msgstr "Будь ласка, введіть ім'я користувача, яке ви отримали від Crossref."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
-msgstr "OJS буде автоматично депонувати призначені DOI на Crossref. Зверніть увагу, що після публікації обробка може зайняти деякий час (наприклад, залежно від налаштувань вашого cron). Ви можете перевірити всі незареєстровані DOI."
+msgstr ""
+"OJS буде автоматично депонувати призначені DOI на Crossref. Зверніть увагу, "
+"що після публікації обробка може зайняти деякий час (наприклад, залежно від "
+"налаштувань вашого cron). Ви можете перевірити всі незареєстровані DOI."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
-msgstr "Використовувати тестовий API Crossref (середовище тестування) для депонування DOI. Будь ласка, не забудьте прибрати цей параметр для подальшої роботи."
+msgstr ""
+"Використовувати тестовий API Crossref (середовище тестування) для "
+"депонування DOI. Будь ласка, не забудьте прибрати цей параметр для подальшої "
+"роботи."
 
 msgid "plugins.importexport.crossref.issues.description"
 msgstr "Примітка: Для експорту/реєстрації тут розглядатимуться лише випуски (а не статті з них)."
@@ -118,7 +123,6 @@ msgstr "Надіслати"
 msgid "plugins.importexport.crossref.action.checkStatus"
 msgstr "Перевірити статус"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
 msgstr "Завдання автоматичної реєстрації Crossref"
 
@@ -155,3 +159,18 @@ msgstr "Реєстрація Успішна, але отримано насту�
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Лише перевірте експорт. Не завантажуйте файл."
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "Не депоновано"
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Налаштування Crossref"
+
+msgid "plugins.generic.crossref.description"
+msgstr "Обробляє розміщення та експорт метаданих Crossref"
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Плагін менеджера Crossref"

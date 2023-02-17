@@ -1,9 +1,10 @@
+# Hüseyin Körpeoğlu <yoruyenturk@hotmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-19T11:05:37+00:00\n"
-"PO-Revision-Date: 2021-04-13 18:55+0000\n"
+"PO-Revision-Date: 2022-09-06 13:50+0000\n"
 "Last-Translator: Hüseyin Körpeoğlu <yoruyenturk@hotmail.com>\n"
 "Language-Team: Turkish <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/tr_TR/>\n"
@@ -12,13 +13,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.9.1\n"
+"X-Generator: Weblate 4.13.1\n"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Crossref  XML Aktarım Eklentisi"
+msgstr "Crossref XML Aktarım Eklentisi"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.description"
 msgstr "Makale üst verilerini Crossref XML formatında dışa aktar."
 
@@ -28,9 +27,9 @@ msgstr "Gereksinimler"
 msgid "plugins.importexport.crossref.requirements.satisfied"
 msgstr "Tüm eklenti gereksinimleri karşılanıyor."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Başarılı bir Crossref arşivlemesi için aşağıdakiler gereklidir."
+msgstr ""
+"Crossref'e başarılı bir şekilde gönderilmesi için aşağıdakiler gereklidir."
 
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Arşivleyenin adı"
@@ -47,7 +46,6 @@ msgstr "Lütfen arşivleyenin e-posta adresini giriniz."
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Kullanıcı adı"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
 msgstr "Crossref'ten almış olduğunuz kullanıcı adını giriniz."
 
@@ -66,7 +64,6 @@ msgstr ""
 "Makaleler, DOI genel tanımlayıcı eklentisinde DOI ataması için seçilmediği "
 "için bu eklenti, arşivleme veya dışa aktarma yapamıyor."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
 msgstr ""
 "Bu eklentiyi, Dijital Nesne Tanımlayıcılarını (DOI'ler) doğrudan Crossref'e "
@@ -76,7 +73,6 @@ msgstr ""
 "Crossref XML biçimi ile dışa aktarma yapabilirsiniz, ancak DOI'lerinizi "
 "Crossref'e OJS içinden kaydedemezsiniz."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
 msgstr ""
 "OJS atanmış DOI'leri otomatik olarak Crossref'e kaydedecek. Lütfen bu "
@@ -84,7 +80,6 @@ msgstr ""
 "Ör. zamanlanmış işler yapılandırmanıza bağlı olarak). Kaydedilmemiş tüm "
 "DOI'leri kontrol edebilirsiniz."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
 msgstr ""
 "DOI arşivlemesi için Crossref test API'sini (test ortamı) kullanın. Lütfen "
@@ -139,7 +134,6 @@ msgstr "Arşivle"
 msgid "plugins.importexport.crossref.action.checkStatus"
 msgstr "Durumu kontrol et"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
 msgstr "Crossref otomatik kayıt görevi"
 
@@ -177,3 +171,19 @@ msgstr ""
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Yalnızca dışarı aktarımı doğrula. Dosyayı indirme."
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "Gönderilmedi"
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Crossref Ayarları"
+
+msgid "plugins.generic.crossref.description"
+msgstr ""
+"Crossref için üst verilerin gönderilmesini ve dışa aktarılmasını yönetir"
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Crossref Yönetici Eklentisi"

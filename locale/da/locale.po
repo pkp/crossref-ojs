@@ -1,10 +1,11 @@
+# Alexandra Fogtmann-Schulz <alfo@kb.dk>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-19T11:05:35+00:00\n"
-"PO-Revision-Date: 2021-04-13 18:55+0000\n"
-"Last-Translator: Niels Erik Frederiksen <nef@kb.dk>\n"
+"PO-Revision-Date: 2022-08-17 10:33+0000\n"
+"Last-Translator: Alexandra Fogtmann-Schulz <alfo@kb.dk>\n"
 "Language-Team: Danish <http://translate.pkp.sfu.ca/projects/plugins/crossref/"
 "da_DK/>\n"
 "Language: da_DK\n"
@@ -12,13 +13,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.9.1\n"
+"X-Generator: Weblate 4.13.1\n"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
 msgstr "Crossref XML Eksport-plugin"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.description"
 msgstr "Eksportér artikelmetadata i Crossref XML format."
 
@@ -42,7 +41,10 @@ msgid "plugins.importexport.crossref.requirements.satisfied"
 msgstr "Alle plugin-krav er opfyldt."
 
 msgid "plugins.importexport.crossref.error.publisherNotConfigured"
-msgstr "Et tidsskriftsforlag mangler at blive indskrevet! Der skal tilføjes en forlæggerinstitution på  <a href=\"{$journalSettingsUrl}\" target=\"_blank\">Konfigurationssiden</a>."
+msgstr ""
+"Et tidsskriftsforlag mangler at blive indskrevet! Der skal tilføjes en "
+"forlæggerinstitution på <a href=\"{$journalSettingsUrl}\" target=\"_blank\""
+">Konfigurationssiden</a>."
 
 msgid "plugins.importexport.crossref.error.issnNotConfigured"
 msgstr "Et ISSN mangler at blive indskrevet! Der skal tilføjes et ISSN på the <a href=\"{$journalSettingsUrl}\" target=\"_blank\">Konfigurationssiden</a>."
@@ -53,7 +55,6 @@ msgstr ""
 "indentifier-pluginen, så der er ingen deponerings- eller eksportmuligheder i "
 "dette plugin."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
 msgstr "Følgende elementer er påkrævet for at foretage en Crossref-deponering."
 
@@ -73,7 +74,7 @@ msgid "plugins.importexport.crossref.registrationIntro"
 msgstr ""
 "Hvis du ønsker at anvende dette plugin til direkte registrering af Digital "
 "Object Identifiers (DOI'er) hos Crossref skal du have et brugernavn og en "
-"adgangskode (kan oprettes fra <a href=\"http://www.crossref.org\" target=\""
+"adgangskode (kan oprettes fra <a href=\"https://www.crossref.org\" target=\""
 "_blank\">Crossref</a>). Hvis du ikke har dit eget brugernavn og password, "
 "kan du stadig eksportere via Crossref XML formatet, men du kan ikke "
 "registrere dine DOI'er hos Crossref direkte via OJS."
@@ -81,17 +82,20 @@ msgstr ""
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Brugernavn"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
 msgstr "Indsæt det brugernavn du har fået udleveret fra Crossref."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
-msgstr "OJS vil deponere tildelte DOI'er automatisk hos Crossref. Bemærk, at der kan gå kort tid mellem publicering og endelig færdigbehandling. Alle ikke-registrerede DOI'er kan fremfindes."
+msgstr ""
+"OJS vil automatisk deponere tildelte DOI'er til Crossref. Bemærk, at der kan "
+"gå lidt tid mellem publicering og endelig færdigbehandling (fx afhængig af "
+"din konfigurering af cronjob). Du kan søge efter alle ikke-registrerede "
+"DOI'er."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
-msgstr "Brug Crossref test-API til DOI-deponering (testopstilling). Glem ikke at fjerne denne mulighed under produktionen."
+msgstr ""
+"Brug Crossref test-API (testmiljø) til DOI-deponeringen. Glem ikke at fjerne "
+"denne mulighed i forbindelse med produktionen."
 
 msgid "plugins.importexport.crossref.issues.description"
 msgstr "Bemærk: Kun numre (og ikke deres artikler) vil her blive taget i betragtning ved eksport/registrering."
@@ -124,9 +128,8 @@ msgstr ""
 msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "Markér aktiv"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "Crossref automatiske registreringsopgave"
+msgstr "Crossrefs automatiske registreringsfunktion"
 
 msgid "plugins.importexport.crossref.action.export"
 msgstr "Eksport"
@@ -150,3 +153,18 @@ msgstr ""
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Validér kun eksport. Download ikke filen."
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "Ikke deponeret"
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Crossref indstillinger"
+
+msgid "plugins.generic.crossref.description"
+msgstr "Håndterer deponering og eksport af Crossref metadata"
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Crossref Manager Plugin"

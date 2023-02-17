@@ -1,0 +1,172 @@
+# Artashes Mirzoyan <amirzoyan@sci.am>, 2022.
+# Tigran Zargaryan <tigran@flib.sci.am>, 2022.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2022-07-04 05:31+0000\n"
+"Last-Translator: Tigran Zargaryan <tigran@flib.sci.am>\n"
+"Language-Team: Armenian <http://translate.pkp.sfu.ca/projects/plugins/"
+"crossref/hy_AM/>\n"
+"Language: hy_AM\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 3.9.1\n"
+
+msgid "plugins.importexport.crossref.action.markRegistered"
+msgstr "Նշել որպես ակտիվ"
+
+msgid "plugins.importexport.crossref.statusLegend"
+msgstr ""
+"\n"
+"\t\t<p>Ավանդադրման կարգավիճակ:</p>\n"
+"\t\t<p>\n"
+"\t\t- Չի ավանդադրված. ավանդի փորձ չի արվել այս DOI-ի համար.<br />\n"
+"\t\t- Ակտիվ. DOI-ն ավանդադրվել է և ճիշտ է լուծվում.<br />\n"
+"\t\t- Չհաջողվեց. DOI ավանդադրումը ձախողվել է.<br />\n"
+"\t\t- Նշված է ակտիվ. DOI-ն ձեռքով նշվել է որպես ակտիվ.\n"
+"\t\t</p>\n"
+"\t\t<p>Ցուցադրվում է միայն ավանդադրման վերջին փորձի կարգավիճակը.</p>\n"
+"\t\t<p>Եթե ավանդադրումը ձախողվել է, խնդրում ենք լուծել խնդիրը և կրկին փորձել "
+"գրանցել DOI-ը.</p>"
+
+msgid "plugins.importexport.crossref.action.register"
+msgstr "Ավանդադնել"
+
+msgid "plugins.importexport.crossref.settings.form.depositorName"
+msgstr "Ավանդադնողի անունը"
+
+msgid "plugins.importexport.crossref.registrationIntro"
+msgstr ""
+"Եթե ցանկանում եք օգտագործել այս փլագինը թվային օբյեկտների նույնացուցիչները "
+"(DOI) ուղղակիորեն Crossref-ով գրանցելու համար, ձեզ անհրաժեշտ կլինի օգտանուն "
+"և գաղտնաբառ (հասանելի է <a href=\"https://www.crossref.org\" target=\""
+"_blank\">Crossref</a>) դա անելու համար: Եթե չունեք ձեր սեփական օգտանունը և "
+"գաղտնաբառը, դուք դեռ կարող եք արտահանել Crossref XML ձևաչափով, բայց դուք չեք "
+"կարող գրանցել ձեր DOI-ները Crossref-ով OJS-ից:"
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
+
+msgid "plugins.importexport.crossref.export.error.articleNotFound"
+msgstr "Ոչ մի հոդված չի համապատասխանում նշված հոդվածի ID-ին՝ \"{$articleId}\":"
+
+msgid "plugins.importexport.crossref.export.error.issueNotFound"
+msgstr ""
+"Ոչ մի թողարկում չի համապատասխանում նշված թողարկման ID-ին \"{$issueId}\"."
+
+msgid "plugins.importexport.crossref.register.success.warning"
+msgstr ""
+"Գրանցումը հաջող էր, սակայն տեղի ունեցավ հետևյալ նախազգուշացումը: '{$param}'."
+
+msgid "plugins.importexport.crossref.register.error.mdsError"
+msgstr ""
+"Գրանցումն ամբողջությամբ չի հաջողվել: DOI գրանցման կայանը սխալ է վերադարձրել:"
+
+msgid "plugins.importexport.crossref.cliUsage"
+msgstr ""
+"Օգտագործում:\n"
+"{$scriptName} {$pluginName} export [xmlFileName] [journal_path] articles "
+"objectId1 [objectId2] ...\n"
+"{$scriptName} {$pluginName} register [journal_path] articles objectId1 "
+"[objectId2] ...\n"
+
+msgid "plugins.importexport.crossref.senderTask.name"
+msgstr "Crossref ինքնաշխատ գրանցման առաջադրանք"
+
+msgid "plugins.importexport.crossref.action.export"
+msgstr "Արտահանում"
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "Չի ավանդադրվում"
+
+msgid "plugins.importexport.crossref.status.markedRegistered"
+msgstr "Նշված է ակտիվ"
+
+msgid "plugins.importexport.crossref.status.registered"
+msgstr "Ակտիվ"
+
+msgid "plugins.importexport.crossref.status.failed"
+msgstr "Ձախոողվեց"
+
+msgid "plugins.importexport.crossref.issues.description"
+msgstr ""
+"Նշում. Այստեղ արտահանման/գրանցման համար կդիտարկվեն միայն թողարկումները (և ոչ "
+"դրանց հոդվածները):"
+
+msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
+msgstr "Վավերացրեք միայն արտահանումը: Մի ներբեռնեք նիշքը:"
+
+msgid "plugins.importexport.crossref.settings.form.validation"
+msgstr ""
+"Վավերացնել XML-ը: Օգտագործեք այս տարբերակը XML ներբեռնման նպատակով DOI-ի "
+"ձեռքով գրանցման համար:"
+
+msgid "plugins.importexport.crossref.settings.form.testMode.description"
+msgstr ""
+"Օգտագործեք Crossref test API (փորձարկման միջավայր) DOI ավանդադրման համար: "
+"Խնդրում ենք մի մոռացեք հեռացնել այս տարբերակը արտադրության համար:"
+
+msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
+msgstr ""
+"OJS-ը նշանակված DOI-ները ինքնաշխատ կերպով կպահի Crossref-ում: Խնդրում ենք "
+"նկատի ունենալ, որ դրա մշակումը հրապարակումից հետո կարող է կարճ ժամանակ "
+"պահանջել (օրինակ՝ կախված ձեր cronjob-ի կազմաձևից): Դուք կարող եք ստուգել "
+"բոլոր չգրանցված DOI-ները:"
+
+msgid "plugins.importexport.crossref.settings.form.usernameRequired"
+msgstr "Խնդրում ենք մուտքագրել այն օգտվողի անունը, որը ստացել եք Crossref-ից:"
+
+msgid "plugins.importexport.crossref.settings.form.username"
+msgstr "Օգտանուն"
+
+msgid "plugins.importexport.crossref.requirements"
+msgstr "Պահանջներ"
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
+msgstr "Մուտք արեք ավանդադրողի էլ․ փոստը:"
+
+msgid "plugins.importexport.crossref.settings.form.depositorNameRequired"
+msgstr "Մուտք արեք ավանդադրողի անունը:"
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail"
+msgstr "Ավանդադրողի էլ․ փոստը"
+
+msgid "plugins.importexport.crossref.settings.depositorIntro"
+msgstr "Հետևյալ նյութերն են պահանջվում Crossref հաջող ավանդադրման համար:"
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Crossref կարգավորումներ"
+
+msgid "plugins.importexport.crossref.error.noDOIContentObjects"
+msgstr ""
+"DOI հանրային նույնացուցիչի հավելվածում հոդվածները ընտրված չեն DOI-ի "
+"նշանակման համար, ուստի այս հավելվածում ավանդադրման կամ արտահանման "
+"հնարավորություն չկա:"
+
+msgid "plugins.importexport.crossref.error.issnNotConfigured"
+msgstr ""
+"Ամսագրի ISSN-ը կազմաձևված չէ: Դուք պետք է ISSN ավելացնեք <a href=\""
+"{$journalSettingsUrl}\" target=\"_blank\">Ամսագրի կարգավորումների էջ</a> "
+"-ում:"
+
+msgid "plugins.importexport.crossref.error.publisherNotConfigured"
+msgstr ""
+"Ամսագրի հրատարակիչը կազմաձևված չէ: Դուք պետք է հրատարակիչ հաստատություն "
+"ավելացնեք <a href=\"{$journalSettingsUrl}\" target=\"_blank\">Ամսագրի "
+"կարգավորումների էջ</a> -ում:"
+
+msgid "plugins.importexport.crossref.requirements.satisfied"
+msgstr "Պլագինների բոլոր պահանջները բավարարված են:"
+
+msgid "plugins.generic.crossref.description"
+msgstr "Կառավարում է Crossref մետատվյալների ավանդադրումը և արտահանումը"
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Crossref կառավարիչի փլագին"
+
+msgid "plugins.importexport.crossref.description"
+msgstr "Արտահանել հոդվածի մետատվյալները Crossref XML ձևաչափով:"
+
+msgid "plugins.importexport.crossref.displayName"
+msgstr "Crossref XML արտահանման փլագին"

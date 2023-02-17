@@ -1,7 +1,7 @@
 # Cyril Kamburov <cc@intermedia.bg>, 2022.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-04-03 13:57+0000\n"
+"PO-Revision-Date: 2022-08-18 18:33+0000\n"
 "Last-Translator: Cyril Kamburov <cc@intermedia.bg>\n"
 "Language-Team: Bulgarian <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/bg_BG/>\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.9.1\n"
+"X-Generator: Weblate 4.13.1\n"
 
 msgid "plugins.importexport.crossref.requirements"
 msgstr "Изисквания"
@@ -44,8 +44,8 @@ msgstr "Експорт"
 
 msgid "plugins.importexport.crossref.issues.description"
 msgstr ""
-"Забележка: Само броеве (а не техните статии) ще бъдат разглеждани за експорт/"
-"регистрация тук."
+"Забележка: Тук за експортиране/регистрация ще се разглеждат само публикувани "
+"издания (а не предпечатни или работни такива)."
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Потвърдете само експортирането. Не изтегляйте файла."
@@ -61,11 +61,11 @@ msgid "plugins.importexport.crossref.registrationIntro"
 msgstr ""
 "Ако искате да използвате тази добавка (плъгин) за регистриране на цифрови "
 "идентификатори на обекти (DOI) директно с CrossRef, за да го направите, ще "
-"ви трябва потребителско име и парола (достъпни от <a href=\""
-"http://www.crossref.org\" target=\"_blank\"> CrossRef</a>). Ако нямате "
-"собствено потребителско име и парола, все още можете да експортирате във "
-"формат CrossRef XML, но не можете да регистрирате вашите DOI с CrossRef от "
-"тази система."
+"ви трябва потребителско име и парола (достъпни от <a href=\"https://www."
+"crossref.org\" target=\"_blank\"> CrossRef</a>). Ако нямате собствено "
+"потребителско име и парола, все още можете да експортирате във формат "
+"CrossRef XML, но не можете да регистрирате вашите DOI с CrossRef от тази "
+"система."
 
 msgid "plugins.importexport.crossref.register.success.warning"
 msgstr ""
@@ -141,9 +141,9 @@ msgstr "Следните елементи са необходими за усп�
 
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr ""
-"Статиите не са избрани за присвояване на DOI в добавката (плъгин) за "
-"публичен идентификатор на DOI, така че няма възможност за депозиране или "
-"експортиране в този плъгин."
+"Предпечатните материали не са избрани за присвояване на DOI в добавката "
+"(плъгин) за публичен идентификатор на DOI, така че няма възможност за "
+"депозиране или експортиране в този плъгин."
 
 msgid "plugins.importexport.crossref.error.issnNotConfigured"
 msgstr ""
@@ -159,3 +159,18 @@ msgstr ""
 
 msgid "plugins.importexport.crossref.requirements.satisfied"
 msgstr "Всички изисквания за тази добавка (плъгин) са изпълнени."
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref агенция"
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "Не са депозирани"
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Настройки за Crossref"
+
+msgid "plugins.generic.crossref.description"
+msgstr "Управлява депозирането и експортирането на метаданни за Crossref"
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Добавка (плъгин) за управление на Crossref"

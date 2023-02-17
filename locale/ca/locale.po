@@ -1,10 +1,10 @@
-# Jordi LC <jordi.lacruz@uab.cat>, 2021.
+# Jordi LC <jordi.lacruz@uab.cat>, 2021, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-30T06:56:43-07:00\n"
-"PO-Revision-Date: 2021-08-03 11:04+0000\n"
+"PO-Revision-Date: 2022-07-02 03:52+0000\n"
 "Last-Translator: Jordi LC <jordi.lacruz@uab.cat>\n"
 "Language-Team: Catalan <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/ca_ES/>\n"
@@ -15,13 +15,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.9.1\n"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Mòdul d'exportació a XML de Crossref"
+msgstr "Mòdul d'exportació XML de Crossref"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Exporta les metadades de l'article en format XML de Crossref."
+msgstr "Exportar les metadades de l'article en format XML de Crossref."
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""
@@ -39,9 +37,9 @@ msgstr "Tots els requisits del mòdul han estat satisfets."
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Nom d'usuari"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Són necessaris els següents elements per a un dipòsit Crossref amb èxit."
+msgstr ""
+"Els següents elements són obligatoris per a un dipòsit Crossref amb èxit."
 
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Nom del dipositant"
@@ -55,7 +53,6 @@ msgstr "Introduïu el nom del dipositant."
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
 msgstr "Introduïu el correu electrònic del dipositant."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
 msgstr "Tasca de registre automàtic de Crossref"
 
@@ -131,7 +128,6 @@ msgstr ""
 "exemple, segons la configuració de les tasques cron). Podeu comprovar tots "
 "els DOI no registrats."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
 msgstr "Introduïu el nom d'usuari/ària obtingut des de Crossref."
 
@@ -164,3 +160,18 @@ msgstr ""
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Només validar l'exportació. No descarregar l'arxiu."
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "No dipositat"
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Configuració de Crossref"
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Mòdul de gestió de Crossref"
+
+msgid "plugins.generic.crossref.description"
+msgstr "Gestiona el dipòsit i l'exportació de les metadades de Crossref"
