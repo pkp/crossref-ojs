@@ -1,10 +1,10 @@
-# Diego José Macêdo <diegojmacedo@gmail.com>, 2022.
+# Diego José Macêdo <diegojmacedo@gmail.com>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-30T11:58:33-07:00\n"
-"PO-Revision-Date: 2022-08-05 23:36+0000\n"
+"PO-Revision-Date: 2023-02-18 21:48+0000\n"
 "Last-Translator: Diego José Macêdo <diegojmacedo@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <http://translate.pkp.sfu.ca/projects/"
 "plugins/crossref/pt_BR/>\n"
@@ -160,10 +160,33 @@ msgid "plugins.importexport.crossref.status.notDeposited"
 msgstr "Não depositado"
 
 msgid "plugins.importexport.crossref.settings"
-msgstr "Configurações da Crossref"
+msgstr "Configurações do Crossref"
 
 msgid "plugins.generic.crossref.description"
-msgstr "Lida com o depósito e exportação de metadados Crossref"
+msgstr "Manipula o depósito e a exportação de metadados Crossref"
 
 msgid "plugins.generic.crossref.displayName"
 msgstr "Plugin do Gerenciador Crossref"
+
+msgid "plugins.importexport.crossref.settings.form.depositorName.description"
+msgstr ""
+"Nome da organização que cadastra os DOIs. É incluído nos metadados "
+"depositados e usado para registrar quem enviou o depósito."
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail.description"
+msgstr ""
+"Endereço de e-mail do responsável pelo registro do conteúdo no Crossref. Ele "
+"é incluído nos metadados depositados e usado no envio do e-mail de "
+"confirmação do depósito."
+
+msgid "plugins.importexport.crossref.settings.form.username.description"
+msgstr ""
+"O nome de usuário Crossref que será usado para autenticar seus depósitos. Se "
+"você estiver usando uma conta pessoal, consulte as recomendações acima."
+
+msgid "plugins.generic.crossref.successMessage"
+msgstr ""
+"Os metadados para este item foram depositados no Crossref. Para ver mais "
+"detalhes, consulte a submissão no <a href=\"https://doi.crossref.org/servlet/"
+"submissionAdmin?sf=detail&submissionID={$submissionId}\">Painel de "
+"administração do Crossref</a>."
