@@ -40,7 +40,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use PKP\doi\Doi;
 use PKP\file\FileManager;
 use PKP\file\TemporaryFileManager;
-use PKP\plugins\HookRegistry;
+use PKP\plugins\Hook;
 use PKP\plugins\PluginRegistry;
 use APP\issue\Issue;
 
@@ -364,7 +364,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
                 $result = [['plugins.importexport.crossref.register.success.warning', htmlspecialchars($response->getBody())]];
             }
             // A possibility for other plugins (e.g. reference linking) to work with the response
-            HookRegistry::call('crossrefexportplugin::deposited', [$this, $response->getBody(), $objects]);
+            Hook::run('crossrefexportplugin::deposited', [[$this, $response->getBody(), $objects]]);
         }
 
         // Update the status
