@@ -1,11 +1,12 @@
 # Carla Marques <carla.marques@usdb.uminho.pt>, 2022.
+# José Carvalho <jcarvalho@keep.pt>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-19T11:05:36+00:00\n"
-"PO-Revision-Date: 2022-07-14 09:17+0000\n"
-"Last-Translator: Carla Marques <carla.marques@usdb.uminho.pt>\n"
+"PO-Revision-Date: 2023-03-07 03:19+0000\n"
+"Last-Translator: José Carvalho <jcarvalho@keep.pt>\n"
 "Language-Team: Portuguese (Portugal) <http://translate.pkp.sfu.ca/projects/"
 "plugins/crossref/pt_PT/>\n"
 "Language: pt_PT\n"
@@ -13,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.4.2\n"
+"X-Generator: Weblate 4.13.1\n"
 
 msgid "plugins.importexport.crossref.displayName"
 msgstr "Plugin de Exportação Crossref XML"
@@ -30,7 +31,7 @@ msgstr ""
 "[objectId2] ...\n"
 
 msgid "plugins.importexport.crossref.settings.form.username"
-msgstr "Utilizador"
+msgstr "Nome do utilizador"
 
 msgid "plugins.importexport.crossref.requirements"
 msgstr "Requisitos"
@@ -56,7 +57,7 @@ msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
 msgstr "Insira o e-mail do depositante."
 
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Insira o nome de utilizador da sua conta na Crossref."
+msgstr "Insira o nome de utilizador que recebeu da Crossref."
 
 msgid "plugins.importexport.crossref.senderTask.name"
 msgstr "Tarefa de registo automático Crossref"
@@ -104,7 +105,7 @@ msgid "plugins.importexport.crossref.status.registered"
 msgstr "Ativo"
 
 msgid "plugins.importexport.crossref.status.markedRegistered"
-msgstr "Marcado ativo"
+msgstr "Marcado como ativo"
 
 msgid "plugins.importexport.crossref.statusLegend"
 msgstr ""
@@ -129,25 +130,28 @@ msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "Marcar ativo"
 
 msgid "plugins.importexport.crossref.export.error.issueNotFound"
-msgstr "Nenhum número corresponde ao ID do problema especificado \"{$issueId}\"."
+msgstr "Nenhuma edição corresponde ao ID da edição especificada \"{$issueId}\"."
 
 msgid "plugins.importexport.crossref.export.error.articleNotFound"
 msgstr "Nenhum artigo corresponde ao ID do artigo especificado \"{$articleId}\"."
 
 msgid "plugins.importexport.crossref.register.success.warning"
-msgstr "Registo concluído com sucesso mas com o seguinte aviso: '{$param}'."
+msgstr ""
+"O registo foi realizado com sucesso, mas ocorreu o seguinte aviso: "
+"'{$param}'."
 
 msgid "plugins.importexport.crossref.register.error.mdsError"
 msgstr ""
-"O registo não foi concluído! O servidor de registo do DOI devolveu um erro."
+"O registo não foi bem-sucedido! O servidor de registo do DOI devolveu um "
+"erro."
 
 msgid "plugins.importexport.crossref.action.register"
-msgstr "Depositar"
+msgstr "Depósito"
 
 msgid "plugins.importexport.crossref.settings.form.validation"
 msgstr ""
-"Validar XML. Use esta opção para download do ficheiro XML para registo "
-"manual do DOI."
+"Valide o XML. Use esta opção para o download do XML para o registo manual do "
+"DOI."
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Validar apenas exportação. Não descarregar o ficheiro."
@@ -159,10 +163,10 @@ msgid "plugins.importexport.crossref.status.notDeposited"
 msgstr "Não depositado"
 
 msgid "plugins.importexport.crossref.settings"
-msgstr "Configurações da Crossref"
+msgstr "Configurações Crossref"
 
 msgid "plugins.generic.crossref.description"
-msgstr "Lida com o depósito e exportação de metadados CrossRef"
+msgstr "Gere o depósito e a exportação de metadados Crossref"
 
 msgid "plugins.generic.crossref.displayName"
 msgstr "Plugin de Gestão CrossRef"
