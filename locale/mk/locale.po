@@ -1,8 +1,9 @@
 # Teodora Fildishevska <t.fildishevska@gmail.com>, 2023.
+# Mirko Spiroski <mspiroski@id-press.eu>, 2023.
 msgid ""
 msgstr ""
 "PO-Revision-Date: 2023-03-16 10:48+0000\n"
-"Last-Translator: Teodora Fildishevska <t.fildishevska@gmail.com>\n"
+"Last-Translator: Mirko Spiroski <mspiroski@id-press.eu>\n"
 "Language-Team: Macedonian <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/mk/>\n"
 "Language: mk\n"
@@ -72,7 +73,7 @@ msgstr "Следните елементи се задолжителни за у�
 
 msgid "plugins.importexport.crossref.error.issnNotConfigured"
 msgstr ""
-"Не конфигуриран ISSN на списанието! Мора да го додадете ISSN на  <a href=\""
+"Не конфигуриран ISSN на списанието! Мора да го додадете ISSN на <a href=\""
 "{$journalSettingsUrl}\" target=\"_blank\">Страницата за поставки на "
 "списанието</a>."
 
