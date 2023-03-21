@@ -29,14 +29,6 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
     }
 
     //
-    // Implement template methods from PersistableFilter
-    //
-    public function getClassName()
-    {
-        return (string) self::class;
-    }
-
-    //
     // Implement template methods from Filter
     //
     /**

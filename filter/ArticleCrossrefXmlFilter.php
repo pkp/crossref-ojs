@@ -36,15 +36,6 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     }
 
     //
-    // Implement template methods from PersistableFilter
-    //
-    public function getClassName()
-    {
-        return (string) self::class;
-    }
-
-
-    //
     // Submission conversion functions
     //
     /**
