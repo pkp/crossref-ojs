@@ -1,14 +1,14 @@
 <?php
 
 /**
- * @file plugins/generic/crossref/CrossRefExportPlugin.php
+ * @file plugins/generic/crossref/CrossrefExportPlugin.php
  *
  * Copyright (c) 2014-2022 Simon Fraser University
  * Copyright (c) 2003-2022 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
- * @class CrossRefExportPlugin
- * @brief CrossRef/MEDLINE XML metadata export plugin
+ * @class CrossrefExportPlugin
+ * @brief Crossref/MEDLINE XML metadata export plugin
  */
 
 namespace APP\plugins\generic\crossref;
@@ -28,7 +28,7 @@ use APP\issue\Issue;
 use GuzzleHttp\Exception\RequestException;
 use PKP\plugins\Plugin;
 
-class CrossRefExportPlugin extends DOIPubIdExportPlugin
+class CrossrefExportPlugin extends DOIPubIdExportPlugin
 {
     // The status of the Crossref DOI.
     // any, notDeposited, and markedRegistered are reserved
@@ -67,7 +67,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
      */
     public function getName()
     {
-        return 'CrossRefExportPlugin';
+        return 'CrossrefExportPlugin';
     }
 
     /**

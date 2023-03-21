@@ -1,5 +1,5 @@
 ================================
-=== OJS CrossRef Export Plugin
+=== OJS Crossref Export Plugin
 === Version: 2.1
 === Author: Bozana Bokan <bozana.bokan@posteo.net>
 === Author: Juan Pablo Alperin <juan@alperin.ca>
@@ -9,7 +9,7 @@
 About
 -----
 This plugin for OJS 3 provides an import/export plugin to generate metadata information for articles
-and issues for indexing in CrossRef. Details on the XML format and data requirements is available at:
+and issues for indexing in Crossref. Details on the XML format and data requirements is available at:
 http://www.crossref.org/schema
 
 License
@@ -27,7 +27,7 @@ To install the plugin:
  - copy the crossref folder into OJS/plugins/importexport
 
 The export functionality can then be accessed through:
- - Tools > Import/Export > CrossRef XML Export Plugin
+ - Tools > Import/Export > Crossref XML Export Plugin
 
 Contact/Support
 ---------------

@@ -155,12 +155,12 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
             $journalAbbrev = $context->getData('acronym', $context->getPrimaryLocale());
         }
         $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'abbrev_title', htmlspecialchars($journalAbbrev, ENT_COMPAT, 'UTF-8')));
-        /* Both ISSNs are permitted for CrossRef, so sending whichever one (or both) */
+        /* Both ISSNs are permitted for Crossref, so sending whichever one (or both) */
         if ($ISSN = $context->getData('onlineIssn')) {
             $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'issn', $ISSN));
             $node->setAttribute('media_type', 'electronic');
         }
-        /* Both ISSNs are permitted for CrossRef so sending whichever one (or both) */
+        /* Both ISSNs are permitted for Crossref so sending whichever one (or both) */
         if ($ISSN = $context->getData('printIssn')) {
             $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'issn', $ISSN));
             $node->setAttribute('media_type', 'print');

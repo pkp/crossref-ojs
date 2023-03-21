@@ -188,7 +188,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         }
 
         // pages
-        // CrossRef requires first_page and last_page of any contiguous range, then any other ranges go in other_pages
+        // Crossref requires first_page and last_page of any contiguous range, then any other ranges go in other_pages
         $pages = $publication->getPageArray();
         if (!empty($pages)) {
             $firstRange = array_shift($pages);
@@ -200,7 +200,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                 // There is not a range in the first segment
                 $lastPage = '';
             }
-            // CrossRef accepts no punctuation in first_page or last_page
+            // Crossref accepts no punctuation in first_page or last_page
             if ((!empty($firstPage) || $firstPage === '0') && !preg_match('/[^[:alnum:]]/', $firstPage) && !preg_match('/[^[:alnum:]]/', $lastPage)) {
                 $pagesNode = $doc->createElementNS($deployment->getNamespace(), 'pages');
                 $pagesNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'first_page', $firstPage));
