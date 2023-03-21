@@ -60,6 +60,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
      */
     public function createJournalIssueNode($doc, $submission)
     {
+        /** @var CrossrefExportDeployment */
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $cache = $deployment->getCache();
@@ -88,6 +89,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
      */
     public function createJournalArticleNode($doc, $submission)
     {
+        /** @var CrossrefExportDeployment */
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $request = Application::get()->getRequest();
@@ -115,7 +117,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
         if (!empty($authors)) {
             $contributorsNode = $doc->createElementNS($deployment->getNamespace(), 'contributors');
-        
+
             $isFirst = true;
             foreach ($authors as $author) { /** @var Author $author */
                 $personNameNode = $doc->createElementNS($deployment->getNamespace(), 'person_name');
@@ -234,7 +236,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $submissionGalleys = $pdfGalleys = $remoteGalleys = [];
         // preferred PDF full-text for the as-crawled URL
         $pdfGalleyInArticleLocale = null;
-        // get immediatelly also supplementary files for component list
+        // get immediately also supplementary files for component list
         $componentGalleys = [];
         $genreDao = DAORegistry::getDAO('GenreDAO'); /** @var GenreDAO $genreDao */
         foreach ($galleys as $galley) {

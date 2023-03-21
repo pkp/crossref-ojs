@@ -25,11 +25,11 @@ use PKP\file\TemporaryFileManager;
 use PKP\plugins\Hook;
 use PKP\plugins\PluginRegistry;
 use APP\issue\Issue;
+use GuzzleHttp\Exception\RequestException;
+use PKP\plugins\Plugin;
 
 class CrossRefExportPlugin extends DOIPubIdExportPlugin
 {
-    protected IDoiRegistrationAgency $agencyPlugin;
-
     // The status of the Crossref DOI.
     // any, notDeposited, and markedRegistered are reserved
     public const CROSSREF_STATUS_FAILED = 'failed';
@@ -44,11 +44,9 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
     // The name of the setting used to save the registered DOI and the URL with the deposit status.
     public const CROSSREF_DEPOSIT_STATUS = 'depositStatus';
 
-    public function __construct(IDoiRegistrationAgency $agencyPlugin)
+    public function __construct(protected IDoiRegistrationAgency|Plugin $agencyPlugin)
     {
         parent::__construct();
-
-        $this->agencyPlugin = $agencyPlugin;
     }
 
     public function register($category, $path, $mainContextId = null)
@@ -115,7 +113,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
      */
     public function getStatusMessage($request)
     {
-        // if the failure occured on request and the message was saved
+        // if the failure occurred on request and the message was saved
         // return that message
         $articleId = $request->getUserVar('articleId');
         $article = Repo::submission()->get((int)$articleId);
@@ -140,7 +138,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
                     ]
                 ]
             );
-        } catch (GuzzleHttp\Exception\RequestException $e) {
+        } catch (RequestException $e) {
             $returnMessage = $e->getMessage();
             if ($e->hasResponse()) {
                 $returnMessage = $e->getResponse()->getBody(true) . ' (' .$e->getResponse()->getStatusCode() . ' ' . $e->getResponse()->getReasonPhrase() . ')';
@@ -194,12 +192,12 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
         $resultErrors = [];
 
         assert($filter != null);
-        // Errors occured will be accessible via the status link
+        // Errors occurred will be accessible via the status link
         // thus do not display all errors notifications (for every article),
         // just one general.
-        // Warnings occured when the registration was successfull will however be
+        // Warnings occurred when the registration was successful will however be
         // displayed for each article.
-        $errorsOccured = false;
+        $errorsOccurred = false;
         // The new Crossref deposit API expects one request per object.
         // On contrary the export supports bulk/batch object export, thus
         // also the filter expects an array of objects.
@@ -218,7 +216,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
             // Deposit the XML file.
             $result = $this->depositXML($object, $context, $exportFileName);
             if (!$result) {
-                $errorsOccured = true;
+                $errorsOccurred = true;
             }
             if (is_array($result)) {
                 $resultErrors[] = $result;
@@ -228,7 +226,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
         }
         // Prepare response message and return status
         if (empty($resultErrors)) {
-            if ($errorsOccured) {
+            if ($errorsOccurred) {
                 $responseMessage = 'plugins.importexport.crossref.register.error.mdsError';
                 return false;
             } else {
@@ -313,7 +311,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
                     ]
                 ]
             );
-        } catch (GuzzleException $e) {
+        } catch (RequestException $e) {
             $returnMessage = $e->getMessage();
             if ($e->hasResponse()) {
                 $eResponseBody = $e->getResponse()->getBody(true);
@@ -378,7 +376,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
      * @param DataObject $object The object getting deposited
      * @param int $status
      * @param string $batchId
-     * @param string $failedMsg (opitonal)
+     * @param string $failedMsg (optional)
      */
     public function updateDepositStatus($context, $object, $status, $batchId = null, $failedMsg = null, $successMsg = null)
     {
@@ -478,12 +476,12 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
                 PluginRegistry::loadCategory('generic', true, $context->getId());
                 $fileManager = new FileManager();
                 $resultErrors = [];
-                // Errors occured will be accessible via the status link
+                // Errors occurred will be accessible via the status link
                 // thus do not display all errors notifications (for every article),
                 // just one general.
-                // Warnings occured when the registration was successfull will however be
+                // Warnings occurred when the registration was successful will however be
                 // displayed for each article.
-                $errorsOccured = false;
+                $errorsOccurred = false;
                 // The new Crossref deposit API expects one request per object.
                 // On contrary the export supports bulk/batch object export, thus
                 // also the filter expects an array of objects.
@@ -500,7 +498,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
                     // Deposit the XML file.
                     $result = $this->depositXML($object, $context, $exportFileName);
                     if (!$result) {
-                        $errorsOccured = true;
+                        $errorsOccurred = true;
                     }
                     if (is_array($result)) {
                         $resultErrors[] = $result;
@@ -510,7 +508,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
                 }
                 // display deposit result status messages
                 if (empty($resultErrors)) {
-                    if ($errorsOccured) {
+                    if ($errorsOccurred) {
                         echo __('plugins.importexport.crossref.register.error.mdsError') . "\n";
                     } else {
                         echo __('plugins.importexport.common.register.success') . "\n";

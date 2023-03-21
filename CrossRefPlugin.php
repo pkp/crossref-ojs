@@ -17,9 +17,11 @@ namespace APP\plugins\generic\crossref;
 use APP\core\Application;
 use APP\core\Services;
 use APP\facades\Repo;
+use APP\issue\Issue;
 use APP\plugins\generic\crossref\classes\CrossrefSettings;
 use APP\plugins\IDoiRegistrationAgency;
 use APP\services\ContextService;
+use APP\submission\Submission;
 use Illuminate\Support\Collection;
 use PKP\context\Context;
 use PKP\doi\RegistrationAgencySettings;
@@ -380,6 +382,9 @@ class CrossRefPlugin extends GenericPlugin implements IDoiRegistrationAgency
         return $this->getName() . '_successMsg';
     }
 
+    /**
+     * @return CrossRefExportPlugin
+     */
     private function _getExportPlugin()
     {
         if (empty($this->_exportPlugin)) {

@@ -76,7 +76,7 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                 'value' => $this->agencyPlugin->getSetting($context->getId(), 'depositorEmail'),
             ]),
             new FieldHTML('credentialsExplanation', [
-               'description' => __('plugins.importexport.crossref.registrationIntro'),
+                'description' => __('plugins.importexport.crossref.registrationIntro'),
             ]),
             new FieldText('username', [
                 'label' => __('plugins.importexport.crossref.settings.form.username'),
