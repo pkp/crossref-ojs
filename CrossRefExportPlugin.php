@@ -13,24 +13,6 @@
 
 namespace APP\plugins\generic\crossref;
 
-// The status of the Crossref DOI.
-// any, notDeposited, and markedRegistered are reserved
-define('CROSSREF_STATUS_FAILED', 'failed');
-
-define('CROSSREF_API_DEPOSIT_OK', 200);
-define('CROSSREF_API_DEPOSIT_ERROR_FROM_CROSSREF', 403);
-
-define('CROSSREF_API_URL', 'https://api.crossref.org/v2/deposits');
-//TESTING
-define('CROSSREF_API_URL_DEV', 'https://test.crossref.org/v2/deposits');
-
-define('CROSSREF_API_STATUS_URL', 'https://doi.crossref.org/servlet/submissionDownload');
-//TESTING
-define('CROSSREF_API_STATUS_URL_DEV', 'https://test.crossref.org/servlet/submissionDownload');
-
-// The name of the setting used to save the registered DOI and the URL with the deposit status.
-define('CROSSREF_DEPOSIT_STATUS', 'depositStatus');
-
 use APP\core\Application;
 use APP\facades\Repo;
 use APP\plugins\DOIPubIdExportPlugin;
@@ -47,6 +29,21 @@ use APP\issue\Issue;
 class CrossRefExportPlugin extends DOIPubIdExportPlugin
 {
     protected IDoiRegistrationAgency $agencyPlugin;
+
+    // The status of the Crossref DOI.
+    // any, notDeposited, and markedRegistered are reserved
+    public const CROSSREF_STATUS_FAILED = 'failed';
+    public const CROSSREF_API_DEPOSIT_OK = 200;
+    public const CROSSREF_API_DEPOSIT_ERROR_FROM_CROSSREF = 403;
+    public const CROSSREF_API_URL = 'https://api.crossref.org/v2/deposits';
+    //TESTING
+    public const CROSSREF_API_URL_DEV = 'https://test.crossref.org/v2/deposits';
+    public const CROSSREF_API_STATUS_URL = 'https://doi.crossref.org/servlet/submissionDownload';
+    //TESTING
+    public const CROSSREF_API_STATUS_URL_DEV = 'https://test.crossref.org/servlet/submissionDownload';
+    // The name of the setting used to save the registered DOI and the URL with the deposit status.
+    public const CROSSREF_DEPOSIT_STATUS = 'depositStatus';
+
     public function __construct(IDoiRegistrationAgency $agencyPlugin)
     {
         parent::__construct();
@@ -133,7 +130,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
         try {
             $response = $httpClient->request(
                 'POST',
-                $this->isTestMode($context) ? CROSSREF_API_STATUS_URL_DEV : CROSSREF_API_STATUS_URL,
+                $this->isTestMode($context) ? static::CROSSREF_API_STATUS_URL_DEV : static::CROSSREF_API_STATUS_URL,
                 [
                     'form_params' => [
                         'doi_batch_id' => $request->getUserVar('batchId'),
@@ -294,7 +291,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
         try {
             $response = $httpClient->request(
                 'POST',
-                $this->isTestMode($context) ? CROSSREF_API_URL_DEV : CROSSREF_API_URL,
+                $this->isTestMode($context) ? static::CROSSREF_API_URL_DEV : static::CROSSREF_API_URL,
                 [
                     'multipart' => [
                         [
@@ -321,7 +318,7 @@ class CrossRefExportPlugin extends DOIPubIdExportPlugin
             if ($e->hasResponse()) {
                 $eResponseBody = $e->getResponse()->getBody(true);
                 $eStatusCode = $e->getResponse()->getStatusCode();
-                if ($eStatusCode == CROSSREF_API_DEPOSIT_ERROR_FROM_CROSSREF) {
+                if ($eStatusCode == static::CROSSREF_API_DEPOSIT_ERROR_FROM_CROSSREF) {
                     $xmlDoc = new \DOMDocument();
                     $xmlDoc->loadXML($eResponseBody);
                     $batchIdNode = $xmlDoc->getElementsByTagName('batch_id')->item(0);

@@ -14,16 +14,16 @@
 
 namespace APP\plugins\generic\crossref;
 
-// XML attributes
-define('CROSSREF_XMLNS', 'http://www.crossref.org/schema/5.3.1');
-define('CROSSREF_XMLNS_XSI', 'http://www.w3.org/2001/XMLSchema-instance');
-define('CROSSREF_XSI_SCHEMAVERSION', '5.3.1');
-define('CROSSREF_XSI_SCHEMALOCATION', 'https://www.crossref.org/schemas/crossref5.3.1.xsd');
-define('CROSSREF_XMLNS_JATS', 'http://www.ncbi.nlm.nih.gov/JATS1');
-define('CROSSREF_XMLNS_AI', 'http://www.crossref.org/AccessIndicators.xsd');
-
 class CrossrefExportDeployment
 {
+    // XML attributes
+    public const CROSSREF_XMLNS = 'http://www.crossref.org/schema/5.3.1';
+    public const CROSSREF_XMLNS_XSI = 'http://www.w3.org/2001/XMLSchema-instance';
+    public const CROSSREF_XSI_SCHEMAVERSION = '5.3.1';
+    public const CROSSREF_XSI_SCHEMALOCATION = 'https://www.crossref.org/schemas/crossref5.3.1.xsd';
+    public const CROSSREF_XMLNS_JATS = 'http://www.ncbi.nlm.nih.gov/JATS1';
+    public const CROSSREF_XMLNS_AI = 'http://www.crossref.org/AccessIndicators.xsd';
+
     /** @var Context The current import/export context */
     public $_context;
 
@@ -67,7 +67,7 @@ class CrossrefExportDeployment
      */
     public function getNamespace()
     {
-        return CROSSREF_XMLNS;
+        return static::CROSSREF_XMLNS;
     }
 
     /**
@@ -76,7 +76,7 @@ class CrossrefExportDeployment
      */
     public function getXmlSchemaInstance()
     {
-        return CROSSREF_XMLNS_XSI;
+        return static::CROSSREF_XMLNS_XSI;
     }
 
     /**
@@ -85,7 +85,7 @@ class CrossrefExportDeployment
      */
     public function getXmlSchemaVersion()
     {
-        return CROSSREF_XSI_SCHEMAVERSION;
+        return static::CROSSREF_XSI_SCHEMAVERSION;
     }
 
     /**
@@ -94,7 +94,7 @@ class CrossrefExportDeployment
      */
     public function getXmlSchemaLocation()
     {
-        return CROSSREF_XSI_SCHEMALOCATION;
+        return static::CROSSREF_XSI_SCHEMALOCATION;
     }
 
     /**
@@ -103,7 +103,7 @@ class CrossrefExportDeployment
      */
     public function getJATSNamespace()
     {
-        return CROSSREF_XMLNS_JATS;
+        return static::CROSSREF_XMLNS_JATS;
     }
 
     /**
@@ -112,7 +112,7 @@ class CrossrefExportDeployment
      */
     public function getAINamespace()
     {
-        return CROSSREF_XMLNS_AI;
+        return static::CROSSREF_XMLNS_AI;
     }
 
     /**
