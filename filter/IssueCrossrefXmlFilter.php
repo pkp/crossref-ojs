@@ -29,14 +29,6 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
     }
 
     //
-    // Implement template methods from PersistableFilter
-    //
-    public function getClassName()
-    {
-        return (string) self::class;
-    }
-
-    //
     // Implement template methods from Filter
     //
     /**
@@ -82,6 +74,7 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
      */
     public function createRootNode($doc)
     {
+        /** @var CrossrefExportDeployment */
         $deployment = $this->getDeployment();
         $rootNode = $doc->createElementNS($deployment->getNamespace(), $deployment->getRootElementName());
         $rootNode->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xsi', $deployment->getXmlSchemaInstance());
@@ -99,6 +92,7 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
      */
     public function createHeadNode($doc)
     {
+        /** @var CrossrefExportDeployment */
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $plugin = $deployment->getPlugin();
@@ -161,12 +155,12 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
             $journalAbbrev = $context->getData('acronym', $context->getPrimaryLocale());
         }
         $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'abbrev_title', htmlspecialchars($journalAbbrev, ENT_COMPAT, 'UTF-8')));
-        /* Both ISSNs are permitted for CrossRef, so sending whichever one (or both) */
+        /* Both ISSNs are permitted for Crossref, so sending whichever one (or both) */
         if ($ISSN = $context->getData('onlineIssn')) {
             $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'issn', $ISSN));
             $node->setAttribute('media_type', 'electronic');
         }
-        /* Both ISSNs are permitted for CrossRef so sending whichever one (or both) */
+        /* Both ISSNs are permitted for Crossref so sending whichever one (or both) */
         if ($ISSN = $context->getData('printIssn')) {
             $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'issn', $ISSN));
             $node->setAttribute('media_type', 'print');
@@ -182,6 +176,7 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
      */
     public function createJournalIssueNode($doc, $issue)
     {
+        /** @var CrossrefExportDeployment */
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $deployment->setIssue($issue);

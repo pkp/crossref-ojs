@@ -1,13 +1,13 @@
 <?php
 
 /**
- * @file plugins/generic/crossref/classes/CrossRefSettings.php
+ * @file plugins/generic/crossref/classes/CrossrefSettings.php
  *
  * Copyright (c) 2014-2023 Simon Fraser University
  * Copyright (c) 2003-2023 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
- * @class CrossRefSettings
+ * @class CrossrefSettings
  * @ingroup plugins_generic_crossref
  *
  * @brief Setting management class to handle schema, fields, validation, etc. for Crossref plugin
@@ -76,7 +76,7 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                 'value' => $this->agencyPlugin->getSetting($context->getId(), 'depositorEmail'),
             ]),
             new FieldHTML('credentialsExplanation', [
-               'description' => __('plugins.importexport.crossref.registrationIntro'),
+                'description' => __('plugins.importexport.crossref.registrationIntro'),
             ]),
             new FieldText('username', [
                 'label' => __('plugins.importexport.crossref.settings.form.username'),

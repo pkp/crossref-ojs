@@ -36,15 +36,6 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     }
 
     //
-    // Implement template methods from PersistableFilter
-    //
-    public function getClassName()
-    {
-        return (string) self::class;
-    }
-
-
-    //
     // Submission conversion functions
     //
     /**
@@ -69,6 +60,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
      */
     public function createJournalIssueNode($doc, $submission)
     {
+        /** @var CrossrefExportDeployment */
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $cache = $deployment->getCache();
@@ -97,6 +89,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
      */
     public function createJournalArticleNode($doc, $submission)
     {
+        /** @var CrossrefExportDeployment */
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $request = Application::get()->getRequest();
@@ -124,7 +117,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
         if (!empty($authors)) {
             $contributorsNode = $doc->createElementNS($deployment->getNamespace(), 'contributors');
-        
+
             $isFirst = true;
             foreach ($authors as $author) { /** @var Author $author */
                 $personNameNode = $doc->createElementNS($deployment->getNamespace(), 'person_name');
@@ -195,7 +188,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         }
 
         // pages
-        // CrossRef requires first_page and last_page of any contiguous range, then any other ranges go in other_pages
+        // Crossref requires first_page and last_page of any contiguous range, then any other ranges go in other_pages
         $pages = $publication->getPageArray();
         if (!empty($pages)) {
             $firstRange = array_shift($pages);
@@ -207,7 +200,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                 // There is not a range in the first segment
                 $lastPage = '';
             }
-            // CrossRef accepts no punctuation in first_page or last_page
+            // Crossref accepts no punctuation in first_page or last_page
             if ((!empty($firstPage) || $firstPage === '0') && !preg_match('/[^[:alnum:]]/', $firstPage) && !preg_match('/[^[:alnum:]]/', $lastPage)) {
                 $pagesNode = $doc->createElementNS($deployment->getNamespace(), 'pages');
                 $pagesNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'first_page', $firstPage));
@@ -243,7 +236,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $submissionGalleys = $pdfGalleys = $remoteGalleys = [];
         // preferred PDF full-text for the as-crawled URL
         $pdfGalleyInArticleLocale = null;
-        // get immediatelly also supplementary files for component list
+        // get immediately also supplementary files for component list
         $componentGalleys = [];
         $genreDao = DAORegistry::getDAO('GenreDAO'); /** @var GenreDAO $genreDao */
         foreach ($galleys as $galley) {

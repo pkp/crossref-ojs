@@ -162,7 +162,7 @@ msgid "plugins.importexport.crossref.settings"
 msgstr "Configurações da Crossref"
 
 msgid "plugins.generic.crossref.description"
-msgstr "Lida com o depósito e exportação de metadados CrossRef"
+msgstr "Lida com o depósito e exportação de metadados Crossref"
 
 msgid "plugins.generic.crossref.displayName"
-msgstr "Plugin de Gestão CrossRef"
+msgstr "Plugin de Gestão Crossref"

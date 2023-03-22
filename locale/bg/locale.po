@@ -16,10 +16,10 @@ msgid "plugins.importexport.crossref.requirements"
 msgstr "Изисквания"
 
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Добавка (плъгин) за CrossRef XML експорт"
+msgstr "Добавка (плъгин) за Crossref XML експорт"
 
 msgid "plugins.importexport.crossref.description"
-msgstr "Експортиране на метаданни на статия в CrossRef XML формат."
+msgstr "Експортиране на метаданни на статия в Crossref XML формат."
 
 msgid "plugins.importexport.crossref.export.error.issueNotFound"
 msgstr ""
@@ -52,7 +52,7 @@ msgstr "Потвърдете само експортирането. Не изт�
 
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
 msgstr ""
-"Системата ще депозира присвоените DOI автоматично в CrossRef. Моля, имайте "
+"Системата ще депозира присвоените DOI автоматично в Crossref. Моля, имайте "
 "предвид, че това може да отнеме кратко време след публикуването за обработка "
 "(например в зависимост от конфигурацията на cronjob). Можете да проверите за "
 "всички нерегистрирани DOI."
@@ -60,11 +60,11 @@ msgstr ""
 msgid "plugins.importexport.crossref.registrationIntro"
 msgstr ""
 "Ако искате да използвате тази добавка (плъгин) за регистриране на цифрови "
-"идентификатори на обекти (DOI) директно с CrossRef, за да го направите, ще "
+"идентификатори на обекти (DOI) директно с Crossref, за да го направите, ще "
 "ви трябва потребителско име и парола (достъпни от <a href=\"https://www."
-"crossref.org\" target=\"_blank\"> CrossRef</a>). Ако нямате собствено "
+"crossref.org\" target=\"_blank\"> Crossref</a>). Ако нямате собствено "
 "потребителско име и парола, все още можете да експортирате във формат "
-"CrossRef XML, но не можете да регистрирате вашите DOI с CrossRef от тази "
+"Crossref XML, но не можете да регистрирате вашите DOI с Crossref от тази "
 "система."
 
 msgid "plugins.importexport.crossref.register.success.warning"
@@ -77,7 +77,7 @@ msgstr ""
 "грешка."
 
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "CrossRef задача за автоматична регистрация"
+msgstr "Crossref задача за автоматична регистрация"
 
 msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "Маркиране като активен"
@@ -115,11 +115,11 @@ msgstr ""
 
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
 msgstr ""
-"Използвайте CrossRef тестовия API (среда за тестване) за депозита на DOI. "
+"Използвайте Crossref тестовия API (среда за тестване) за депозита на DOI. "
 "Моля, не забравяйте да премахнете тази опция при работа в реалната среда."
 
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Моля, въведете потребителското име, което сте получили от CrossRef."
+msgstr "Моля, въведете потребителското име, което сте получили от Crossref."
 
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Потребител"
@@ -137,7 +137,7 @@ msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Име на депозиращия"
 
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Следните елементи са необходими за успешен CrossRef депозит."
+msgstr "Следните елементи са необходими за успешен Crossref депозит."
 
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
 msgstr ""
