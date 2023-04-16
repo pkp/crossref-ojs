@@ -8,6 +8,7 @@
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class IssueCrossrefXmlFilter
+ *
  * @brief Class that converts an Issue to a Crossref XML document.
  */
 
@@ -20,6 +21,7 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
 {
     /**
      * Constructor
+     *
      * @param \PKP\filter\FilterGroup $filterGroup
      */
     public function __construct($filterGroup)
@@ -33,7 +35,9 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
     //
     /**
      * @see \PKP\filter\Filter::process()
+     *
      * @param array $pubObjects Array of Issues or Submissions
+     *
      * @return \DOMDocument
      */
     public function &process(&$pubObjects)
@@ -69,7 +73,9 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
     //
     /**
      * Create and return the root node 'doi_batch'.
+     *
      * @param \DOMDocument $doc
+     *
      * @return \DOMElement
      */
     public function createRootNode($doc)
@@ -87,7 +93,9 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
 
     /**
      * Create and return the head node 'head'.
+     *
      * @param \DOMDocument $doc
+     *
      * @return \DOMElement
      */
     public function createHeadNode($doc)
@@ -118,8 +126,10 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
 
     /**
      * Create and return the journal node 'journal'.
+     *
      * @param \DOMDocument $doc
      * @param Object $pubObject Issue or Submission
+     *
      * @return \DOMElement
      */
     public function createJournalNode($doc, $pubObject)
@@ -133,7 +143,9 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
 
     /**
      * Create and return the journal metadata node 'journal_metadata'.
+     *
      * @param \DOMDocument $doc
+     *
      * @return \DOMElement
      */
     public function createJournalMetadataNode($doc)
@@ -170,8 +182,10 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
 
     /**
      * Create and return the journal issue node 'journal_issue'.
+     *
      * @param \DOMDocument $doc
      * @param \APP\issue\Issue $issue
+     *
      * @return \DOMElement
      */
     public function createJournalIssueNode($doc, $issue)
@@ -204,8 +218,10 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
 
     /**
      * Create and return the publication date node 'publication_date'.
+     *
      * @param \DOMDocument $doc
      * @param string $objectPublicationDate
+     *
      * @return \DOMElement
      */
     public function createPublicationDateNode($doc, $objectPublicationDate)
@@ -226,9 +242,11 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
 
     /**
      * Create and return the DOI date node 'doi_data'.
+     *
      * @param \DOMDocument $doc
      * @param string $doi
      * @param string $url
+     *
      * @return \DOMElement
      */
     public function createDOIDataNode($doc, $doi, $url)
@@ -243,8 +261,6 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
     /**
      * Helper to ensure dispatcher is available even when called from CLI tools
      *
-     * @param \APP\core\Request $request
-     * @return \PKP\core\Dispatcher
      */
     protected function _getDispatcher(\APP\core\Request $request): \PKP\core\Dispatcher
     {

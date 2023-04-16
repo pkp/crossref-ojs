@@ -8,6 +8,7 @@
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefExportPlugin
+ *
  * @brief Crossref/MEDLINE XML metadata export plugin
  */
 
@@ -15,18 +16,18 @@ namespace APP\plugins\generic\crossref;
 
 use APP\core\Application;
 use APP\facades\Repo;
+use APP\issue\Issue;
 use APP\plugins\DOIPubIdExportPlugin;
 use APP\plugins\IDoiRegistrationAgency;
 use APP\submission\Submission;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use PKP\doi\Doi;
 use PKP\file\FileManager;
 use PKP\file\TemporaryFileManager;
 use PKP\plugins\Hook;
-use PKP\plugins\PluginRegistry;
-use APP\issue\Issue;
-use GuzzleHttp\Exception\RequestException;
 use PKP\plugins\Plugin;
+use PKP\plugins\PluginRegistry;
 
 class CrossrefExportPlugin extends DOIPubIdExportPlugin
 {
@@ -141,7 +142,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
         } catch (RequestException $e) {
             $returnMessage = $e->getMessage();
             if ($e->hasResponse()) {
-                $returnMessage = $e->getResponse()->getBody(true) . ' (' .$e->getResponse()->getStatusCode() . ' ' . $e->getResponse()->getReasonPhrase() . ')';
+                $returnMessage = $e->getResponse()->getBody(true) . ' (' . $e->getResponse()->getStatusCode() . ' ' . $e->getResponse()->getReasonPhrase() . ')';
             }
             return __('plugins.importexport.common.register.error.mdsError', ['param' => $returnMessage]);
         }
@@ -151,6 +152,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
 
     /**
      * Get a list of additional setting names that should be stored with the objects.
+     *
      * @return array
      */
     protected function _getObjectAdditionalSettings()
@@ -175,7 +177,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
      */
     public function getSettingsFormClassName()
     {
-        throw new \Exception("DOI settings no longer managed via plugin settings form.");
+        throw new \Exception('DOI settings no longer managed via plugin settings form.');
     }
 
     /**
@@ -186,7 +188,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
         return (string) \APP\plugins\generic\crossref\CrossrefExportDeployment::class;
     }
 
-    public function exportAndDeposit($context, $objects, $filter, $objectsFileNamePart, string &$responseMessage, $noValidation = null) : bool
+    public function exportAndDeposit($context, $objects, $filter, $objectsFileNamePart, string &$responseMessage, $noValidation = null): bool
     {
         $fileManager = new FileManager();
         $resultErrors = [];
@@ -242,14 +244,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     /**
      * Exports and stores XML as a TemporaryFile
      *
-     * @param \PKP\context\Context $context
-     * @param array $objects
-     * @param string $filter
-     * @param string $objectsFileNamePart
-     * @param bool|null $noValidation
-     * @param array|null $exportErrors
      *
-     * @return int|null
      * @throws Exception
      */
     public function exportAsDownload(\PKP\context\Context $context, array $objects, string $filter, string $objectsFileNamePart, ?bool $noValidation = null, ?array &$exportErrors = null): ?int
@@ -275,6 +270,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
      * @param string $filename Export XML filename
      *
      * @throws GuzzleException
+     *
      * @see PubObjectsExportPlugin::depositXML()
      *
      */
@@ -293,19 +289,19 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
                 [
                     'multipart' => [
                         [
-                            'name'     => 'usr',
+                            'name' => 'usr',
                             'contents' => $this->getSetting($context->getId(), 'username'),
                         ],
                         [
-                            'name'     => 'pwd',
+                            'name' => 'pwd',
                             'contents' => $this->getSetting($context->getId(), 'password'),
                         ],
                         [
-                            'name'     => 'operation',
+                            'name' => 'operation',
                             'contents' => 'doMDUpload',
                         ],
                         [
-                            'name'     => 'mdFile',
+                            'name' => 'mdFile',
                             'contents' => fopen($filename, 'r'),
                         ],
                     ]
@@ -324,9 +320,9 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
                     $msgSave = $msg . PHP_EOL . $eResponseBody;
                     $status = Doi::STATUS_ERROR;
                     $this->updateDepositStatus($context, $objects, $status, $batchIdNode->nodeValue, $msgSave);
-                    $returnMessage = $msg . ' (' .$eStatusCode . ' ' . $e->getResponse()->getReasonPhrase() . ')';
+                    $returnMessage = $msg . ' (' . $eStatusCode . ' ' . $e->getResponse()->getReasonPhrase() . ')';
                 } else {
-                    $returnMessage = $eResponseBody . ' (' .$eStatusCode . ' ' . $e->getResponse()->getReasonPhrase() . ')';
+                    $returnMessage = $eResponseBody . ' (' . $eStatusCode . ' ' . $e->getResponse()->getReasonPhrase() . ')';
                     $this->updateDepositStatus($context, $objects, Doi::STATUS_ERROR, null, $returnMessage);
                 }
             }
@@ -372,11 +368,13 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
 
     /**
      * Check the Crossref APIs, if deposits and registration have been successful
+     *
      * @param Context $context
      * @param DataObject $object The object getting deposited
      * @param int $status
      * @param string $batchId
      * @param string $failedMsg (optional)
+     * @param null|mixed $successMsg
      */
     public function updateDepositStatus($context, $object, $status, $batchId = null, $failedMsg = null, $successMsg = null)
     {
@@ -429,21 +427,23 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     /**
      * Get request failed message setting name.
      * NB: Changed as of 3.4
+     *
      * @return string
      */
     public function getFailedMsgSettingName()
     {
-        return $this->getPluginSettingsPrefix().'_failedMsg';
+        return $this->getPluginSettingsPrefix() . '_failedMsg';
     }
 
     /**
      * Get deposit batch ID setting name.
      * NB Changed as of 3.4
+     *
      * @return string
      */
     public function getDepositBatchIdSettingName()
     {
-        return $this->getPluginSettingsPrefix().'_batchId';
+        return $this->getPluginSettingsPrefix() . '_batchId';
     }
 
     public function getSuccessMsgSettingName(): string
@@ -519,7 +519,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
                         foreach ($errors as $error) {
                             assert(is_array($error) && count($error) >= 1);
                             $errorMessage = __($error[0], ['param' => $error[1] ?? null]);
-                            echo "*** $errorMessage\n";
+                            echo "*** {$errorMessage}\n";
                         }
                     }
                     echo "\n";

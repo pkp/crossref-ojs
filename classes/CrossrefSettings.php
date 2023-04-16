@@ -8,6 +8,7 @@
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefSettings
+ *
  * @ingroup plugins_generic_crossref
  *
  * @brief Setting management class to handle schema, fields, validation, etc. for Crossref plugin

@@ -1,13 +1,14 @@
 <?php
 
 /**
- * @file plugins/generic/crossref/filter/ArticleCrossrefXmlFilter.inc.php
+ * @file plugins/generic/crossref/filter/ArticleCrossrefXmlFilter.php
  *
  * Copyright (c) 2014-2021 Simon Fraser University
  * Copyright (c) 2000-2021 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class ArticleCrossrefXmlFilter
+ *
  * @ingroup plugins_generic_crossref
  *
  * @brief Class that converts an Article to a Crossref XML document.

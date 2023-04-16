@@ -8,6 +8,7 @@
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefExportDeployment
+ *
  * @brief Base class configuring the crossref export process to an
  * application's specifics.
  */
@@ -40,6 +41,7 @@ class CrossrefExportDeployment
 
     /**
      * Constructor
+     *
      * @param \PKP\context\Context $context
      * @param \PKP\plugins\Plugin $plugin
      */
@@ -54,6 +56,7 @@ class CrossrefExportDeployment
     //
     /**
      * Get the root element name
+     *
      * @return string
      */
     public function getRootElementName()
@@ -63,6 +66,7 @@ class CrossrefExportDeployment
 
     /**
      * Get the namespace URN
+     *
      * @return string
      */
     public function getNamespace()
@@ -72,6 +76,7 @@ class CrossrefExportDeployment
 
     /**
      * Get the schema instance URN
+     *
      * @return string
      */
     public function getXmlSchemaInstance()
@@ -81,6 +86,7 @@ class CrossrefExportDeployment
 
     /**
      * Get the schema version
+     *
      * @return string
      */
     public function getXmlSchemaVersion()
@@ -90,6 +96,7 @@ class CrossrefExportDeployment
 
     /**
      * Get the schema location URL
+     *
      * @return string
      */
     public function getXmlSchemaLocation()
@@ -99,6 +106,7 @@ class CrossrefExportDeployment
 
     /**
      * Get the JATS namespace URN
+     *
      * @return string
      */
     public function getJATSNamespace()
@@ -108,6 +116,7 @@ class CrossrefExportDeployment
 
     /**
      * Get the access indicators namespace URN
+     *
      * @return string
      */
     public function getAINamespace()
@@ -117,6 +126,7 @@ class CrossrefExportDeployment
 
     /**
      * Get the schema filename.
+     *
      * @return string
      */
     public function getSchemaFilename()
@@ -129,6 +139,7 @@ class CrossrefExportDeployment
     //
     /**
      * Set the import/export context.
+     *
      * @param \PKP\context\Context $context
      */
     public function setContext($context)
@@ -138,6 +149,7 @@ class CrossrefExportDeployment
 
     /**
      * Get the import/export context.
+     *
      * @return \PKP\context\Context
      */
     public function getContext()
@@ -147,6 +159,7 @@ class CrossrefExportDeployment
 
     /**
      * Set the import/export plugin.
+     *
      * @param \PKP\plugins\Plugin $plugin
      */
     public function setPlugin($plugin)
@@ -156,6 +169,7 @@ class CrossrefExportDeployment
 
     /**
      * Get the import/export plugin.
+     *
      * @return \PKP\plugins\Plugin
      */
     public function getPlugin()
@@ -165,6 +179,7 @@ class CrossrefExportDeployment
 
     /**
      * Set the import/export issue.
+     *
      * @param \APP\issue\Issue $issue
      */
     public function setIssue($issue)
@@ -174,6 +189,7 @@ class CrossrefExportDeployment
 
     /**
      * Get the import/export issue.
+     *
      * @return \APP\issue\Issue
      */
     public function getIssue()
