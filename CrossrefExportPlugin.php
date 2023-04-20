@@ -20,6 +20,7 @@ use APP\issue\Issue;
 use APP\plugins\DOIPubIdExportPlugin;
 use APP\plugins\IDoiRegistrationAgency;
 use APP\submission\Submission;
+use APP\template\TemplateManager;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use PKP\doi\Doi;
@@ -107,6 +108,22 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     public function getSetting($contextId, $name)
     {
         return $this->agencyPlugin->getSetting($contextId, $name);
+    }
+
+    /**
+     * @copydoc ImportExportPlugin::display()
+     */
+    public function display($args, $request)
+    {
+        switch (array_shift($args)) {
+            case 'index':
+            case '':
+                $templateMgr = TemplateManager::getManager($request);
+                $templateMgr->display($this->getTemplateResource('index.tpl'));
+                break;
+            default:
+                parent::display($args, $request);
+        }
     }
 
     /**
