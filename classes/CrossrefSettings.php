@@ -119,7 +119,7 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
             $notices[] = __('plugins.importexport.crossref.error.publisherNotConfigured', ['journalSettingsUrl' => $journalSettingsUrl]);
         }
 
-        if (!($context->getData('onlineIssn') && $context->getData('printIssn'))) {
+        if (!$context->getData('onlineIssn') && !$context->getData('printIssn')) {
             $notices[] = __('plugins.importexport.crossref.error.issnNotConfigured', ['journalSettingsUrl' => $journalSettingsUrl]);
         }
 
