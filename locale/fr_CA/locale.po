@@ -1,19 +1,20 @@
+# Marie-Hélène Vézina [UdeMontréal] <marie-helene.vezina@umontreal.ca>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-30T06:56:43-07:00\n"
-"PO-Revision-Date: 2020-12-09 14:51+0000\n"
-"Last-Translator: Marie-Hélène Vézina [UdeMontréal] <marie-"
-"helene.vezina@umontreal.ca>\n"
-"Language-Team: French (Canada) <http://translate.pkp.sfu.ca/projects/ojs/"
-"importexport-crossref/fr_CA/>\n"
+"PO-Revision-Date: 2023-04-24 10:30+0000\n"
+"Last-Translator: Marie-Hélène Vézina [UdeMontréal] <marie-helene."
+"vezina@umontreal.ca>\n"
+"Language-Team: French (Canada) <http://translate.pkp.sfu.ca/projects/plugins/"
+"crossref/fr_CA/>\n"
 "Language: fr_CA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.9.1\n"
+"X-Generator: Weblate 4.13.1\n"
 
 #,fuzzy
 msgid "plugins.importexport.crossref.displayName"
@@ -183,3 +184,42 @@ msgstr ""
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Valider uniquement l'exportation. Ne pas télécharger le fichier."
+
+msgid "plugins.importexport.crossref.settings.form.depositorName.description"
+msgstr ""
+"Nom de l'organisation enregistrant les DOI. Ce nom est inclus avec les "
+"métadonnées déposées et utilisé pour enregistrer qui a soumis le dépôt."
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail.description"
+msgstr ""
+"Courriel de la personne responsable de l'enregistrement du contenu auprès de "
+"Crossref. Ce courriel est inclus avec les métadonnées déposées et utilisé "
+"lors de l'envoi de courriel de confirmation de dépôt."
+
+msgid "plugins.importexport.crossref.settings.form.username.description"
+msgstr ""
+"Le nom d'utilisateur Crossref qui sera utilisé pour authentifier vos dépôts. "
+"Si vous utilisez un compte personnel, veuillez consulter les conseils ci-"
+"dessus."
+
+msgid "plugins.generic.crossref.successMessage"
+msgstr ""
+"Les métadonnées de cet élément ont été déposées auprès de Crossref. Pour "
+"voir plus de détails, consulter la soumission dans le <a href=\"https://doi."
+"crossref.org/servlet/submissionAdmin?sf=detail&submissionID={$submissionId}\""
+">panneau d'administration de Crossref</a>."
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "Non déposé"
+
+msgid "plugins.generic.crossref.description"
+msgstr "Gère le dépôt et l'exportation des métadonnées Crossref"
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Plugiciel de gestion de Crossref"
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Paramètres de Crossref"
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
