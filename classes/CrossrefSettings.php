@@ -43,7 +43,7 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                 ],
                 'username' => (object) [
                     'type' => 'string',
-                    'validation' => ['nullable', 'max:60'],
+                    'validation' => ['nullable', 'max:120'],
                 ],
                 'password' => (object) [
                     'type' => 'string',
@@ -83,7 +83,7 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                 'label' => __('plugins.importexport.crossref.settings.form.username'),
                 'description' => __('plugins.importexport.crossref.settings.form.username.description'),
                 'value' => $this->agencyPlugin->getSetting($context->getId(), 'username'),
-                'inputType' => 'email',
+                'inputType' => 'text',
             ]),
             new FieldText('password', [
                 'label' => __('plugins.importexport.common.settings.form.password'),
