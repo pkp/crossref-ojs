@@ -1,19 +1,20 @@
 # Jordi LC <jordi.lacruz@uab.cat>, 2021.
+# Marc Bria <marc.bria@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-19T11:05:35+00:00\n"
-"PO-Revision-Date: 2021-08-04 13:04+0000\n"
-"Last-Translator: Jordi LC <jordi.lacruz@uab.cat>\n"
+"PO-Revision-Date: 2023-04-27 09:49+0000\n"
+"Last-Translator: Marc Bria <marc.bria@gmail.com>\n"
 "Language-Team: Spanish <http://translate.pkp.sfu.ca/projects/plugins/"
-"crossref/es_ES/>\n"
-"Language: es_ES\n"
+"crossref/es/>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.9.1\n"
+"X-Generator: Weblate 4.13.1\n"
 
 #,fuzzy
 msgid "plugins.importexport.crossref.displayName"
@@ -24,10 +25,10 @@ msgid "plugins.importexport.crossref.description"
 msgstr "Exportar los metadatos del artículo en formato Crossref XML."
 
 msgid "plugins.importexport.crossref.requirements"
-msgstr "Requerimientos"
+msgstr "Requisitos"
 
 msgid "plugins.importexport.crossref.requirements.satisfied"
-msgstr "Se satisfacen todas las dependencias de módulos."
+msgstr "Se cumplen todos los requisitos del módulo."
 
 msgid "plugins.importexport.crossref.error.publisherNotConfigured"
 msgstr "¡No se ha definido la editorial de la revista! Debe añadir la institución editora en la página de <a href=\"{$journalSettingsUrl}\" target=\"_blank\">Preferencias de la Revista</a>."
@@ -36,39 +37,56 @@ msgid "plugins.importexport.crossref.error.issnNotConfigured"
 msgstr "¡No se ha definido un ISSN para la revista! Debe añadir un ISSN en la página de <a href=\"{$journalSettingsUrl}\" target=\"_blank\">Preferencias de la Revista</a>."
 
 msgid "plugins.importexport.crossref.error.noDOIContentObjects"
-msgstr "¡No se han seleccionado artículos a los que asignar un identificador público DOI, por lo tanto, el módulo no puede depositar o exportar nada."
+msgstr ""
+"No se han seleccionado artículos a los que asignar un identificador público "
+"(DOI), por lo tanto, el módulo no puede depositar o exportar nada."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Para un correcto depósito en Crossref, se requieren los siguientes ítems."
+msgstr "Para depositar en Crossref, se requieren los siguientes elementos."
 
 msgid "plugins.importexport.crossref.settings.form.depositorName"
-msgstr "Nombre del depositario"
+msgstr "Nombre del depositante"
 
 msgid "plugins.importexport.crossref.settings.form.validation"
 msgstr ""
-"Validar XML. Utilice esta opción para descargar el XML para realizar el "
-"registro manual del DOI."
+"Validar XML. Use esta opción para descargar el XML y realizar el registro "
+"manual del DOI."
 
 msgid "plugins.importexport.crossref.settings.form.depositorEmail"
-msgstr "Correo electrónico del depositario"
+msgstr "Correo electrónico del depositante"
 
 msgid "plugins.importexport.crossref.settings.form.depositorNameRequired"
-msgstr "Introduzca el nombre del depositario."
+msgstr "Introduzca el nombre del depositante."
 
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
-msgstr "Introduzca el correo electrónico del depositario."
+msgstr "Introduzca el correo electrónico del depositante."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
-msgstr "Si quiere usar este módulo para registrar Identificadores Digitales de Objeto (Digital Object Identifiers - DOI, en inglés) directamente con Crossref, necesita un usuario y contraseña (disponible en <a href=\"http://www.crossref.org\" target=\"_blank\">Crossref</a>). Si no dispone de su propio usuario y contraseña, todavía puede exportar en formato XML de Crossref, pero no podrá registrar sus DOIs en Crossref directamente desde OJS."
+msgstr ""
+"<p>Si desea utilizar este módulo para registrar Identificadores de Objetos "
+"Digitales (DOIs) directamente con <a href=\"http://www.crossref.org/\""
+">Crossref</a>, deberá agregar a continuación sus <a href=\"https://www."
+"crossref.org/documentation/member-setup/account-credentials/\">credenciales "
+"de cuenta de Crossref</a> en los campos de nombre de usuario/a y "
+"contraseña.</p><p>Dependiendo de su membresía en Crossref, hay dos formas de "
+"indicar su nombre de usuario/a y contraseña:</p><ul><li>Si está usando una "
+"cuenta organizativa, agregue su <a href=\"https://www.crossref.org/"
+"documentation/member-setup/account-credentials/#00376\">nombre de usuario/a "
+"y contraseña compartidos</a></li><li>Si está usando una <a href=\"https://www"
+".crossref.org/documentation/member-setup/account-credentials/#00368\">cuenta "
+"personal</a>, introduzca su dirección de correo electrónico y el rol en el "
+"campo de nombre de usuario/a. El nombre de usuario/a se verá así: "
+"correo_electrónico@ejemplo.com/rol</li><li>Si no conoce o no tiene acceso a "
+"sus credenciales de Crossref, puede contactar con <a href=\"https://support."
+"crossref.org/\">soporte de Crossref</a> para obtener ayuda. Sin "
+"credenciales, también puede exportar metadatos en formato XML de Crossref, "
+"pero no podrá registrar sus DOIs con Crossref desde OJS.</li></ul>"
 
 msgid "plugins.importexport.crossref.settings.form.username"
-msgstr "Usuario"
+msgstr "Nombre de usuario/a"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Introduzca el usuario que ha obtenido de Crossref."
+msgstr "Introduzca el nombre de usuario/a que obtuvo de Crossref."
 
 #,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
@@ -88,7 +106,7 @@ msgid "plugins.importexport.crossref.status.registered"
 msgstr "Activos"
 
 msgid "plugins.importexport.crossref.status.markedRegistered"
-msgstr "Marcados activo"
+msgstr "Marcado activo"
 
 msgid "plugins.importexport.crossref.statusLegend"
 msgstr ""
@@ -112,9 +130,8 @@ msgstr "Marcar activo"
 msgid "plugins.importexport.crossref.action.register"
 msgstr "Depositar"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "Tarea automática de registro en Crossref"
+msgstr "Tarea de registro automático en Crossref"
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""
@@ -130,10 +147,50 @@ msgid "plugins.importexport.crossref.export.error.articleNotFound"
 msgstr "No existe ningún artículo con el ID \"{$articleId}\"."
 
 msgid "plugins.importexport.crossref.register.error.mdsError"
-msgstr "¡El registro no pudo realizarse! El servidor de registro de DOI retornó un error."
+msgstr "Registro fallido. El servidor de registro de DOI devolvió un error."
 
 msgid "plugins.importexport.crossref.register.success.warning"
-msgstr "El registro se realizó satisfactoriamente. Sin embargo, ocurrieron las siguientes advertencias: '{$param}'."
+msgstr ""
+"El registro se realizó correctamente, aunque han surgido las siguientes "
+"advertencias: '{$param}'."
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Solo validar la exportación. No descargar el archivo."
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Módulo de administración de Crossref"
+
+msgid "plugins.generic.crossref.description"
+msgstr "Gestiona el depósito y la exportación de metadatos de Crossref"
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Ajustes de Crossref"
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail.description"
+msgstr ""
+"Dirección de correo electrónico de la persona responsable de registrar los "
+"contenidos en Crossref. Se incluirá en los metadatos depositados y se usará "
+"al enviar el correo electrónico de confirmación del depósito."
+
+msgid "plugins.importexport.crossref.settings.form.username.description"
+msgstr ""
+"El nombre de usuario/a de Crossref que se usará para autenticar sus "
+"depósitos. Si usa una cuenta personal, consulte el consejo anterior."
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "No depositado"
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
+
+msgid "plugins.importexport.crossref.settings.form.depositorName.description"
+msgstr ""
+"Nombre de la organización que registra los DOI. Se incluirá con los "
+"metadatos depositados y se usará para registrar quién presentó el depósito."
+
+msgid "plugins.generic.crossref.successMessage"
+msgstr ""
+"Los metadatos de este elemento se han depositado en Crossref. Para ver más "
+"detalles, consulte su envío en el <a href=\"https://doi.crossref.org/servlet/"
+"submissionAdmin?sf=detail&submissionID={$submissionId}\">panel de "
+"administración de Crossref</a>."
