@@ -144,7 +144,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
         } catch (RequestException $e) {
             $returnMessage = $e->getMessage();
             if ($e->hasResponse()) {
-                $returnMessage = $e->getResponse()->getBody(true) . ' (' . $e->getResponse()->getStatusCode() . ' ' . $e->getResponse()->getReasonPhrase() . ')';
+                $returnMessage = $e->getResponse()->getBody() . ' (' . $e->getResponse()->getStatusCode() . ' ' . $e->getResponse()->getReasonPhrase() . ')';
             }
             return __('plugins.importexport.common.register.error.mdsError', ['param' => $returnMessage]);
         }
@@ -312,7 +312,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
         } catch (RequestException $e) {
             $returnMessage = $e->getMessage();
             if ($e->hasResponse()) {
-                $eResponseBody = $e->getResponse()->getBody(true);
+                $eResponseBody = $e->getResponse()->getBody();
                 $eStatusCode = $e->getResponse()->getStatusCode();
                 if ($eStatusCode == static::CROSSREF_API_DEPOSIT_ERROR_FROM_CROSSREF) {
                     $xmlDoc = new \DOMDocument();

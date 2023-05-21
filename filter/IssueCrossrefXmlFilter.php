@@ -211,7 +211,7 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
         if ($issue->getDatePublished() && $issue->hasDoi()) {
             $request = Application::get()->getRequest();
             $dispatcher = $this->_getDispatcher($request);
-            $url = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'issue', 'view', $issue->getBestIssueId($context), null, null, true);
+            $url = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'issue', 'view', $issue->getBestIssueId(), null, null, true);
             $journalIssueNode->appendChild($this->createDOIDataNode($doc, $issue->getDoi(), $url));
         }
         return $journalIssueNode;
