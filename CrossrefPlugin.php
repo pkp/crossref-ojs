@@ -81,7 +81,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
         if (!$enabled) {
             $contextId = $this->getCurrentContextId();
             /** @var \PKP\context\ContextDAO $contextDao */
-            $contextDao = \APP\core\Application::getContextDAO();
+            $contextDao = Application::getContextDAO();
             $context = $contextDao->getById($contextId);
             if ($context->getData(Context::SETTING_CONFIGURED_REGISTRATION_AGENCY) === $this->getName()) {
                 $context->setData(Context::SETTING_CONFIGURED_REGISTRATION_AGENCY, Context::SETTING_NO_REGISTRATION_AGENCY);
@@ -148,7 +148,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
      */
     public function addAsRegistrationAgencyOption($hookName, $args)
     {
-        /** @var Collection<IDoiRegistrationAgency> $enabledRegistrationAgencies */
+        /** @var Collection<int,IDoiRegistrationAgency> $enabledRegistrationAgencies */
         $enabledRegistrationAgencies = &$args[0];
         $enabledRegistrationAgencies->add($this);
     }

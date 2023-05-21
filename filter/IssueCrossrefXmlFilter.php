@@ -15,6 +15,7 @@
 namespace APP\plugins\generic\crossref\filter;
 
 use APP\core\Application;
+use APP\plugins\generic\crossref\CrossrefExportDeployment;
 use PKP\core\PKPApplication;
 
 class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\NativeExportFilter
@@ -128,7 +129,7 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
      * Create and return the journal node 'journal'.
      *
      * @param \DOMDocument $doc
-     * @param Object $pubObject Issue or Submission
+     * @param object $pubObject Issue or Submission
      *
      * @return \DOMElement
      */
@@ -266,7 +267,7 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
     {
         $dispatcher = $request->getDispatcher();
         if ($dispatcher === null) {
-            $dispatcher = \APP\core\Application::get()->getDispatcher();
+            $dispatcher = Application::get()->getDispatcher();
         }
 
         return $dispatcher;

@@ -16,12 +16,17 @@
 
 namespace APP\plugins\generic\crossref\filter;
 
+use APP\author\Author;
 use APP\core\Application;
 use APP\facades\Repo;
+use APP\plugins\generic\crossref\CrossrefExportDeployment;
 use APP\submission\Submission;
+use DOMDocument;
+use DOMElement;
 use PKP\core\PKPApplication;
 use PKP\db\DAORegistry;
 use PKP\i18n\LocaleConversion;
+use PKP\submission\GenreDAO;
 
 class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 {
@@ -65,7 +70,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $cache = $deployment->getCache();
-        assert($submission instanceof \APP\submission\Submission);
+        assert($submission instanceof Submission);
         $issueId = $submission->getCurrentPublication()->getData('issueId');
         if ($cache->isCached('issues', $issueId)) {
             $issue = $cache->get('issues', $issueId);

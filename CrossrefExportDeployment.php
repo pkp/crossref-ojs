@@ -14,6 +14,9 @@
  */
 
 namespace APP\plugins\generic\crossref;
+use APP\issue\Issue;
+use APP\journal\Journal;
+use PKP\plugins\Plugin;
 
 class CrossrefExportDeployment
 {
@@ -25,7 +28,7 @@ class CrossrefExportDeployment
     public const CROSSREF_XMLNS_JATS = 'http://www.ncbi.nlm.nih.gov/JATS1';
     public const CROSSREF_XMLNS_AI = 'http://www.crossref.org/AccessIndicators.xsd';
 
-    /** @var Context The current import/export context */
+    /** @var Journal The current import/export context */
     public $_context;
 
     /** @var Plugin The current import/export plugin */

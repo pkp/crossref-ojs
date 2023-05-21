@@ -17,17 +17,19 @@ namespace APP\plugins\generic\crossref;
 use APP\core\Application;
 use APP\facades\Repo;
 use APP\issue\Issue;
+use APP\journal\Journal;
 use APP\plugins\DOIPubIdExportPlugin;
 use APP\plugins\IDoiRegistrationAgency;
 use APP\submission\Submission;
+use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use PKP\core\DataObject;
 use PKP\doi\Doi;
 use PKP\file\FileManager;
 use PKP\file\TemporaryFileManager;
 use PKP\plugins\Hook;
 use PKP\plugins\Plugin;
-use PKP\plugins\PluginRegistry;
 
 class CrossrefExportPlugin extends DOIPubIdExportPlugin
 {
@@ -177,7 +179,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
      */
     public function getSettingsFormClassName()
     {
-        throw new \Exception('DOI settings no longer managed via plugin settings form.');
+        throw new Exception('DOI settings no longer managed via plugin settings form.');
     }
 
     /**
@@ -266,7 +268,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
 
     /**
      * @param Submission $objects
-     * @param Context $context
+     * @param Journal $context
      * @param string $filename Export XML filename
      *
      * @throws GuzzleException
@@ -369,7 +371,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     /**
      * Check the Crossref APIs, if deposits and registration have been successful
      *
-     * @param Context $context
+     * @param Journal $context
      * @param DataObject $object The object getting deposited
      * @param int $status
      * @param string $batchId
