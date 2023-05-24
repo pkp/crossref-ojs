@@ -293,7 +293,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
         $exportPlugin = $this->_getExportPlugin();
         $filterName = $exportPlugin->getSubmissionFilter();
         $responseMessage = '';
-        $status = $exportPlugin->exportAndDeposit($context, $submissions, $filterName, 'articles', $responseMessage);
+        $status = $exportPlugin->exportAndDeposit($context, $submissions, $filterName, $responseMessage);
 
         return [
             'hasErrors' => !$status,
@@ -312,7 +312,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
         $filterName = $exportPlugin->getIssueFilter();
         $xmlErrors = [];
 
-        $temporaryFileId = $exportPlugin->exportAsDownload($context, $issues, $filterName, 'articles', null, $xmlErrors);
+        $temporaryFileId = $exportPlugin->exportAsDownload($context, $issues, $filterName, 'issues', null, $xmlErrors);
         return ['temporaryFileId' => $temporaryFileId, 'xmlErrors' => $xmlErrors];
     }
 
@@ -324,7 +324,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
         $exportPlugin = $this->_getExportPlugin();
         $filterName = $exportPlugin->getIssueFilter();
         $responseMessage = '';
-        $status = $exportPlugin->exportAndDeposit($context, $issues, $filterName, 'issues', $responseMessage);
+        $status = $exportPlugin->exportAndDeposit($context, $issues, $filterName, $responseMessage);
 
         return [
             'hasErrors' => !$status,

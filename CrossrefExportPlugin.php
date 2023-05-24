@@ -190,7 +190,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
         return (string) \APP\plugins\generic\crossref\CrossrefExportDeployment::class;
     }
 
-    public function exportAndDeposit($context, $objects, $filter, $objectsFileNamePart, string &$responseMessage, $noValidation = null): bool
+    public function exportAndDeposit($context, $objects, $filter, string &$responseMessage, $noValidation = null): bool
     {
         $fileManager = new FileManager();
         $resultErrors = [];
@@ -214,7 +214,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
             $exportXml = $this->exportXML([$object], $filter, $context, $noValidation, $exportErrors);
             // Write the XML to a file.
             // export file name example: crossref-20160723-160036-articles-1-1.xml
-            $objectFileNamePart = $objectsFileNamePart . '-' . $object->getId();
+            $objectFileNamePart = $this->_getObjectFileNamePart($object);
             $exportFileName = $this->getExportFileName($this->getExportPath(), $objectFileNamePart, $context, '.xml');
             $fileManager->writeFile($exportFileName, $exportXml);
             // Deposit the XML file.
@@ -256,8 +256,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
         $exportErrors = [];
         $exportXml = $this->exportXML($objects, $filter, $context, $noValidation, $exportErrors);
 
-        $objectFileNamePart = $objectsFileNamePart . '-' . $objects[0]->getId();
-        $exportFileName = $this->getExportFileName($this->getExportPath(), $objectFileNamePart, $context, '.xml');
+        $exportFileName = $this->getExportFileName($this->getExportPath(), $objectsFileNamePart, $context, '.xml');
 
         $fileManager->writeFile($exportFileName, $exportXml);
 
@@ -459,5 +458,20 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     public function getDepositSuccessNotificationMessageKey()
     {
         return 'plugins.importexport.common.register.success';
+    }
+
+    /**
+     * @param Submission|Issue $object
+     *
+     */
+    private function _getObjectFileNamePart(DataObject $object): string
+    {
+        if ($object instanceof Submission) {
+            return 'articles-' . $object->getId();
+        } elseif ($object instanceof Issue) {
+            return 'issues-' . $object->getId();
+        } else {
+            return '';
+        }
     }
 }
