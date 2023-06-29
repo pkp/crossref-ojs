@@ -118,7 +118,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             unset($titleLanguages[$primaryLanguageIndex]);
             array_unshift($titleLanguages, $locale);
         }
-        $languageCounter = 0;
+        $languageCounter = 1;
         foreach ($titleLanguages as $lang) {
             $titlesNode = $doc->createElementNS($deployment->getNamespace(), 'titles');
             $titlesNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'title', $publication->getLocalizedTitle($lang, 'html')));
