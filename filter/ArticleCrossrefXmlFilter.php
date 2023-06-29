@@ -108,15 +108,29 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
         $journalArticleNode = $doc->createElementNS($deployment->getNamespace(), 'journal_article');
         $journalArticleNode->setAttribute('publication_type', 'full_text');
-
+        $journalArticleNode->setAttribute('language', LocaleConversion::getIso1FromLocale($locale));
 
         // title
-        $titlesNode = $doc->createElementNS($deployment->getNamespace(), 'titles');
-        $titlesNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'title', $publication->getLocalizedTitle($locale, 'html')));
-        if ($subtitle = $publication->getLocalizedSubTitle($locale, 'html')) {
-            $titlesNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'subtitle', $subtitle));
+        $titleLanguages = array_keys($publication->getTitles());
+        // Crossref 5.3.1 limits to 20 titles maximum, ensure the primary locale is first
+        $primaryLanguageIndex = array_search($locale, $titleLanguages);
+        if ($primaryLanguageIndex) {
+            unset($titleLanguages[$primaryLanguageIndex]);
+            array_unshift($titleLanguages, $locale);
         }
-        $journalArticleNode->appendChild($titlesNode);
+        $languageCounter = 0;
+        foreach ($titleLanguages as $lang) {
+            $titlesNode = $doc->createElementNS($deployment->getNamespace(), 'titles');
+            $titlesNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'title', $publication->getLocalizedTitle($lang, 'html')));
+            if ($subtitle = $publication->getLocalizedSubTitle($lang, 'html')) {
+                $titlesNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'subtitle', $subtitle));
+            }
+            $journalArticleNode->appendChild($titlesNode);
+            $languageCounter++;
+            if ($languageCounter > 20) {
+                break;
+            }
+        }
 
         // contributors
         $authors = $publication->getData('authors');
@@ -182,8 +196,10 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         }
 
         // abstract
-        if ($abstract = $publication->getData('abstract', $locale)) {
+        $abstracts = $publication->getData('abstract');
+        foreach($abstracts as $lang => $abstract) {            
             $abstractNode = $doc->createElementNS($deployment->getJATSNamespace(), 'jats:abstract');
+            $abstractNode->setAttributeNS($deployment->getXMLNamespace(), 'xml:lang', LocaleConversion::getIso1FromLocale($lang));
             $abstractNode->appendChild($node = $doc->createElementNS($deployment->getJATSNamespace(), 'jats:p', htmlspecialchars(html_entity_decode(strip_tags($abstract), ENT_COMPAT, 'UTF-8'), ENT_COMPAT, 'UTF-8')));
             $journalArticleNode->appendChild($abstractNode);
         }
