@@ -2,7 +2,7 @@
 # Tigran Zargaryan <tigran@flib.sci.am>, 2022, 2023.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-04-07 12:48+0000\n"
+"PO-Revision-Date: 2023-07-28 05:58+0000\n"
 "Last-Translator: Tigran Zargaryan <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/hy/>\n"
@@ -145,7 +145,7 @@ msgid "plugins.importexport.crossref.settings.form.depositorEmail"
 msgstr "Ավանդադրողի էլ․ փոստը"
 
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Հետևյալ նյութերն են պահանջվում Crossref հաջող ավանդադրման համար:"
+msgstr "Crossref հաջողված ավանդադրման համար պահանջվում են հետևյալ նյութերը:"
 
 msgid "plugins.importexport.crossref.settings"
 msgstr "Crossref կարգաբերումներ"
