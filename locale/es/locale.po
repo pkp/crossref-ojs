@@ -1,12 +1,12 @@
-# Jordi LC <jordi.lacruz@uab.cat>, 2021.
+# Jordi LC <jordi.lacruz@uab.cat>, 2021, 2023.
 # Marc Bria <marc.bria@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-19T11:05:35+00:00\n"
-"PO-Revision-Date: 2023-04-27 09:49+0000\n"
-"Last-Translator: Marc Bria <marc.bria@gmail.com>\n"
+"PO-Revision-Date: 2023-07-25 11:58+0000\n"
+"Last-Translator: Jordi LC <jordi.lacruz@uab.cat>\n"
 "Language-Team: Spanish <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/es/>\n"
 "Language: es\n"
@@ -42,7 +42,9 @@ msgstr ""
 "(DOI), por lo tanto, el módulo no puede depositar o exportar nada."
 
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Para depositar en Crossref, se requieren los siguientes elementos."
+msgstr ""
+"Para depositar correctamente en Crossref son necesarios los elementos "
+"siguientes."
 
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Nombre del depositante"
@@ -106,7 +108,7 @@ msgid "plugins.importexport.crossref.status.registered"
 msgstr "Activos"
 
 msgid "plugins.importexport.crossref.status.markedRegistered"
-msgstr "Marcado activo"
+msgstr "Marcado como activo"
 
 msgid "plugins.importexport.crossref.statusLegend"
 msgstr ""
@@ -125,13 +127,13 @@ msgid "plugins.importexport.crossref.action.export"
 msgstr "Exportar"
 
 msgid "plugins.importexport.crossref.action.markRegistered"
-msgstr "Marcar activo"
+msgstr "Marcar como activo"
 
 msgid "plugins.importexport.crossref.action.register"
 msgstr "Depositar"
 
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "Tarea de registro automático en Crossref"
+msgstr "Tarea de registro automático de Crossref"
 
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""
@@ -147,12 +149,14 @@ msgid "plugins.importexport.crossref.export.error.articleNotFound"
 msgstr "No existe ningún artículo con el ID \"{$articleId}\"."
 
 msgid "plugins.importexport.crossref.register.error.mdsError"
-msgstr "Registro fallido. El servidor de registro de DOI devolvió un error."
+msgstr ""
+"El registro no fue del todo correcto. El servidor de registro de DOI ha dado "
+"un error."
 
 msgid "plugins.importexport.crossref.register.success.warning"
 msgstr ""
-"El registro se realizó correctamente, aunque han surgido las siguientes "
-"advertencias: '{$param}'."
+"El registro se realizó correctamente, pero se ha producido la siguiente "
+"advertencia: '{$param}'."
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Solo validar la exportación. No descargar el archivo."
