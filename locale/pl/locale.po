@@ -1,19 +1,20 @@
+# Dorota Siwecka <dorota.k.siwecka@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-30T17:56:46+00:00\n"
-"PO-Revision-Date: 2020-11-30 15:32+0000\n"
-"Last-Translator: rl <biuro@fimagis.pl>\n"
-"Language-Team: Polish <http://translate.pkp.sfu.ca/projects/ojs/"
-"importexport-crossref/pl_PL/>\n"
-"Language: pl_PL\n"
+"PO-Revision-Date: 2023-10-25 12:06+0000\n"
+"Last-Translator: Dorota Siwecka <dorota.k.siwecka@gmail.com>\n"
+"Language-Team: Polish <http://translate.pkp.sfu.ca/projects/plugins/crossref/"
+"pl/>\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 3.9.1\n"
+"X-Generator: Weblate 4.13.1\n"
 
 #,fuzzy
 msgid "plugins.importexport.crossref.description"
@@ -30,7 +31,10 @@ msgid "plugins.importexport.crossref.requirements.satisfied"
 msgstr "Wszystkie wymagania wtyczki zostały spełnione."
 
 msgid "plugins.importexport.crossref.error.publisherNotConfigured"
-msgstr "Organizacja wydająca czasopismo nie została skonfigurowana! Musisz uzupełnić brakujące elementy <a href=\"{$journalSettingsUrl}\" target=\"_blank\">na stronie konfiguracji czasopisma</a> w kroku 1.5."
+msgstr ""
+"Wydawca czasopisma nie został skonfigurowany! Musisz uzupełnić brakujące "
+"elementy <a href=\"{$journalSettingsUrl}\" target=\"_blank\">na stronie "
+"konfiguracji czasopisma</a> w kroku 1.5."
 
 #,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
@@ -154,3 +158,23 @@ msgstr "Rejestracja zakończona sukcesem, ale pojawiły się następujące ostrz
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Tylko potwierdzony eksport. Nie pobieraj tego pliku."
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Wtyczka Crossref Manager"
+
+msgid "plugins.generic.crossref.description"
+msgstr "Obsługuje deponowanie i eksportowanie metadanych Crossref"
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Ustawienia Crossref"
+
+msgid "plugins.importexport.crossref.settings.form.depositorName.description"
+msgstr ""
+"Nazwa organizacji rejestrującej DOI. Jest ona dołączana do zdeponowanych "
+"metadanych i używana do rejestrowania, kto zdeponował dane."
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail.description"
+msgstr ""
+"Adres e-mail osoby odpowiedzialnej za rejestrację treści w Crossref. Jest on "
+"dołączony do zdeponowanych metadanych i używany podczas wysyłania wiadomości "
+"e-mail z potwierdzeniem depozytu."
