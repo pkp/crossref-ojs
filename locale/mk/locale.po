@@ -2,7 +2,7 @@
 # Mirko Spiroski <mspiroski@id-press.eu>, 2023.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-12-12 08:38+0000\n"
+"PO-Revision-Date: 2023-12-20 07:39+0000\n"
 "Last-Translator: Mirko Spiroski <mspiroski@id-press.eu>\n"
 "Language-Team: Macedonian <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/mk/>\n"
@@ -90,7 +90,7 @@ msgid "plugins.importexport.crossref.requirements"
 msgstr "Побарувања"
 
 msgid "plugins.importexport.crossref.description"
-msgstr "Експортирај ги метаподатоците во Crossref XML формат."
+msgstr "Експортирај ги метаподатоците од трудот во Crossref XML формат."
 
 msgid "plugins.importexport.crossref.displayName"
 msgstr "Приклучок за експортирање на Crossref XML"
