@@ -24,6 +24,7 @@ use APP\plugins\IDoiRegistrationAgency;
 use APP\services\ContextService;
 use APP\submission\Submission;
 use Illuminate\Support\Collection;
+use PKP\config\Config;
 use PKP\context\Context;
 use PKP\doi\RegistrationAgencySettings;
 use PKP\plugins\GenericPlugin;
@@ -55,6 +56,11 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     {
         $success = parent::register($category, $path, $mainContextId);
         if ($success) {
+            // Crossref functionality is set to sandbox mode and will not run the features of plugin
+            if (!Config::getVar('sandbox', 'crossref', true)) {
+                return false;
+            }
+
             // If the system isn't installed, or is performing an upgrade, don't
             // register hooks. This will prevent DB access attempts before the
             // schema is installed.
