@@ -56,8 +56,8 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     {
         $success = parent::register($category, $path, $mainContextId);
         if ($success) {
-            // Crossref functionality is set to sandbox mode and will not run the features of plugin
-            if (!Config::getVar('sandbox', 'crossref', true)) {
+            // Application is set to sandbox mode and will not run the features of plugin
+            if (Config::getVar('general', 'sandbox', false)) {
                 return false;
             }
 
