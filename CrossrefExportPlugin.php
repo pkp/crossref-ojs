@@ -287,7 +287,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
         // Application is set to sandbox mode and will not run the features of plugin
         if (Config::getVar('general', 'sandbox', false)) {
             error_log('Application is set to sandbox mode and will not have any interaction with crossref external service');
-            return [__('common.sandbox')];
+            return false;
         }
 
         $status = null;
