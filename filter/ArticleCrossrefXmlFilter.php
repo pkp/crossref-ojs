@@ -196,8 +196,8 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         }
 
         // abstract
-        $abstracts = $publication->getData('abstract');
-        foreach($abstracts as $lang => $abstract) {            
+        $abstracts = $publication->getData('abstract') ?: [];
+        foreach($abstracts as $lang => $abstract) {
             $abstractNode = $doc->createElementNS($deployment->getJATSNamespace(), 'jats:abstract');
             $abstractNode->setAttributeNS($deployment->getXMLNamespace(), 'xml:lang', LocaleConversion::getIso1FromLocale($lang));
             $abstractNode->appendChild($node = $doc->createElementNS($deployment->getJATSNamespace(), 'jats:p', htmlspecialchars(html_entity_decode(strip_tags($abstract), ENT_COMPAT, 'UTF-8'), ENT_COMPAT, 'UTF-8')));
