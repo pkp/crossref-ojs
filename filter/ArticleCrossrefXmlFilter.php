@@ -250,7 +250,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
         // DOI data
         $dispatcher = $this->_getDispatcher($request);
-        $url = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'view', $submission->getBestId(), null, null, true);
+        $url = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'view', $publication->getData('urlPath') ?? $submission->getId(), null, null, true);
         $doiDataNode = $this->createDOIDataNode($doc, $publication->getDoi(), $url);
         // append galleys files and collection nodes to the DOI data node
         $galleys = $publication->getData('galleys');
@@ -323,6 +323,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $request = Application::get()->getRequest();
+        $publication = $submission->getCurrentPublication();
         $dispatcher = $this->_getDispatcher($request);
 
         if (empty($galleys)) {
@@ -331,7 +332,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             $doiDataNode->appendChild($crawlerBasedCollectionNode);
         }
         foreach ($galleys as $galley) {
-            $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', [$submission->getBestId(), $galley->getBestGalleyId()], null, null, true);
+            $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', [$publication->getData('urlPath') ?? $submission->getId(), $galley->getBestGalleyId()], null, null, true);
             // iParadigms crawler based collection element
             $crawlerBasedCollectionNode = $doc->createElementNS($deployment->getNamespace(), 'collection');
             $crawlerBasedCollectionNode->setAttribute('property', 'crawler-based');
@@ -357,12 +358,13 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $context = $deployment->getContext();
         $request = Application::get()->getRequest();
         $dispatcher = $this->_getDispatcher($request);
+        $publication = $submission->getCurrentPublication();
 
         // start of the text-mining collection element
         $textMiningCollectionNode = $doc->createElementNS($deployment->getNamespace(), 'collection');
         $textMiningCollectionNode->setAttribute('property', 'text-mining');
         foreach ($galleys as $galley) {
-            $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', [$submission->getBestId(), $galley->getBestGalleyId()], null, null, true); // text-mining collection item
+            $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', [$publication->getData('urlPath') ?? $submission->getId(), $galley->getBestGalleyId()], null, null, true); // text-mining collection item
             $textMiningItemNode = $doc->createElementNS($deployment->getNamespace(), 'item');
             $resourceNode = $doc->createElementNS($deployment->getNamespace(), 'resource', $resourceURL);
             if (!$galley->getRemoteURL()) {
@@ -388,6 +390,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $request = Application::get()->getRequest();
+        $publication = $submission->getCurrentPublication();
         $dispatcher = $this->_getDispatcher($request);
 
         // Create the base node
@@ -405,7 +408,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                 $componentNode->appendChild($titlesNode);
             }
             // DOI data node
-            $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', [$submission->getBestId(), $componentGalley->getBestGalleyId()], null, null, true);
+            $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', [$publication->getData('urlPath') ?? $submission->getId(), $componentGalley->getBestGalleyId()], null, null, true);
             $componentNode->appendChild($this->createDOIDataNode($doc, $componentGalley->getStoredPubId('doi'), $resourceURL));
             $componentListNode->appendChild($componentNode);
         }
