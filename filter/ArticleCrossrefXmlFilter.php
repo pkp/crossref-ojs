@@ -263,7 +263,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $genreDao = DAORegistry::getDAO('GenreDAO'); /** @var GenreDAO $genreDao */
         foreach ($galleys as $galley) {
             // filter supp files with DOI
-            if (!$galley->getRemoteURL()) {
+            if (!$galley->getData('urlRemote')) {
                 $galleyFile = $galley->getFile();
                 if ($galleyFile) {
                     $genre = $genreDao->getById($galleyFile->getGenreId());
@@ -367,7 +367,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', [$publication->getData('urlPath') ?? $submission->getId(), $galley->getBestGalleyId()], null, null, true); // text-mining collection item
             $textMiningItemNode = $doc->createElementNS($deployment->getNamespace(), 'item');
             $resourceNode = $doc->createElementNS($deployment->getNamespace(), 'resource', $resourceURL);
-            if (!$galley->getRemoteURL()) {
+            if (!$galley->getData('urlRemote')) {
                 $resourceNode->setAttribute('mime_type', $galley->getFileType());
             }
             $textMiningItemNode->appendChild($resourceNode);
