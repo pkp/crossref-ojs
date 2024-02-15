@@ -15,6 +15,7 @@
 namespace APP\plugins\generic\crossref;
 
 use APP\core\Application;
+use PKP\config\Config;
 use APP\facades\Repo;
 use APP\issue\Issue;
 use APP\journal\Journal;
@@ -116,6 +117,12 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
      */
     public function getStatusMessage($request)
     {
+        // Application is set to sandbox mode and will not run the features of plugin
+        if (Config::getVar('general', 'sandbox', false)) {
+            error_log('Application is set to sandbox mode and will not have any interaction with crossref external service');
+            return __('common.sandbox');
+        }
+        
         // if the failure occurred on request and the message was saved
         // return that message
         $articleId = $request->getUserVar('articleId');
@@ -277,6 +284,12 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
      */
     public function depositXML($objects, $context, $filename)
     {
+        // Application is set to sandbox mode and will not run the features of plugin
+        if (Config::getVar('general', 'sandbox', false)) {
+            error_log('Application is set to sandbox mode and will not have any interaction with crossref external service');
+            return false;
+        }
+
         $status = null;
         $msgSave = null;
 
