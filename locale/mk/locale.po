@@ -1,8 +1,8 @@
 # Teodora Fildishevska <t.fildishevska@gmail.com>, 2023.
-# Mirko Spiroski <mspiroski@id-press.eu>, 2023.
+# Mirko Spiroski <mspiroski@id-press.eu>, 2023, 2024.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-03-16 10:48+0000\n"
+"PO-Revision-Date: 2024-01-16 07:39+0000\n"
 "Last-Translator: Mirko Spiroski <mspiroski@id-press.eu>\n"
 "Language-Team: Macedonian <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/mk/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==1 || n%10==1 ? 0 : 1;\n"
-"X-Generator: Weblate 4.13.1\n"
+"X-Generator: Weblate 4.18.2\n"
 
 #,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
@@ -89,9 +89,8 @@ msgstr "Сите побарувања за плагинот се извршен�
 msgid "plugins.importexport.crossref.requirements"
 msgstr "Побарувања"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.description"
-msgstr "Експортирај ги метаподатоците на трудот во Crossref XML формат."
+msgstr "Експортирај ги метаподатоците од трудот во Crossref XML формат."
 
 msgid "plugins.importexport.crossref.displayName"
 msgstr "Приклучок за експортирање на Crossref XML"
@@ -165,7 +164,7 @@ msgstr "Неуспешно"
 msgid "plugins.importexport.crossref.issues.description"
 msgstr ""
 "Забелешка: За експорт/регистрација овде ќе се земат предвид само изданија (а "
-"не нивните претходно печатени материјали)."
+"не нивните препринти)."
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Валидира само експортирање. Не го симнувај фајлот."

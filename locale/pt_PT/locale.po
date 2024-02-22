@@ -1,11 +1,11 @@
 # Carla Marques <carla.marques@usdb.uminho.pt>, 2022, 2023.
-# José Carvalho <jcarvalho@keep.pt>, 2023.
+# José Carvalho <jcarvalho@keep.pt>, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-19T11:05:36+00:00\n"
-"PO-Revision-Date: 2023-06-21 08:49+0000\n"
+"PO-Revision-Date: 2024-01-30 16:39+0000\n"
 "Last-Translator: José Carvalho <jcarvalho@keep.pt>\n"
 "Language-Team: Portuguese (Portugal) <http://translate.pkp.sfu.ca/projects/"
 "plugins/crossref/pt_PT/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.13.1\n"
+"X-Generator: Weblate 4.18.2\n"
 
 msgid "plugins.importexport.crossref.displayName"
 msgstr "Plugin de Exportação Crossref XML"
@@ -53,7 +53,7 @@ msgid "plugins.importexport.crossref.settings.form.depositorNameRequired"
 msgstr "Insira o nome do depositante."
 
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
-msgstr "Insira o e-mail do depositante."
+msgstr "Insira o nome do depositante."
 
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
 msgstr "Insira o nome de utilizador que recebeu da Crossref."
