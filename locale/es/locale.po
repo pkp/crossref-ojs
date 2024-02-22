@@ -1,11 +1,11 @@
-# Jordi LC <jordi.lacruz@uab.cat>, 2021, 2023.
+# Jordi LC <jordi.lacruz@uab.cat>, 2021, 2023, 2024.
 # Marc Bria <marc.bria@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-19T11:05:35+00:00\n"
-"PO-Revision-Date: 2023-07-25 11:58+0000\n"
+"PO-Revision-Date: 2024-02-16 12:39+0000\n"
 "Last-Translator: Jordi LC <jordi.lacruz@uab.cat>\n"
 "Language-Team: Spanish <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/es/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.13.1\n"
+"X-Generator: Weblate 4.18.2\n"
 
 #,fuzzy
 msgid "plugins.importexport.crossref.displayName"
@@ -99,7 +99,9 @@ msgid "plugins.importexport.crossref.settings.form.testMode.description"
 msgstr "Usar la API de pruebas de Crossref (entorno de testeo) para depositar los DOIs. No olvide desactivar esta opción cuando pase a producción."
 
 msgid "plugins.importexport.crossref.issues.description"
-msgstr "Nota: Solo los números (y no sus artículos) se toman en consideración para la exportación/registro."
+msgstr ""
+"Nota: Solo los números (y no sus artículos) se tomarán en consideración para "
+"la exportación/registro."
 
 msgid "plugins.importexport.crossref.status.failed"
 msgstr "Fallos"
@@ -179,7 +181,7 @@ msgstr ""
 msgid "plugins.importexport.crossref.settings.form.username.description"
 msgstr ""
 "El nombre de usuario/a de Crossref que se usará para autenticar sus "
-"depósitos. Si usa una cuenta personal, consulte el consejo anterior."
+"depósitos. Si utiliza una cuenta personal, consulte el aviso anterior."
 
 msgid "plugins.importexport.crossref.status.notDeposited"
 msgstr "No depositado"
