@@ -121,7 +121,8 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $languageCounter = 1;
         foreach ($titleLanguages as $lang) {
             $titlesNode = $doc->createElementNS($deployment->getNamespace(), 'titles');
-            $titlesNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'title', $publication->getLocalizedTitle($lang, 'html')));
+            $titlesNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'title'));
+            $node->appendChild($doc->createTextNode($publication->getLocalizedTitle($lang, 'html')));
             if ($subtitle = $publication->getLocalizedSubTitle($lang, 'html')) {
                 $titlesNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'subtitle', $subtitle));
             }
@@ -134,8 +135,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
         // contributors
         $authors = $publication->getData('authors');
-
-        if (!empty($authors)) {
+        if ($authors->count() != 0) {
             $contributorsNode = $doc->createElementNS($deployment->getNamespace(), 'contributors');
 
             $isFirst = true;
