@@ -124,7 +124,8 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             $titlesNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'title'));
             $node->appendChild($doc->createTextNode($publication->getLocalizedTitle($lang, 'html')));
             if ($subtitle = $publication->getLocalizedSubTitle($lang, 'html')) {
-                $titlesNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'subtitle', $subtitle));
+                $titlesNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'subtitle'));
+                $node->appendChild($doc->createTextNode($subtitle));
             }
             $journalArticleNode->appendChild($titlesNode);
             $languageCounter++;
