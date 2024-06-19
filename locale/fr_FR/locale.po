@@ -1,15 +1,16 @@
+# Germán Huélamo Bautista <germanhuelamo@gmail.com>, 2024.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-02-01 05:31+0000\n"
-"Last-Translator: Paul Heckler <paul.d.heckler@gmail.com>\n"
-"Language-Team: French <http://translate.pkp.sfu.ca/projects/ojs/"
-"importexport-crossref/fr_FR/>\n"
+"PO-Revision-Date: 2024-04-26 12:23+0000\n"
+"Last-Translator: Germán Huélamo Bautista <germanhuelamo@gmail.com>\n"
+"Language-Team: French <http://translate.pkp.sfu.ca/projects/plugins/crossref/"
+"fr_FR/>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.9.1\n"
+"X-Generator: Weblate 4.18.2\n"
 
 msgid "plugins.importexport.crossref.export.error.articleNotFound"
 msgstr ""
@@ -150,7 +151,7 @@ msgstr ""
 msgid "plugins.importexport.crossref.error.publisherNotConfigured"
 msgstr ""
 "Un éditeur n'a pas été configuré ! Vous devez ajouter une institution "
-"éditrice sur la page  des <a href=\"{$journalSettingsUrl}\" target=\"_blank\""
+"éditrice sur la page des <a href=\"{$journalSettingsUrl}\" target=\"_blank\""
 ">paramètres de la revue</a>."
 
 msgid "plugins.importexport.crossref.requirements.satisfied"
@@ -169,3 +170,41 @@ msgstr "Module d'exportation Crossref XML"
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Valider uniquement l'exportation. Ne pas télécharger le fichier."
+
+msgid "plugins.generic.crossref.successMessage"
+msgstr ""
+"Les métadonnées de ce document ont été déposées auprès de Crossref. Pour "
+"plus de détails, consultez la soumission dans le <a href=\"https://doi."
+"crossref.org/servlet/submissionAdmin?sf=detail&submissionID={$submissionId}\""
+">panneau d'administration de Crossref</a>."
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "Non déposé"
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Module de gestion de Crossref"
+
+msgid "plugins.generic.crossref.description"
+msgstr "Gère le dépôt et l'exportation des métadonnées de Crossref"
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Paramètres de Crossref"
+
+msgid "plugins.importexport.crossref.settings.form.depositorName.description"
+msgstr ""
+"Nom de l'organisation qui enregistre les DOI. Il est inclus dans les "
+"métadonnées du dépôt et utilisé pour enregistrer l'auteur du dépôt."
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail.description"
+msgstr ""
+"Adresse électronique de la personne responsable de l'enregistrement du "
+"contenu auprès de Crossref. Elle est incluse dans les métadonnées déposées "
+"et utilisée pour l'envoi du courrier électronique de confirmation du dépôt."
+
+msgid "plugins.importexport.crossref.settings.form.username.description"
+msgstr ""
+"Le nom d'utilisateur Crossref qui sera utilisé pour authentifier vos dépôts. "
+"Si vous utilisez un compte personnel, veuillez consulter l'avis ci-dessus."
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
