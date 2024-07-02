@@ -111,7 +111,7 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
             $context->getPath(),
             'management',
             'settings',
-            'context'
+            ['context']
         );
 
         $notices = [];
