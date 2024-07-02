@@ -252,7 +252,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
         // DOI data
         $dispatcher = $this->_getDispatcher($request);
-        $url = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'view', $publication->getData('urlPath') ?? $submission->getId(), null, null, true, '');
+        $url = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'view', [$publication->getData('urlPath') ?? $submission->getId()], null, null, true, '');
         $doiDataNode = $this->createDOIDataNode($doc, $publication->getDoi(), $url);
         // append galleys files and collection nodes to the DOI data node
         $galleys = $publication->getData('galleys');
