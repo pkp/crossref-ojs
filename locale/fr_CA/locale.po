@@ -1,12 +1,12 @@
 # Marie-Hélène Vézina [UdeMontréal] <marie-helene.vezina@umontreal.ca>, 2023.
+# Pierre Lasou <pierre.lasou@bibl.ulaval.ca>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-30T06:56:43-07:00\n"
-"PO-Revision-Date: 2023-04-24 10:30+0000\n"
-"Last-Translator: Marie-Hélène Vézina [UdeMontréal] <marie-helene."
-"vezina@umontreal.ca>\n"
+"PO-Revision-Date: 2024-08-21 17:40+0000\n"
+"Last-Translator: Pierre Lasou <pierre.lasou@bibl.ulaval.ca>\n"
 "Language-Team: French (Canada) <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/fr_CA/>\n"
 "Language: fr_CA\n"
@@ -14,11 +14,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.13.1\n"
+"X-Generator: Weblate 4.18.2\n"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
-msgstr "Plugiciel d'exportation Crossref XML"
+msgstr "Plugiciel d'exportation en format XML Crossref"
 
 #,fuzzy
 msgid "plugins.importexport.crossref.description"
@@ -36,11 +35,11 @@ msgid "plugins.importexport.crossref.requirements"
 msgstr "Exigences"
 
 msgid "plugins.importexport.crossref.requirements.satisfied"
-msgstr "Toutes les exigences du plugiciel sont satisfaites."
+msgstr "Toutes les exigences du plugiciels sont remplies."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr "Les éléments suivants sont requis pour un dépôt Crossref réussi."
+msgstr ""
+"Les éléments suivants sont requis afin de réaliser le dépôt dans Crossref."
 
 msgid "plugins.importexport.crossref.settings.form.depositorName"
 msgstr "Nom du déposant"
@@ -49,13 +48,13 @@ msgid "plugins.importexport.crossref.settings.form.depositorEmail"
 msgstr "Courriel du déposant"
 
 msgid "plugins.importexport.crossref.settings.form.depositorNameRequired"
-msgstr "Veuillez inscrire le nom du déposant."
+msgstr "S'il vous plaît, fournissez le nom du déposant."
 
 msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
-msgstr "Veuillez inscrire le courriel du déposant."
+msgstr "S'il vous plaît, fournissez le courriel du déposant."
 
 msgid "plugins.importexport.crossref.settings.form.username"
-msgstr "Nom d'utilisateur-trice"
+msgstr "Nom d'utilisateur"
 
 #,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
@@ -187,14 +186,14 @@ msgstr "Valider uniquement l'exportation. Ne pas télécharger le fichier."
 
 msgid "plugins.importexport.crossref.settings.form.depositorName.description"
 msgstr ""
-"Nom de l'organisation enregistrant les DOI. Ce nom est inclus avec les "
-"métadonnées déposées et utilisé pour enregistrer qui a soumis le dépôt."
+"Nom de l'organisation qui enregistre les DOI. Il est ajouté dans les dépôts "
+"de métadonnées et utilisé pour identifier qui a soumis le dépôt."
 
 msgid "plugins.importexport.crossref.settings.form.depositorEmail.description"
 msgstr ""
-"Courriel de la personne responsable de l'enregistrement du contenu auprès de "
-"Crossref. Ce courriel est inclus avec les métadonnées déposées et utilisé "
-"lors de l'envoi de courriel de confirmation de dépôt."
+"Adresse courriel de la personne responsable de l'enregistrement du contenu "
+"avec Crossref. Elle est incluse dans les dépôts de métadonnées et utilisée "
+"lors de l'envoi des confirmations de dépôt."
 
 msgid "plugins.importexport.crossref.settings.form.username.description"
 msgstr ""
@@ -219,7 +218,7 @@ msgid "plugins.generic.crossref.displayName"
 msgstr "Plugiciel de gestion de Crossref"
 
 msgid "plugins.importexport.crossref.settings"
-msgstr "Paramètres de Crossref"
+msgstr "Configurations Crossref"
 
 msgid "plugins.generic.crossref.registrationAgency.name"
 msgstr "Crossref"
