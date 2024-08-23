@@ -1,19 +1,20 @@
 # Huw Robert Grange <huw.r.grange@uit.no>, 2023.
+# Johanna Skaug <johanna.skaug@ub.uio.no>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-19T11:05:36+00:00\n"
-"PO-Revision-Date: 2023-01-25 14:02+0000\n"
-"Last-Translator: Huw Robert Grange <huw.r.grange@uit.no>\n"
+"PO-Revision-Date: 2024-06-26 11:40+0000\n"
+"Last-Translator: Johanna Skaug <johanna.skaug@ub.uio.no>\n"
 "Language-Team: Norwegian Bokmål <http://translate.pkp.sfu.ca/projects/"
 "plugins/crossref/nb_NO/>\n"
-"Language: nb_NO\n"
+"Language: nb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.13.1\n"
+"X-Generator: Weblate 4.18.2\n"
 
 #,fuzzy
 msgid "plugins.importexport.crossref.displayName"
@@ -149,8 +150,7 @@ msgstr "Opplasters navn"
 
 #,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
-msgstr ""
-"Det følgende elementet er nødvendig for en vellykket Crossref-opplasting."
+msgstr "Følgende er nødvendig for en vellykket Crossref-deponering."
 
 msgid "plugins.importexport.crossref.error.publisherNotConfigured"
 msgstr ""
@@ -166,3 +166,47 @@ msgstr "Krav"
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
 msgstr "Bare validér eksporten. Ikke last ned filen."
+
+#, fuzzy
+msgid "plugins.importexport.crossref.settings.form.depositorEmail.description"
+msgstr ""
+"E-postadressen til den personen som er ansvarlig for å registrere innhold "
+"hos Crossref. Den inngår i de innsendte metadataene og brukes når man sender "
+"e-postbekreftelsen på deponeringen."
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "Ikke deponert"
+
+#, fuzzy
+msgid "plugins.generic.crossref.successMessage"
+msgstr ""
+"Metadata for dette elementet har blitt deponert hos Crossref. For å se "
+"nærmere detaljer, se innsendingen i <a href=\"https://doi.crossref.org/"
+"servlet/submissionAdmin?sf=detail&submissionID={$submissionId}\">Crossrefs "
+"adminpanel</a>."
+
+#, fuzzy
+msgid "plugins.generic.crossref.description"
+msgstr "Håndterer deponering og eksportering av Crossref metadata"
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Crossref Manager Plugin"
+
+#, fuzzy
+msgid "plugins.importexport.crossref.settings"
+msgstr "Crossref innstillinger"
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
+
+#, fuzzy
+msgid "plugins.importexport.crossref.settings.form.depositorName.description"
+msgstr ""
+"Navn på organisasjonen som registrerer DOI-ene. Det inngår i deponerte "
+"metadata og brukes til å registrere hvem som utførte deponeringen."
+
+#, fuzzy
+msgid "plugins.importexport.crossref.settings.form.username.description"
+msgstr ""
+"Crossref-brukernavnet som vil bli brukt for å autentisere dine deponeringer. "
+"Hvis du bruker en personlig konto, vennligst les rådene over."
