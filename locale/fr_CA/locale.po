@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-30T06:56:43-07:00\n"
-"PO-Revision-Date: 2024-08-21 17:40+0000\n"
+"PO-Revision-Date: 2024-09-07 04:24+0000\n"
 "Last-Translator: Pierre Lasou <pierre.lasou@bibl.ulaval.ca>\n"
 "Language-Team: French (Canada) <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/fr_CA/>\n"
@@ -56,10 +56,9 @@ msgstr "S'il vous plaît, fournissez le courriel du déposant."
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Nom d'utilisateur"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
 msgstr ""
-"Veuillez entrer le nom d'utilisateur-trice que vous avez obtenu auprès de "
+"S'il vous plait, inscrivez le nom d'utilisateur qui vous a été fourni par "
 "Crossref."
 
 #,fuzzy
@@ -158,14 +157,15 @@ msgstr "Un DOI n'a pas pu être enregistré. Pour voir les dépôts ayant échou
 
 msgid "plugins.importexport.crossref.register.error.mdsError"
 msgstr ""
-"L'enregistrement a échoué ! Le serveur d'enregistrement de DOIs a retourné "
-"une erreur."
+"L'enregistrement n'a pas été effectué. Le serveur d'enregistrement de DOI a "
+"renvoyé une erreur."
 
 msgid "plugins.importexport.crossref.register.success"
 msgstr "Soumission réussie!"
 
 msgid "plugins.importexport.crossref.export.error.issueNotFound"
-msgstr "Aucun numéro ne correspond au ID de numéro spécifié, « {$issueId} »."
+msgstr ""
+"Aucun numéro ne correspond à l'identifiant de numéro spécifié \"{$issueId}\"."
 
 msgid "plugins.importexport.crossref.export.error.articleNotFound"
 msgstr ""
@@ -173,8 +173,8 @@ msgstr ""
 
 msgid "plugins.importexport.crossref.register.success.warning"
 msgstr ""
-"L'enregistrement a réussi, mais l'avertissement suivant a été émis : "
-"'{$param}'."
+"L'enregistrement a bien été effectué, mais l'avertissement suivant s'est "
+"produit: '{$param}'."
 
 msgid "plugins.importexport.crossref.settings.form.validation"
 msgstr ""
