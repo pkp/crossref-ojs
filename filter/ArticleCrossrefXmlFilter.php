@@ -160,7 +160,10 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                     $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($familyNames[$locale]), ENT_COMPAT, 'UTF-8')));
 
                     if ($author->getData('orcid')) {
-                        $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'ORCID', $author->getData('orcid')));
+                        $orcidNode = $doc->createElementNS($deployment->getNamespace(), 'ORCID', $author->getData('orcid'));
+                        $orcidAuthenticated = $author->getData('orcidAccessToken') ? 'true' : 'false';
+                        $orcidNode->setAttribute('authenticated', $orcidAuthenticated);
+                        $personNameNode->appendChild($orcidNode);
                     }
 
                     $hasAltName = false;
