@@ -281,6 +281,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
      *
      * @see PubObjectsExportPlugin::depositXML()
      *
+     * @hook crossrefexportplugin::deposited [[$this, $response->getBody(), $objects]]
      */
     public function depositXML($objects, $context, $filename)
     {
