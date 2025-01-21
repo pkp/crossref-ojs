@@ -161,7 +161,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
                     if ($author->getData('orcid')) {
                         $orcidNode = $doc->createElementNS($deployment->getNamespace(), 'ORCID', $author->getData('orcid'));
-                        $orcidAuthenticated = $author->getData('orcidAccessToken') ? 'true' : 'false';
+                        $orcidAuthenticated = $author->getData('orcidIsVerified') ? 'true' : 'false';
                         $orcidNode->setAttribute('authenticated', $orcidAuthenticated);
                         $personNameNode->appendChild($orcidNode);
                     }
