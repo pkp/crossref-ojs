@@ -14,6 +14,7 @@
  */
 
 namespace APP\plugins\generic\crossref;
+
 use APP\issue\Issue;
 use APP\journal\Journal;
 use PKP\plugins\Plugin;
