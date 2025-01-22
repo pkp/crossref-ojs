@@ -25,6 +25,7 @@ use DOMDocument;
 use DOMElement;
 use PKP\core\PKPApplication;
 use PKP\db\DAORegistry;
+use PKP\filter\FilterGroup;
 use PKP\submission\GenreDAO;
 
 class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
@@ -32,7 +33,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Constructor
      *
-     * @param \PKP\filter\FilterGroup $filterGroup
+     * @param FilterGroup $filterGroup
      */
     public function __construct($filterGroup)
     {
@@ -65,7 +66,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
      */
     public function createJournalIssueNode($doc, $submission)
     {
-        /** @var CrossrefExportDeployment */
+        /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $cache = $deployment->getCache();
@@ -80,21 +81,20 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                 $cache->add($issue, null);
             }
         }
-        $journalIssueNode = parent::createJournalIssueNode($doc, $issue);
-        return $journalIssueNode;
+        return parent::createJournalIssueNode($doc, $issue);
     }
 
     /**
      * Create and return the journal article node 'journal_article'.
      *
-     * @param \DOMDocument $doc
-     * @param \APP\submission\Submission $submission
+     * @param DOMDocument $doc
+     * @param Submission $submission
      *
-     * @return \DOMElement
+     * @return DOMElement
      */
     public function createJournalArticleNode($doc, $submission)
     {
-        /** @var CrossrefExportDeployment */
+        /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $request = Application::get()->getRequest();
@@ -159,13 +159,6 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                     $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'given_name', htmlspecialchars(ucfirst($givenNames[$locale]), ENT_COMPAT, 'UTF-8')));
                     $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($familyNames[$locale]), ENT_COMPAT, 'UTF-8')));
 
-                    if ($author->getData('orcid')) {
-                        $orcidNode = $doc->createElementNS($deployment->getNamespace(), 'ORCID', $author->getData('orcid'));
-                        $orcidAuthenticated = $author->getData('orcidIsVerified') ? 'true' : 'false';
-                        $orcidNode->setAttribute('authenticated', $orcidAuthenticated);
-                        $personNameNode->appendChild($orcidNode);
-                    }
-
                     $hasAltName = false;
                     foreach ($familyNames as $otherLocal => $familyName) {
                         if ($otherLocal != $locale && isset($familyName) && !empty($familyName)) {
@@ -188,9 +181,13 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                     }
                 } else {
                     $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($givenNames[$locale]), ENT_COMPAT, 'UTF-8')));
-                    if ($author->getData('orcid')) {
-                        $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'ORCID', $author->getData('orcid')));
-                    }
+                }
+
+                if ($author->getData('orcid')) {
+                    $orcidNode = $doc->createElementNS($deployment->getNamespace(), 'ORCID', $author->getData('orcid'));
+                    $orcidAuthenticated = $author->getData('orcidIsVerified') ? 'true' : 'false';
+                    $orcidNode->setAttribute('authenticated', $orcidAuthenticated);
+                    $personNameNode->appendChild($orcidNode);
                 }
 
                 $contributorsNode->appendChild($personNameNode);
@@ -317,9 +314,9 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Append the collection node 'collection property="crawler-based"' to the doi data node.
      *
-     * @param \DOMDocument $doc
-     * @param \DOMElement $doiDataNode
-     * @param \APP\submission\Submission $submission
+     * @param DOMDocument $doc
+     * @param DOMElement $doiDataNode
+     * @param Submission $submission
      * @param array $galleys of \PKP\galley\Galley objects
      */
     public function appendAsCrawledCollectionNodes($doc, $doiDataNode, $submission, $galleys)
@@ -351,9 +348,9 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Append the collection node 'collection property="text-mining"' to the doi data node.
      *
-     * @param \DOMDocument $doc
-     * @param \DOMElement $doiDataNode
-     * @param \APP\submission\Submission $submission
+     * @param DOMDocument $doc
+     * @param DOMElement $doiDataNode
+     * @param Submission $submission
      * @param array $galleys of \PKP\galley\Galley objects
      */
     public function appendTextMiningCollectionNodes($doc, $doiDataNode, $submission, $galleys)
@@ -383,11 +380,11 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Create and return component list node 'component_list'.
      *
-     * @param \DOMDocument $doc
-     * @param \APP\submission\Submission $submission
+     * @param DOMDocument $doc
+     * @param Submission $submission
      * @param array $componentGalleys
      *
-     * @return \DOMElement
+     * @return DOMElement
      */
     public function createComponentListNode($doc, $submission, $componentGalleys)
     {
