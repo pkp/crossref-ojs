@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/crossref/filter/ArticleCrossrefXmlFilter.php
  *
- * Copyright (c) 2014-2021 Simon Fraser University
- * Copyright (c) 2000-2021 John Willinsky
+ * Copyright (c) 2014-2025 Simon Fraser University
+ * Copyright (c) 2000-2025 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class ArticleCrossrefXmlFilter
@@ -158,7 +158,36 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                     $personNameNode->setAttribute('language', \Locale::getPrimaryLanguage($locale));
                     $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'given_name', htmlspecialchars(ucfirst($givenNames[$locale]), ENT_COMPAT, 'UTF-8')));
                     $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($familyNames[$locale]), ENT_COMPAT, 'UTF-8')));
+                } else {
+                    $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($givenNames[$locale]), ENT_COMPAT, 'UTF-8')));
+                }
 
+                $affiliations = $author->getAffiliations();
+                if (count($affiliations) > 0) {
+                    $affiliationsNode = $doc->createElementNS($deployment->getNamespace(), 'affiliations');
+                    foreach ($affiliations as $affiliation) {
+                        $institutionNode = $doc->createElementNS($deployment->getNamespace(), 'institution');
+                        $institutionNameNode = $doc->createElementNS($deployment->getNamespace(), 'institution_name', htmlspecialchars($affiliation->getLocalizedName($locale), ENT_COMPAT, 'UTF-8'));
+                        $institutionNode->appendChild($institutionNameNode);
+                        $rorId = $affiliation->getRor();
+                        if ($rorId) {
+                            $institutionIdNode = $doc->createElementNS($deployment->getNamespace(), 'institution_id', $rorId);
+                            $institutionIdNode->setAttribute('type', 'ror');
+                            $institutionNode->appendChild($institutionIdNode);
+                        }
+                        $affiliationsNode->appendChild($institutionNode);
+                    }
+                    $personNameNode->appendChild($affiliationsNode);
+                }
+
+                if ($author->getData('orcid')) {
+                    $orcidNode = $doc->createElementNS($deployment->getNamespace(), 'ORCID', $author->getData('orcid'));
+                    $orcidAuthenticated = $author->getData('orcidIsVerified') ? 'true' : 'false';
+                    $orcidNode->setAttribute('authenticated', $orcidAuthenticated);
+                    $personNameNode->appendChild($affiliationsNode);
+                }
+
+                if (!empty($familyNames[$locale]) && !empty($givenNames[$locale])) {
                     $hasAltName = false;
                     foreach ($familyNames as $otherLocal => $familyName) {
                         if ($otherLocal != $locale && isset($familyName) && !empty($familyName)) {
@@ -179,15 +208,6 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                             $altNameNode->appendChild($nameNode);
                         }
                     }
-                } else {
-                    $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($givenNames[$locale]), ENT_COMPAT, 'UTF-8')));
-                }
-
-                if ($author->getData('orcid')) {
-                    $orcidNode = $doc->createElementNS($deployment->getNamespace(), 'ORCID', $author->getData('orcid'));
-                    $orcidAuthenticated = $author->getData('orcidIsVerified') ? 'true' : 'false';
-                    $orcidNode->setAttribute('authenticated', $orcidAuthenticated);
-                    $personNameNode->appendChild($orcidNode);
                 }
 
                 $contributorsNode->appendChild($personNameNode);
