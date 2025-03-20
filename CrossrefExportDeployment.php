@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/crossref/CrossrefExportDeployment.php
  *
- * Copyright (c) 2014-2022 Simon Fraser University
- * Copyright (c) 2000-2022 John Willinsky
+ * Copyright (c) 2014-2025 Simon Fraser University
+ * Copyright (c) 2000-2025 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefExportDeployment
@@ -17,15 +17,16 @@ namespace APP\plugins\generic\crossref;
 
 use APP\issue\Issue;
 use APP\journal\Journal;
+use PKP\context\Context;
 use PKP\plugins\Plugin;
 
 class CrossrefExportDeployment
 {
     // XML attributes
-    public const CROSSREF_XMLNS = 'http://www.crossref.org/schema/5.3.1';
+    public const CROSSREF_XMLNS = 'http://www.crossref.org/schema/5.4.0';
     public const CROSSREF_XMLNS_XSI = 'http://www.w3.org/2001/XMLSchema-instance';
-    public const CROSSREF_XSI_SCHEMAVERSION = '5.3.1';
-    public const CROSSREF_XSI_SCHEMALOCATION = 'https://www.crossref.org/schemas/crossref5.3.1.xsd';
+    public const CROSSREF_XSI_SCHEMAVERSION = '5.4.0';
+    public const CROSSREF_XSI_SCHEMALOCATION = 'https://www.crossref.org/schemas/crossref5.4.0.xsd';
     public const CROSSREF_XMLNS_JATS = 'http://www.ncbi.nlm.nih.gov/JATS1';
     public const CROSSREF_XMLNS_AI = 'http://www.crossref.org/AccessIndicators.xsd';
     public const CROSSREF_XMLNS_XML = 'http://www.w3.org/XML/1998/namespace';
@@ -47,8 +48,8 @@ class CrossrefExportDeployment
     /**
      * Constructor
      *
-     * @param \PKP\context\Context $context
-     * @param \PKP\plugins\Plugin $plugin
+     * @param Context $context
+     * @param Plugin $plugin
      */
     public function __construct($context, $plugin)
     {
@@ -155,7 +156,7 @@ class CrossrefExportDeployment
     /**
      * Set the import/export context.
      *
-     * @param \PKP\context\Context $context
+     * @param Context $context
      */
     public function setContext($context)
     {
@@ -165,7 +166,7 @@ class CrossrefExportDeployment
     /**
      * Get the import/export context.
      *
-     * @return \PKP\context\Context
+     * @return Context
      */
     public function getContext()
     {
@@ -175,7 +176,7 @@ class CrossrefExportDeployment
     /**
      * Set the import/export plugin.
      *
-     * @param \PKP\plugins\Plugin $plugin
+     * @param Plugin $plugin
      */
     public function setPlugin($plugin)
     {
@@ -185,7 +186,7 @@ class CrossrefExportDeployment
     /**
      * Get the import/export plugin.
      *
-     * @return \PKP\plugins\Plugin
+     * @return Plugin
      */
     public function getPlugin()
     {
@@ -195,7 +196,7 @@ class CrossrefExportDeployment
     /**
      * Set the import/export issue.
      *
-     * @param \APP\issue\Issue $issue
+     * @param Issue $issue
      */
     public function setIssue($issue)
     {
@@ -205,7 +206,7 @@ class CrossrefExportDeployment
     /**
      * Get the import/export issue.
      *
-     * @return \APP\issue\Issue
+     * @return Issue
      */
     public function getIssue()
     {

@@ -270,6 +270,13 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             $journalArticleNode->appendChild($licenseNode);
         }
 
+        // version info
+        if ($publication->getData('version')) {
+            $versionInfoNode = $doc->createElementNS($deployment->getNamespace(), 'version_info');
+            $versionInfoNode->appendChild($doc->createElementNS($deployment->getNamespace(), 'version', htmlspecialchars($publication->getData('version'), ENT_COMPAT, 'UTF-8')));
+            $journalArticleNode->appendChild($versionInfoNode);
+        }
+
         // DOI data
         $dispatcher = $this->_getDispatcher($request);
         $url = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'view', [$publication->getData('urlPath') ?? $submission->getId()], null, null, true, '');
