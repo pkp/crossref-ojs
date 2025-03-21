@@ -185,7 +185,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                     $orcidNode = $doc->createElementNS($deployment->getNamespace(), 'ORCID', $author->getData('orcid'));
                     $orcidAuthenticated = $author->getData('orcidIsVerified') ? 'true' : 'false';
                     $orcidNode->setAttribute('authenticated', $orcidAuthenticated);
-                    $personNameNode->appendChild($affiliationsNode);
+                    $personNameNode->appendChild($orcidNode);
                 }
 
                 if (!empty($familyNames[$locale]) && !empty($givenNames[$locale])) {
@@ -268,6 +268,13 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             $licenseNode->setAttribute('name', 'AccessIndicators');
             $licenseNode->appendChild($node = $doc->createElementNS($deployment->getAINamespace(), 'ai:license_ref', htmlspecialchars($publication->getData('licenseUrl'), ENT_COMPAT, 'UTF-8')));
             $journalArticleNode->appendChild($licenseNode);
+        }
+
+        // version info
+        if ($publication->getData('version')) {
+            $versionInfoNode = $doc->createElementNS($deployment->getNamespace(), 'version_info');
+            $versionInfoNode->appendChild($doc->createElementNS($deployment->getNamespace(), 'version', htmlspecialchars($publication->getData('version'), ENT_COMPAT, 'UTF-8')));
+            $journalArticleNode->appendChild($versionInfoNode);
         }
 
         // DOI data
