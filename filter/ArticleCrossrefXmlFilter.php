@@ -382,18 +382,39 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $dispatcher = $this->_getDispatcher($request);
         $publication = $submission->getCurrentPublication();
 
+        // check if all the galleys are audio files
+        $hasNonAudioGalleys = false;
+        foreach ($galleys as $galley) {
+            if (!$galley->getData('urlRemote') && strpos($galley->getFileType(), 'audio') === false) {
+                $hasNonAudioGalleys = true;
+                break;
+            }
+        }
+
+        // if there are no non-audio galleys, do not add the text-mining collection node
+        if (!$hasNonAudioGalleys) {
+            return;
+        }
+
         // start of the text-mining collection element
         $textMiningCollectionNode = $doc->createElementNS($deployment->getNamespace(), 'collection');
         $textMiningCollectionNode->setAttribute('property', 'text-mining');
         foreach ($galleys as $galley) {
             $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', [$publication->getData('urlPath') ?? $submission->getId(), $galley->getBestGalleyId()], null, null, true, ''); // text-mining collection item
-            $textMiningItemNode = $doc->createElementNS($deployment->getNamespace(), 'item');
-            $resourceNode = $doc->createElementNS($deployment->getNamespace(), 'resource', $resourceURL);
-            if (!$galley->getData('urlRemote')) {
-                $resourceNode->setAttribute('mime_type', $galley->getFileType());
+
+
+            // add only non-audio galleys to text-mining
+            if (strpos($galley->getFileType(), 'audio') === false) {
+                $textMiningItemNode = $doc->createElementNS($deployment->getNamespace(), 'item');
+                $resourceNode = $doc->createElementNS($deployment->getNamespace(), 'resource', $resourceURL);
+
+                if (!$galley->getData('urlRemote')) {
+                    $resourceNode->setAttribute('mime_type', $galley->getFileType());
+                }
+
+                $textMiningItemNode->appendChild($resourceNode);
+                $textMiningCollectionNode->appendChild($textMiningItemNode);
             }
-            $textMiningItemNode->appendChild($resourceNode);
-            $textMiningCollectionNode->appendChild($textMiningItemNode);
         }
         $doiDataNode->appendChild($textMiningCollectionNode);
     }
