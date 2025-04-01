@@ -382,17 +382,18 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $dispatcher = $this->_getDispatcher($request);
         $publication = $submission->getCurrentPublication();
 
-        // check if all the galleys are audio files
-        $hasNonAudioGalleys = false;
+        // Check if there is at least one galley that is NOT audio or video
+        $hasTextMiningCandidate = false;
         foreach ($galleys as $galley) {
-            if (!$galley->getData('urlRemote') && strpos($galley->getFileType(), 'audio') === false) {
-                $hasNonAudioGalleys = true;
+            $fileType = $galley->getFileType();
+            if (!$galley->getData('urlRemote') && strpos($fileType, 'audio') === false && strpos($fileType, 'video') === false) {
+                $hasTextMiningCandidate = true;
                 break;
             }
         }
 
-        // if there are no non-audio galleys, do not add the text-mining collection node
-        if (!$hasNonAudioGalleys) {
+        // If all galleys are audio/video, skip adding the text-mining node
+        if (!$hasTextMiningCandidate) {
             return;
         }
 
@@ -400,11 +401,12 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $textMiningCollectionNode = $doc->createElementNS($deployment->getNamespace(), 'collection');
         $textMiningCollectionNode->setAttribute('property', 'text-mining');
         foreach ($galleys as $galley) {
+            $fileType = $galley->getFileType();
             $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', [$publication->getData('urlPath') ?? $submission->getId(), $galley->getBestGalleyId()], null, null, true, ''); // text-mining collection item
 
 
-            // add only non-audio galleys to text-mining
-            if (strpos($galley->getFileType(), 'audio') === false) {
+            // add only non-audio/video galleys to text-mining
+            if (strpos($fileType, 'audio') === false && strpos($fileType, 'video') === false) {
                 $textMiningItemNode = $doc->createElementNS($deployment->getNamespace(), 'item');
                 $resourceNode = $doc->createElementNS($deployment->getNamespace(), 'resource', $resourceURL);
 
