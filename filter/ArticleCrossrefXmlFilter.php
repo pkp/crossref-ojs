@@ -382,18 +382,41 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $dispatcher = $this->_getDispatcher($request);
         $publication = $submission->getCurrentPublication();
 
+        // Check if there is at least one galley that is NOT audio or video
+        $hasTextMiningCandidate = false;
+        foreach ($galleys as $galley) {
+            $fileType = $galley->getFileType();
+            if (!$galley->getData('urlRemote') && strpos($fileType, 'audio') === false && strpos($fileType, 'video') === false) {
+                $hasTextMiningCandidate = true;
+                break;
+            }
+        }
+
+        // If all galleys are audio/video, skip adding the text-mining node
+        if (!$hasTextMiningCandidate) {
+            return;
+        }
+
         // start of the text-mining collection element
         $textMiningCollectionNode = $doc->createElementNS($deployment->getNamespace(), 'collection');
         $textMiningCollectionNode->setAttribute('property', 'text-mining');
         foreach ($galleys as $galley) {
+            $fileType = $galley->getFileType();
             $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', [$publication->getData('urlPath') ?? $submission->getId(), $galley->getBestGalleyId()], null, null, true, ''); // text-mining collection item
-            $textMiningItemNode = $doc->createElementNS($deployment->getNamespace(), 'item');
-            $resourceNode = $doc->createElementNS($deployment->getNamespace(), 'resource', $resourceURL);
-            if (!$galley->getData('urlRemote')) {
-                $resourceNode->setAttribute('mime_type', $galley->getFileType());
+
+
+            // add only non-audio/video galleys to text-mining
+            if (strpos($fileType, 'audio') === false && strpos($fileType, 'video') === false) {
+                $textMiningItemNode = $doc->createElementNS($deployment->getNamespace(), 'item');
+                $resourceNode = $doc->createElementNS($deployment->getNamespace(), 'resource', $resourceURL);
+
+                if (!$galley->getData('urlRemote')) {
+                    $resourceNode->setAttribute('mime_type', $galley->getFileType());
+                }
+
+                $textMiningItemNode->appendChild($resourceNode);
+                $textMiningCollectionNode->appendChild($textMiningItemNode);
             }
-            $textMiningItemNode->appendChild($resourceNode);
-            $textMiningCollectionNode->appendChild($textMiningItemNode);
         }
         $doiDataNode->appendChild($textMiningCollectionNode);
     }
