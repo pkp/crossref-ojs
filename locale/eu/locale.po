@@ -1,15 +1,19 @@
+# Oihan Odriozola <oodriozola@euskaltzaindia.eus>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"POT-Creation-Date: 2019-11-19T11:05:35+00:00\n"
+"PO-Revision-Date: 2025-04-25 13:34+0000\n"
+"Last-Translator: Oihan Odriozola <oodriozola@euskaltzaindia.eus>\n"
+"Language-Team: Basque <http://translate.pkp.sfu.ca/projects/plugins/crossref/"
+"eu/>\n"
+"Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-11-19T11:05:35+00:00\n"
-"PO-Revision-Date: 2019-11-19T11:05:35+00:00\n"
-"Language: \n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
 
 msgid "plugins.importexport.crossref.displayName"
 msgstr "Crossref XML esportatzeko plugina"
@@ -24,3 +28,155 @@ msgstr ""
 "{$scriptName} {$pluginName} export [xmlFileName] [journal_path] articles objectId1 [objectId2] ...\n"
 "{$scriptName} {$pluginName} register [journal_path] articles objectId1 [objectId2] ...\n"
 ""
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail"
+msgstr "Gordailugilearen helbide elektronikoa"
+
+msgid "plugins.importexport.crossref.settings.form.depositorNameRequired"
+msgstr "Sartu gordailugilearen izena."
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
+msgstr "Sartu gordailugilearen helbide elektronikoa."
+
+msgid "plugins.importexport.crossref.settings.form.validation"
+msgstr ""
+"XMLa baliozkotu. Erabili aukera hau XMLa deskargatzeko eta DOIaren eskuzko "
+"erregistroa egiteko."
+
+msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
+msgstr "Esportazioa balioztatu besterik ez. Ez deskargatu fitxategia."
+
+msgid "plugins.importexport.crossref.status.failed"
+msgstr "Hutsegiteak"
+
+msgid "plugins.importexport.crossref.status.registered"
+msgstr "Aktiboak"
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "Gordailatu gabea"
+
+msgid "plugins.importexport.crossref.action.register"
+msgstr "Gordailutu"
+
+msgid "plugins.importexport.crossref.action.export"
+msgstr "Esportatu"
+
+msgid "plugins.importexport.crossref.action.markRegistered"
+msgstr "Markatu aktibo gisa"
+
+msgid "plugins.importexport.crossref.senderTask.name"
+msgstr "Crossref-en automatikoki erregistratzeko ataza"
+
+msgid "plugins.importexport.crossref.register.error.mdsError"
+msgstr ""
+"Erregistroa ez da guztiz zuzena izan. DOIen erregistro-zerbitzariak errore "
+"bat eman du."
+
+msgid "plugins.importexport.crossref.export.error.issueNotFound"
+msgstr "Ez dago zenbakirik ID honekin: \"{$issueId}\"."
+
+msgid "plugins.importexport.crossref.export.error.articleNotFound"
+msgstr "Ez dago artikulurik ID honekin: \"{$articleId}\"."
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
+
+msgid "plugins.importexport.crossref.requirements"
+msgstr "Baldintzak"
+
+msgid "plugins.importexport.crossref.settings.depositorIntro"
+msgstr "Crossref-en behar bezala biltegiratzeko, elementu hauek behar dira."
+
+msgid "plugins.importexport.crossref.settings.form.depositorName"
+msgstr "Gordailugilearen izena"
+
+msgid "plugins.generic.crossref.description"
+msgstr "Crossref-eko metadatuen bilketa eta esportazioa kudeatzen ditu"
+
+msgid "plugins.importexport.crossref.settings.form.usernameRequired"
+msgstr "Sartu Crossref-etik lortu duzun erabiltzaile-izena."
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Crossref Kudeaketa Plugina"
+
+msgid "plugins.importexport.crossref.settings.form.username"
+msgstr "Erabiltzaile-izena"
+
+msgid "plugins.importexport.crossref.error.noDOIContentObjects"
+msgstr ""
+"Ez da artikulurik hautatu identifikatzaile publiko bat (DOI) esleitzeko; "
+"beraz, pluginak ezin du ezer biltegiratu edo esportatu."
+
+msgid "plugins.importexport.crossref.statusLegend"
+msgstr ""
+"\n"
+"\t\t<p>Gordailuaren egoerak:</p>\n"
+"\t\t<p>\n"
+"\t\t- Gordailutu gabea: Ez da egin DOI honetarako gordailu saiakerarik.<br />"
+"\n"
+"\t\t- Aktiboa: DOIa gorde da eta behar bezala funtzionatzen du.<br />\n"
+"\t\t- Hutsegitea: DOIaren gordailuak huts egin du.<br />\n"
+"\t\t- Aktibo gisa markatua: DOIa eskuz markatu da aktibo gisa.\n"
+"\t\t</p>\n"
+"\t\t<p>Azken gordailu-saiakeraren egoera bakarrik erakusten da.</p>\n"
+"\t\t<p>Gordailu batek huts egiten badu, konpondu arazoa eta saiatu berriro "
+"DOIa erregistratzen.</p>"
+
+msgid "plugins.importexport.crossref.requirements.satisfied"
+msgstr "Moduluaren baldintza guztiak betetzen dira."
+
+msgid "plugins.importexport.crossref.error.publisherNotConfigured"
+msgstr ""
+"Aldizkariaren argitaratzailea ez da definitu! Argitaletxea gehitu behar duzu "
+"<a href=\"{$journalSettingsUrl}\" target=\"_blank\">Aldizkariaren "
+"Hobespenak</a> orrian."
+
+msgid "plugins.importexport.crossref.error.issnNotConfigured"
+msgstr ""
+"Ez da ISSNrik zehaztu aldizkariarentzat! ISSN bat gehitu behar duzu <a href="
+"\"{$journalSettingsUrl}\" target=\"_blank\">Aldizkariaren Hobespenak</a> "
+"orrian."
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Crossref Ezarpenak"
+
+msgid "plugins.importexport.crossref.settings.form.depositorName.description"
+msgstr ""
+"DOIak erregistratzen dituen erakundearen izena. Gordetako metadatuekin "
+"batera jasoko da, eta gordailua nork aurkeztu duen erregistratzeko erabiliko "
+"da."
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail.description"
+msgstr ""
+"Edukiak Crossref-en erregistratzeko ardura duen pertsonaren helbide "
+"elektronikoa. Gordetako metadatuetan sartuko da, eta gordailua berresteko "
+"mezu elektronikoa bidaltzean erabiliko da."
+
+msgid "plugins.importexport.crossref.settings.form.username.description"
+msgstr ""
+"Zure gordailuak autentifikatzeko erabiliko den Crossref erabiltzaile-izena. "
+"Kontu pertsonal bat erabiltzen baduzu, ikus aurreko oharra."
+
+msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
+msgstr ""
+"OJS-k automatikoki sartuko ditu esleitutako DOIak Crossref-en. Horrek "
+"denbora pixka bat har dezake prozesatzeko argitaratu ondoren. Erregistratu "
+"gabeko DOI guztiak egiazta ditzakezu."
+
+msgid "plugins.importexport.crossref.issues.description"
+msgstr ""
+"Oharra: Zenbakiak bakarrik hartuko dira kontuan (eta ez haien artikuluak) "
+"esportaziorako/erregistrorako."
+
+msgid "plugins.importexport.crossref.status.markedRegistered"
+msgstr "Aktibo gisa markatuta"
+
+msgid "plugins.importexport.crossref.register.success.warning"
+msgstr "Erregistroa behar bezala egin da, baina ohar hau egin da: '{$param}'."
+
+msgid "plugins.generic.crossref.successMessage"
+msgstr ""
+"Elementu honen metadatuak Crossref-en gordailatu dira. Xehetasun gehiago "
+"lortzeko, kontsultatu zure bidalketa <a href=\"https://doi.crossref.org/"
+"servlet/submissionAdmin?sf=detail&submissionID={$submissionId}\">Crossref-"
+"eko administrazio panelean</a>."
