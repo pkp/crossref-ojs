@@ -1,24 +1,23 @@
+# wenshao521！ <wainixueer3334@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-04T08:59:13-08:00\n"
-"PO-Revision-Date: 2020-08-30 02:48+0000\n"
-"Last-Translator: Yukari Chiba <Charles@nia.ac.cn>\n"
+"PO-Revision-Date: 2025-05-11 14:50+0000\n"
+"Last-Translator: wenshao521！ <wainixueer3334@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <http://translate.pkp.sfu.ca/projects/"
-"ojs/importexport-crossref/zh_CN/>\n"
-"Language: zh_CN\n"
+"plugins/crossref/zh_Hans/>\n"
+"Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.9.1\n"
+"X-Generator: Weblate 4.18.2\n"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.displayName"
 msgstr "Crossref XML导出插件"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.description"
 msgstr "导出文章元数据为Crossref XML格式。"
 
@@ -32,11 +31,9 @@ msgstr ""
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "用户名"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
 msgstr "请输入Crossref为您配置的用户名。"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.depositorIntro"
 msgstr "请输入Crossref DOI存储负责人的姓名和邮箱。"
 
@@ -86,7 +83,6 @@ msgstr "注册成功，但是发生以下警告：'{$param}'。"
 msgid "plugins.importexport.crossref.register.error.mdsError"
 msgstr "注册未完全成功！ DOI注册服务器返回了错误。"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
 msgstr "Crossref自动注册任务"
 
@@ -124,19 +120,66 @@ msgstr "失败"
 msgid "plugins.importexport.crossref.settings.form.validation"
 msgstr "验证XML。 使用此选项进行XML下载以进行手动DOI注册。"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
-msgstr "使用Crossref测试API（测试环境）来存储DOI。 请不要忘记在生产环境中删除此选项。"
+msgstr "使用 Crossref 测试 API（测试环境）进行 DOI "
+"提交。请勿忘在生产环境中取消此选项。"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
 msgstr ""
-"OJS会将分配的DOI自动保存到Crossref。 请注意，这可能在发布后需要一段时间处理（例如，取决于您的cronjob配置）。 "
-"您可以检查所有未注册的DOI。"
+"OJS 将自动向 Crossref 提交已分配的 "
+"DOI。请注意，注册过程可能会在发表后延迟一小段时间（例如，取决于您的 cronjob "
+"配置）。您可以检查所有未注册的 DOI。"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.registrationIntro"
 msgstr ""
-"如果您想使用此插件直接向Crossref注册数字对象标识符（DOI），则需要一个用户名和密码（可从<a href=\""
-"http://www.crossref.org\" target=\"_blank\">Crossref </a>获得）。 如果您没有自己的用户名和密码，"
-"则仍然可以导出为Crossref XML格式，但是无法从OJS中使用Crossref注册DOI。"
+"<p>如果您希望使用此插件将数字对象标识符（DOI）直接注册到 <a href=\"http://www"
+".crossref.org/\">Crossref</a>，您需要在下方的用户名和密码字段中填写您的 <a "
+"href=\"https://www.crossref.org/documentation/member-setup/"
+"account-credentials/\">Crossref 账户凭据</a>。</p>\n"
+"<p>根据您在 Crossref 的会员类型，填写用户名和密码有两种方式：</p>\n"
+"<ul>\n"
+"<li>如果您使用的是机构账户，请填写您的 <a href=\"https://www.crossref.org/"
+"documentation/member-setup/account-credentials/#00376\""
+">共享用户名和密码</a></li>\n"
+"<li>如果您使用的是 <a href=\"https://www.crossref.org/documentation/"
+"member-setup/account-credentials/#00368\">个人账户</a>，请在用户名字段中填写"
+"您的电子邮件地址和角色，格式为：email@example.com/role</li>\n"
+"<li>如果您不知道或无法获取 Crossref 凭据，请联系 <a href=\"https://support."
+"crossref.org/\">Crossref 支持</a> 寻求帮助。若无凭据，您仍可导出 Crossref "
+"XML 格式的元数据，但无法通过 OJS 注册 DOI。</li>\n"
+"</ul>"
+
+msgid "plugins.importexport.crossref.settings.form.depositorName.description"
+msgstr "注册 DOI 的机构名称。此名称将包含在提交的元数据中，并用于记录由谁提交注册。"
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail.description"
+msgstr "负责向 Crossref 注册内容的个人的电子邮件地址。该地址将包含在提交的元数据中，"
+"并用于发送注册确认邮件。"
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Crossref Manager插件"
+
+msgid "plugins.generic.crossref.description"
+msgstr "处理 Crossref 元数据的存储和导出"
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Crossref 设置"
+
+msgid "plugins.importexport.crossref.settings.form.username.description"
+msgstr "用于验证您提交信息的 Crossref "
+"用户名。如果您使用的是个人账户，请参阅上方说明。"
+
+msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
+msgstr "仅验证导出内容，不下载文件。"
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "未提交"
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
+
+msgid "plugins.generic.crossref.successMessage"
+msgstr ""
+"此项目的元数据已提交至 Crossref。要查看详细信息，请前往 <a href=\"https://doi"
+".crossref.org/servlet/submissionAdmin?sf=detail&submissionID={$submissionId}"
+"\">Crossref 管理面板</a> 查看该投稿。"
