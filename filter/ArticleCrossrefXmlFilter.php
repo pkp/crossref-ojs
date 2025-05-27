@@ -63,7 +63,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
      * @param DOMDocument $doc
      * @param Submission $submission
      *
-     * @return DOMElement
+     * @return DOMElement|null
      */
     public function createJournalIssueNode($doc, $submission)
     {
@@ -72,7 +72,13 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $context = $deployment->getContext();
         $cache = $deployment->getCache();
         assert($submission instanceof Submission);
+        
         $issueId = $submission->getCurrentPublication()->getData('issueId');
+
+        if (!$issueId) {
+            return null;
+        }
+
         if ($cache->isCached('issues', $issueId)) {
             $issue = $cache->get('issues', $issueId);
         } else {
