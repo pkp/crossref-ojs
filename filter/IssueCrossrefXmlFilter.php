@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/crossref/filter/IssueCrossrefXmlFilter.php
  *
- * Copyright (c) 2014-2022 Simon Fraser University
- * Copyright (c) 2000-2022 John Willinsky
+ * Copyright (c) 2014-2025 Simon Fraser University
+ * Copyright (c) 2000-2025 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class IssueCrossrefXmlFilter
@@ -81,7 +81,7 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
      */
     public function createRootNode($doc)
     {
-        /** @var CrossrefExportDeployment */
+        /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
         $rootNode = $doc->createElementNS($deployment->getNamespace(), $deployment->getRootElementName());
         $rootNode->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xsi', $deployment->getXmlSchemaInstance());
@@ -101,12 +101,12 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
      */
     public function createHeadNode($doc)
     {
-        /** @var CrossrefExportDeployment */
+        /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $plugin = $deployment->getPlugin();
         $headNode = $doc->createElementNS($deployment->getNamespace(), 'head');
-        $headNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'doi_batch_id', htmlspecialchars($context->getData('initials', $context->getPrimaryLocale()) . '_' . time(), ENT_COMPAT, 'UTF-8')));
+        $headNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'doi_batch_id', htmlspecialchars($context->getData('acronym', $context->getPrimaryLocale()) . '_' . time(), ENT_COMPAT, 'UTF-8')));
         $headNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'timestamp', date('YmdHisv')));
         $depositorNode = $doc->createElementNS($deployment->getNamespace(), 'depositor');
         $depositorName = $plugin->getSetting($context->getId(), 'depositorName');
@@ -191,7 +191,7 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
      */
     public function createJournalIssueNode($doc, $issue)
     {
-        /** @var CrossrefExportDeployment */
+        /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $deployment->setIssue($issue);
