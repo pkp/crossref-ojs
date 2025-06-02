@@ -33,7 +33,8 @@ use PKP\core\PKPApplication;
 use PKP\db\DAORegistry;
 use PKP\filter\FilterGroup;
 use PKP\i18n\LocaleConversion;
-use PKP\submission\GenreDAO;
+use PKP\submission\genre\Genre;
+;
 
 class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 {
@@ -263,18 +264,14 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $pdfGalleyInArticleLocale = null;
         // Also collect supplementary files with DOIs for the component list
         $componentGalleys = [];
-        $genreDao = DAORegistry::getDAO('GenreDAO'); /** @var GenreDAO $genreDao */
         foreach ($galleys as $galley) {
             // Only include supplementary files that have a DOI
             if (!$galley->getData('urlRemote')) {
                 $galleyFile = $galley->getFile();
                 if ($galleyFile) {
-                    $genre = $genreDao->getById($galleyFile->getGenreId());
-                    if ($genre->getSupplementary()) {
-                        if ($galley->getDoi()) {
-                            // construct the array key with galley best ID and locale needed for the component node
-                            $componentGalleys[] = $galley;
-                        }
+                    $genre = Repo::genre()->get($galleyFile->getGenreId());
+                    if ($genre !== null && $genre->supplementary && $galley->getDoi()) {
+                        $componentGalleys[] = $galley;
                     } else {
                         $submissionGalleys[] = $galley;
                         if ($galley->isPdfGalley()) {
