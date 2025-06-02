@@ -138,7 +138,12 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
         $deployment = $this->getDeployment();
         $journalNode = $doc->createElementNS($deployment->getNamespace(), 'journal');
         $journalNode->appendChild($this->createJournalMetadataNode($doc));
-        $journalNode->appendChild($this->createJournalIssueNode($doc, $pubObject));
+
+        $issueNode = $this->createJournalIssueNode($doc, $pubObject);
+        if ($issueNode) {
+            $journalNode->appendChild($issueNode);
+        }
+
         return $journalNode;
     }
 
@@ -185,12 +190,16 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
      * Create and return the journal issue node 'journal_issue'.
      *
      * @param \DOMDocument $doc
-     * @param \APP\issue\Issue $issue
+     * @param \APP\issue\Issue|null $issue
      *
-     * @return \DOMElement
+     * @return \DOMElement|null
      */
     public function createJournalIssueNode($doc, $issue)
     {
+        if ($issue === null) {
+            return null;
+        }
+        
         /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
