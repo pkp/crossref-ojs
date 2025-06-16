@@ -38,6 +38,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     // any, notDeposited, and markedRegistered are reserved
     public const CROSSREF_STATUS_FAILED = 'failed';
     public const CROSSREF_API_DEPOSIT_OK = 200;
+    public const CROSSREF_API_DEPOSIT_ERROR_UNAUTHORIZED = 401;
     public const CROSSREF_API_DEPOSIT_ERROR_FROM_CROSSREF = 403;
     public const CROSSREF_API_URL = 'https://api.crossref.org/v2/deposits';
     //TESTING
@@ -336,6 +337,14 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
                     $status = Doi::STATUS_ERROR;
                     $this->updateDepositStatus($context, $objects, $status, $batchIdNode->nodeValue, $msgSave);
                     $returnMessage = $msg . ' (' . $eStatusCode . ' ' . $e->getResponse()->getReasonPhrase() . ')';
+                } elseif ($eStatusCode == static::CROSSREF_API_DEPOSIT_ERROR_UNAUTHORIZED) {
+                    if ($this->isTestMode($context)) {
+                        $errorString = __('plugins.importexport.crossref.settings.form.testModeActive');
+                    } else {
+                        $errorString = __('plugins.importexport.crossref.export.error.unauthorized');
+                    }
+                    $returnMessage = $errorString . ' (' . $eStatusCode . ' ' . $e->getResponse()->getReasonPhrase() . ')';
+                    $this->updateDepositStatus($context, $objects, Doi::STATUS_ERROR, null, $returnMessage);
                 } else {
                     $returnMessage = $eResponseBody . ' (' . $eStatusCode . ' ' . $e->getResponse()->getReasonPhrase() . ')';
                     $this->updateDepositStatus($context, $objects, Doi::STATUS_ERROR, null, $returnMessage);
