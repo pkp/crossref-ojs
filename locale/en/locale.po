@@ -164,3 +164,27 @@ msgid "plugins.generic.crossref.successMessage"
 msgstr ""
 "The metadata for this item has been deposited with Crossref. "
 "To view further details, see the submission in the <a href=\"https://doi.crossref.org/servlet/submissionAdmin?sf=detail&submissionID={$submissionId}\">Crossref admin panel</a>."
+
+msgid "plugins.generic.crossref.issue.required"
+msgstr "Crossref : Issue is required"
+
+msgid "plugins.generic.crossref.onlineIssn.required"
+msgstr "Crossref : Online issn is required"
+
+msgid "plugins.generic.crossref.printIssn.required"
+msgstr "Crossref : Print issn required"
+
+msgid "plugins.generic.crossref.dateSubmitted.required"
+msgstr "Crossref : Submitted date is required"
+
+msgid "plugins.generic.crossref.title.required"
+msgstr "Crossref : Title is required"
+
+msgid "plugins.generic.crossref.title.en.required"
+msgstr "Crossref : Title locale en is required"
+
+msgid "plugins.generic.crossref.journalTitle.required"
+msgstr "Crossref : Journal title is required"
+
+msgid "plugins.generic.crossref.journalTitle.en.required"
+msgstr "Crossref : Journal title locale en is required"

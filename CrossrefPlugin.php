@@ -19,11 +19,13 @@ use APP\core\Application;
 use APP\facades\Repo;
 use APP\issue\Issue;
 use APP\plugins\generic\crossref\classes\CrossrefSettings;
+use APP\plugins\generic\crossref\classes\validator\MetadataValidator;
 use APP\plugins\IDoiRegistrationAgency;
 use APP\services\ContextService;
 use APP\submission\Submission;
 use Illuminate\Support\Collection;
 use PKP\context\Context;
+use PKP\core\PKPApplication;
 use PKP\doi\RegistrationAgencySettings;
 use PKP\plugins\GenericPlugin;
 use PKP\plugins\Hook;
@@ -103,6 +105,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
 
         Hook::add('Doi::markRegistered', $this->editMarkRegisteredParams(...));
         Hook::add('DoiListPanel::setConfig', $this->addRegistrationAgencyName(...));
+        Hook::add('Publication::validatePublish', $this->validate(...));
     }
 
     /**
@@ -410,5 +413,31 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     public function getAllowedDoiTypes(): array
     {
         return [Repo::doi()::TYPE_PUBLICATION, Repo::doi()::TYPE_ISSUE];
+    }
+
+    /**
+     * Make additional validation checks against publishing requirements
+     *
+     * @param $hookName string
+     * @param $args array [
+     * @option array Validation errors already identified
+     * @option Publication The publication to validate
+     * @option Submission The submission of the publication being validated
+     * @option array The locales accepted for this object
+     * @option string The primary locale for this object
+     * ]
+     * @throws Exception
+     * @see PKPPublicationService::validatePublish()
+     */
+    public function validate(string $hookName, array $args): void
+    {
+        $errors =& $args[0];
+        $submission = $args[2];
+        $context = Application::getContextDAO()->getById($submission->getData('contextId'));
+        $metadataValidator = new MetadataValidator($submission,$context);
+        $metadataValidator->metadataValidation();
+        if(!$metadataValidator->isValid()){
+                $errors = $metadataValidator->getErrors();
+        }
     }
 }
