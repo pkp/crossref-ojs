@@ -19,7 +19,7 @@ use APP\core\Application;
 use APP\facades\Repo;
 use APP\issue\Issue;
 use APP\plugins\generic\crossref\classes\CrossrefSettings;
-use APP\plugins\generic\crossref\classes\validator\MetaDataValidator;
+use APP\plugins\generic\crossref\classes\validator\MetadataValidator;
 use APP\plugins\IDoiRegistrationAgency;
 use APP\services\ContextService;
 use APP\submission\Submission;
@@ -431,19 +431,13 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
      */
     public function validate(string $hookName, array $args): void
     {
-        try {
-
-            $errors =& $args[0];
-            $submission = $args[2];
-            $request = PKPApplication::get()->getRequest();
-            $context = $request->getContext();
-            $metaDataValidator = new MetaDataValidator($submission,$context);
-            $metaDataValidator->metaDataValidation();
-            if(!$metaDataValidator->isValid()){
-                $errors = $metaDataValidator->getErrors();
-            }
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+        $errors =& $args[0];
+        $submission = $args[2];
+        $context = Application::getContextDAO()->getById($submission->getData('contextId'));
+        $metadataValidator = new MetadataValidator($submission,$context);
+        $metadataValidator->metadataValidation();
+        if(!$metadataValidator->isValid()){
+                $errors = $metadataValidator->getErrors();
         }
     }
 }

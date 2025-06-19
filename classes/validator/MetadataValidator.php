@@ -2,29 +2,30 @@
 
 namespace APP\plugins\generic\crossref\classes\validator;
 
-use APP\facades\Repo;
 use APP\plugins\generic\crossref\classes\dto\PublicationMetadata;
 use APP\submission\Submission;
 use Illuminate\Validation\Validator;
 use PKP\context\Context;
 use PKP\validation\ValidatorFactory;
 
-class MetaDataValidator
+class MetadataValidator
 {
     private Submission $submission;
     private Context $context;
     private ?Validator $validator = null;
+    private ?string $primaryLocale = null;
 
     public function __construct(Submission $submission, Context $context)
     {
         $this->submission = $submission;
         $this->context = $context;
+        $this->primaryLocale = $this->context->getPrimaryLocale();
     }
 
-    public function metaDataValidation(): void
+    public function metadataValidation(): void
     {
         $this->validator = ValidatorFactory::make(
-            $this->metaData()->toArray(),
+            $this->formatMetadata()->toArray(),
             $this->getValidationRules(),
             $this->getValidationMessages()
         );
@@ -35,7 +36,7 @@ class MetaDataValidator
      * only for Crossref plugin
      * @return PublicationMetadata
      */
-    private function metaData(): PublicationMetadata
+    private function formatMetadata(): PublicationMetadata
     {
         $publication = $this->submission->getCurrentPublication();
         $issueId = $publication->getData('issueId');
@@ -53,7 +54,6 @@ class MetaDataValidator
 
     public function getValidationRules(): array
     {
-        $primaryLocale = $this->context->getPrimaryLocale();
         return [
             "printIssn" => [
                 'required',
@@ -67,7 +67,7 @@ class MetaDataValidator
                 'required',
                 'array',
             ],
-            "title.{$primaryLocale}" => [
+            "title.{$this->primaryLocale}" => [
                 'required',
                 'string',
             ],
@@ -75,7 +75,7 @@ class MetaDataValidator
                 'required',
                 'array',
             ],
-            "journalTitle.{$primaryLocale}" => [
+            "journalTitle.{$this->primaryLocale}" => [
                 'required',
                 'string',
             ],
@@ -89,14 +89,14 @@ class MetaDataValidator
     public function getValidationMessages(): array
     {
         return [
-            'issue.required' => 'issue required',
-            'onlineIssn.required' => 'onlineIssn required',
-            'printIssn.required' => 'printIssn required',
-            'dateSubmitted.required' => 'dateSubmitted required',
-            'title.required' => 'title required',
-            'title.en.required' => 'title.en required',
-            'journalTitle.required' => 'journalTitle required',
-            'journalTitle.en.required' => 'journalTitle en required',
+            'issue.required' => __('plugins.generic.crossref.issue.required'),
+            'onlineIssn.required' => __('plugins.generic.crossref.onlineIssn.required'),
+            'printIssn.required' => __('plugins.generic.crossref.printIssn.required'),
+            'dateSubmitted.required' => __('plugins.generic.crossref.dateSubmitted.required'),
+            'title.required' => __('plugins.generic.crossref.title.required'),
+            'title.' . $this->primaryLocale . '.required' => __('plugins.generic.crossref.title.'. $this->primaryLocale .'.required'),
+            'journalTitle.required' => __('plugins.generic.crossref.journalTitle.required'),
+            'journalTitle.' . $this->primaryLocale . '.required' => __('plugins.generic.crossref.'. $this->primaryLocale .'.required'),
         ];
     }
 
