@@ -92,6 +92,9 @@ msgstr "OJS will deposit assigned DOIs automatically to Crossref. Please note th
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
 msgstr "Use the Crossref test API (testing environment) for the DOI deposit. Please do not forget to remove this option in production."
 
+msgid "plugins.importexport.crossref.settings.form.testModeActive"
+msgstr "Test mode is enabled. Please check that your Crossref test API credentials are correct or disable test mode and try again."
+
 msgid "plugins.importexport.crossref.settings.form.validation"
 msgstr "Validate XML. Use this option for the XML download for the manual DOI registration."
 
@@ -147,6 +150,9 @@ msgstr ""
 
 msgid "plugins.importexport.crossref.register.error.mdsError"
 msgstr "Registration was not fully successful! The DOI registration server returned an error."
+
+msgid "plugins.importexport.crossref.export.error.unauthorized"
+msgstr "Please check that your Crossref credentials are correct and try again."
 
 msgid "plugins.importexport.crossref.register.success.warning"
 msgstr "Registration was successful but the following warning occurred: '{$param}'."
