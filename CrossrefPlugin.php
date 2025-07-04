@@ -20,9 +20,11 @@ use APP\facades\Repo;
 use APP\issue\Issue;
 use APP\plugins\generic\crossref\classes\CrossrefSettings;
 use APP\plugins\IDoiRegistrationAgency;
+use APP\publication\Publication;
 use APP\services\ContextService;
 use APP\submission\Submission;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 use PKP\context\Context;
 use PKP\doi\RegistrationAgencySettings;
 use PKP\plugins\GenericPlugin;
@@ -103,6 +105,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
 
         Hook::add('Doi::markRegistered', $this->editMarkRegisteredParams(...));
         Hook::add('DoiListPanel::setConfig', $this->addRegistrationAgencyName(...));
+        Hook::add('Publication::validatePublish', $this->validate(...));
     }
 
     /**
@@ -410,5 +413,82 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     public function getAllowedDoiTypes(): array
     {
         return [Repo::doi()::TYPE_PUBLICATION, Repo::doi()::TYPE_ISSUE];
+    }
+
+    /**
+     * Make additional validation checks against publishing requirements
+     *
+     * @see PKPPublicationService::validatePublish()
+     *
+     * @param $hookName string
+     * @param $args array [
+     * @option array Validation errors already identified
+     * @option Publication The publication to validate
+     * @option Submission The submission of the publication being validated
+     * @option array The locales accepted for this object
+     * @option string The primary locale for this object
+     * ]
+     * @return bool
+    */
+    public function validate(string $hookName, array $args): bool
+    {
+        $errors =& $args[0];
+        $submission = $args[2];
+        $context = Application::getContextDAO()->getById($submission->getData('contextId'));
+        $publication = $submission->getCurrentPublication();
+        $issueId = $publication->getData('issueId');
+        $rules = [
+            'printIssn' => ['required_without:onlineIssn', 'string'],
+            'onlineIssn' => ['required_without:printIssn', 'string'],
+            'doi' => ['required', 'url'],
+            'issueId' => ['required', 'integer'],
+        ];
+        $metadata = [
+            'printIssn'=> $context->getData('printIssn'),
+            'onlineIssn'=> $context->getData('onlineIssn'),
+            'doi'=> $publication->getDoi(),
+            'issueId'=> $issueId,
+        ];
+
+        $validator = Validator::make(
+            $metadata,
+            $rules,
+            $this->getValidationMessages($publication)
+        );
+        if(!$validator->passes()){
+            $errors = $this->formatErrors($validator->errors()->toArray());
+        }
+        return HOOK::CONTINUE;
+    }
+
+    /**
+     * @param Publication $publication
+     * @return array
+     */
+    private function getValidationMessages(Publication $publication): array
+    {
+        return [
+            'issueId.required' => __('plugins.generic.crossref.issueId.required',['publicationTitle'=>$publication->getLocalizedTitle()]),
+            'doi.required' => __('plugins.generic.crossref.doi.required',['publicationTitle'=>$publication->getLocalizedTitle()]),
+            'doi.url' => __('plugins.generic.crossref.doi.url',['publicationTitle'=>$publication->getLocalizedTitle()]),
+            'onlineIssn.required_without' => __('plugins.generic.crossref.issn.requiredWithout'),
+            'printIssn.required_without' => __('plugins.generic.crossref.issn.requiredWithout'),
+        ];
+    }
+
+    /**
+     * get only array values as an array
+     */
+    private function formatErrors(array $errors): array
+    {
+        $values = [];
+        foreach ($errors as $value) {
+            if (is_array($value)) {
+                $values = array_merge($values, $this->formatErrors($value));
+            } else {
+                $values[] = $value;
+            }
+        }
+        return $values;
     }
 }
