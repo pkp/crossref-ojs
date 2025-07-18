@@ -166,14 +166,14 @@ msgstr ""
 "To view further details, see the submission in the <a href=\"https://doi.crossref.org/servlet/submissionAdmin?sf=detail&submissionID={$submissionId}\">Crossref admin panel</a>."
 
 msgid "plugins.generic.crossref.issueId.required"
-msgstr "The submission \"{$publicationTitle}\" is not associated with an issue and cannot be deposited with CrossRef ."
+msgstr "The submission \"{$publicationTitle}\" is not associated with an issue and cannot be deposited with CrossRef."
 
 msgid "plugins.generic.crossref.issn.requiredWithout"
-msgstr "Either an online ISSN or print ISSN must be provided before submissions can be deposited with CrossRef ."
+msgstr "Either an online ISSN or print ISSN must be provided before submissions can be deposited with CrossRef."
 
 msgid "plugins.generic.crossref.doi.required"
-msgstr "The submission \"{$publicationTitle}\" is not associated with a DOI and cannot be deposited with CrossRef ."
+msgstr "The submission \"{$publicationTitle}\" is not associated with a DOI and cannot be deposited with CrossRef."
 
 msgid "plugins.generic.crossref.doi.url"
-msgstr "The submission \"{$publicationTitle}\" is not associated with a valid DOI url and cannot be deposited with CrossRef ."
+msgstr "The submission \"{$publicationTitle}\" is not associated with a valid DOI url and cannot be deposited with CrossRefy."
 
