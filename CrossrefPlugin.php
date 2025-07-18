@@ -418,18 +418,13 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     /**
      * Make additional validation checks against publishing requirements
      *
+     * @param $hookName string
+     * @param $args array []
+     * @return bool
+     * @throws \Exception
      * @see PKPPublicationService::validatePublish()
      *
-     * @param $hookName string
-     * @param $args array [
-     * @option array Validation errors already identified
-     * @option Publication The publication to validate
-     * @option Submission The submission of the publication being validated
-     * @option array The locales accepted for this object
-     * @option string The primary locale for this object
-     * ]
-     * @return bool
-    */
+     */
     public function validate(string $hookName, array $args): bool
     {
         $errors =& $args[0];
@@ -438,13 +433,11 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
         $publication = $submission->getCurrentPublication();
         $issueId = $publication->getData('issueId');
         $rules = [
-            'printIssn' => ['required_without:onlineIssn', 'string'],
             'onlineIssn' => ['required_without:printIssn', 'string'],
             'doi' => ['required', 'url'],
             'issueId' => ['required', 'integer'],
         ];
         $metadata = [
-            'printIssn'=> $context->getData('printIssn'),
             'onlineIssn'=> $context->getData('onlineIssn'),
             'doi'=> $publication->getDoi(),
             'issueId'=> $issueId,
@@ -462,8 +455,11 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     }
 
     /**
+     *
+     * Get validation messages
      * @param Publication $publication
      * @return array
+     * @throws \Exception
      */
     private function getValidationMessages(Publication $publication): array
     {
@@ -477,7 +473,9 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     }
 
     /**
-     * get only array values as an array
+     * Format errors
+     * @param array $errors
+     * @return array
      */
     private function formatErrors(array $errors): array
     {
