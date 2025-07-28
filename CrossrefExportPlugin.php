@@ -15,6 +15,7 @@
 namespace APP\plugins\generic\crossref;
 
 use APP\core\Application;
+use APP\core\Request;
 use APP\facades\Repo;
 use APP\issue\Issue;
 use APP\journal\Journal;
@@ -116,7 +117,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     /**
      * @copydoc PubObjectsExportPlugin::getStatusMessage()
      */
-    public function getStatusMessage($request)
+    public function getStatusMessage(Request $request): ?string
     {
         // Application is set to sandbox mode and will not run the features of plugin
         if (Config::getVar('general', 'sandbox', false)) {
@@ -162,12 +163,10 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
 
     /**
      * Get a list of additional setting names that should be stored with the objects.
-     *
-     * @return array
      */
-    protected function _getObjectAdditionalSettings()
+    public function getObjectAdditionalSettings(): array
     {
-        return array_merge(parent::_getObjectAdditionalSettings(), [
+        return array_merge(parent::getObjectAdditionalSettings(), [
             $this->getDepositBatchIdSettingName(),
             $this->getFailedMsgSettingName(),
             $this->getSuccessMsgSettingName(),
@@ -185,7 +184,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     /**
      * @copydoc PubObjectsExportPlugin::getSettingsFormClassName()
      */
-    public function getSettingsFormClassName()
+    public function getSettingsFormClassName(): string
     {
         throw new Exception('DOI settings no longer managed via plugin settings form.');
     }
@@ -428,36 +427,6 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
         }
     }
 
-    /**
-     * @copydoc DOIPubIdExportPlugin::markRegistered()
-     */
-    public function markRegistered($context, $objects)
-    {
-        foreach ($objects as $object) {
-            // Get all DOIs for each object
-            // Check if submission or issue
-            if ($object instanceof Submission) {
-                $doiIds = Repo::doi()->getDoisForSubmission($object->getId());
-            } else {
-                $doiIds = Repo::doi()->getDoisForIssue($object->getId, true);
-            }
-
-            foreach ($doiIds as $doiId) {
-                Repo::doi()->markRegistered($doiId);
-            }
-        }
-    }
-
-    /**
-     * Get request failed message setting name.
-     * NB: Changed as of 3.4
-     *
-     * @return string
-     */
-    public function getFailedMsgSettingName()
-    {
-        return $this->getPluginSettingsPrefix() . '_failedMsg';
-    }
 
     /**
      * Get deposit batch ID setting name.
