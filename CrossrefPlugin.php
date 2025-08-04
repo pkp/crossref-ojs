@@ -418,12 +418,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     /**
      * Make additional validation checks against publishing requirements
      *
-     * @param $hookName string
-     * @param $args array []
-     * @return bool
-     * @throws \Exception
      * @see PKPPublicationService::validatePublish()
-     *
      */
     public function validate(string $hookName, array $args): bool
     {
@@ -455,11 +450,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     }
 
     /**
-     *
      * Get validation messages
-     * @param Publication $publication
-     * @return array
-     * @throws \Exception
      */
     private function getValidationMessages(Publication $publication): array
     {
@@ -474,8 +465,6 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
 
     /**
      * Format errors
-     * @param array $errors
-     * @return array
      */
     private function formatErrors(array $errors): array
     {

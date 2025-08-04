@@ -175,5 +175,5 @@ msgid "plugins.generic.crossref.doi.required"
 msgstr "The submission \"{$publicationTitle}\" is not associated with a DOI and cannot be deposited with CrossRef."
 
 msgid "plugins.generic.crossref.doi.url"
-msgstr "The submission \"{$publicationTitle}\" is not associated with a valid DOI url and cannot be deposited with CrossRefy."
+msgstr "The submission \"{$publicationTitle}\" is not associated with a valid DOI url and cannot be deposited with CrossRef."
 
