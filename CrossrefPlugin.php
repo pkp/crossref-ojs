@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/crossref/CrossrefPlugin.php
  *
- * Copyright (c) 2014-2022 Simon Fraser University
- * Copyright (c) 2003-2022 John Willinsky
+ * Copyright (c) 2014-2025 Simon Fraser University
+ * Copyright (c) 2003-2025 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefPlugin
@@ -23,6 +23,7 @@ use APP\plugins\IDoiRegistrationAgency;
 use APP\publication\Publication;
 use APP\services\ContextService;
 use APP\submission\Submission;
+use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use PKP\context\Context;
@@ -187,7 +188,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     /**
      * Add validation rule to Context for restriction of allowed pubObject types for DOI registration.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function validateAllowedPubObjectTypes(string $hookName, array $args): bool
     {
@@ -200,7 +201,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
 
         $contextId = $props['id'];
         if (empty($contextId)) {
-            throw new \Exception('A context ID must be present to edit context settings');
+            throw new Exception('A context ID must be present to edit context settings');
         }
 
         /** @var ContextService $contextService */
@@ -418,24 +419,25 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     /**
      * Make additional validation checks against publishing requirements
      *
+     * @throws Exception
      * @see PKPPublicationService::validatePublish()
      */
     public function validate(string $hookName, array $args): bool
     {
-        $errors =& $args[0];
+        $errors = & $args[0];
         $submission = $args[2];
         $context = Application::getContextDAO()->getById($submission->getData('contextId'));
-        $publication = $submission->getCurrentPublication();
+        $publication = $submission->getCurrentPublication(); /* @var $publication Publication */
         $issueId = $publication->getData('issueId');
         $rules = [
             'onlineIssn' => ['required_without:printIssn', 'string'],
-            'doi' => ['required', 'url'],
+            'doi' => ['required', 'string'],
             'issueId' => ['required', 'integer'],
         ];
         $metadata = [
-            'onlineIssn'=> $context->getData('onlineIssn'),
-            'doi'=> $publication->getDoi(),
-            'issueId'=> $issueId,
+            'onlineIssn' => $context->getData('onlineIssn'),
+            'doi' => $publication->getDoi(),
+            'issueId' => $issueId,
         ];
 
         $validator = Validator::make(
@@ -443,7 +445,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
             $rules,
             $this->getValidationMessages($publication)
         );
-        if(!$validator->passes()){
+        if (!$validator->passes()) {
             $errors = $this->formatErrors($validator->errors()->toArray());
         }
         return HOOK::CONTINUE;
@@ -451,13 +453,20 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
 
     /**
      * Get validation messages
+     * @throws Exception
      */
     private function getValidationMessages(Publication $publication): array
     {
         return [
-            'issueId.required' => __('plugins.generic.crossref.issueId.required',['publicationTitle'=>$publication->getLocalizedTitle()]),
-            'doi.required' => __('plugins.generic.crossref.doi.required',['publicationTitle'=>$publication->getLocalizedTitle()]),
-            'doi.url' => __('plugins.generic.crossref.doi.url',['publicationTitle'=>$publication->getLocalizedTitle()]),
+            'issueId.required' => __('plugins.generic.crossref.issueId.required', [
+                'publicationTitle' => $publication->getLocalizedTitle()
+            ]),
+            'doi.required' => __('plugins.generic.crossref.doi.required', [
+                'publicationTitle' => $publication->getLocalizedTitle()
+            ]),
+            'doi.url' => __('plugins.generic.crossref.doi.url', [
+                'publicationTitle' => $publication->getLocalizedTitle()
+            ]),
             'onlineIssn.required_without' => __('plugins.generic.crossref.issn.requiredWithout'),
             'printIssn.required_without' => __('plugins.generic.crossref.issn.requiredWithout'),
         ];
