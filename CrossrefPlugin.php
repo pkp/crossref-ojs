@@ -429,11 +429,25 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
         $context = Application::getContextDAO()->getById($submission->getData('contextId'));
         $publication = $submission->getCurrentPublication(); /* @var $publication Publication */
         $issueId = $publication->getData('issueId');
+        
         $rules = [
             'onlineIssn' => ['required_without:printIssn', 'string'],
             'doi' => ['required', 'string'],
-            'issueId' => ['required', 'integer'],
+            'issueId' => [
+                'sometimes',
+                'nullable',
+                'integer',
+                function ($attribute, $value, $fail) use ($context, $publication) {
+                    $issue = Repo::issue()->get($value, $context->getId());
+                    if (!$issue) {
+                        $fail(__('plugins.generic.crossref.issueId.invalid', [
+                            'publicationTitle' => $publication->getLocalizedTitle()
+                        ]));
+                    }
+                },
+            ],
         ];
+
         $metadata = [
             'onlineIssn' => $context->getData('onlineIssn'),
             'doi' => $publication->getDoi(),
@@ -458,9 +472,6 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     private function getValidationMessages(Publication $publication): array
     {
         return [
-            'issueId.required' => __('plugins.generic.crossref.issueId.required', [
-                'publicationTitle' => $publication->getLocalizedTitle()
-            ]),
             'doi.required' => __('plugins.generic.crossref.doi.required', [
                 'publicationTitle' => $publication->getLocalizedTitle()
             ]),
