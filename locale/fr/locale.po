@@ -2,7 +2,7 @@
 # Express2120+ <mirouxmmp111@gmail.com>, 2025.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-08-18 19:09+0000\n"
+"PO-Revision-Date: 2025-09-01 14:43+0000\n"
 "Last-Translator: Express2120+ <mirouxmmp111@gmail.com>\n"
 "Language-Team: French <http://translate.pkp.sfu.ca/projects/plugins/crossref/"
 "fr/>\n"
@@ -49,7 +49,6 @@ msgstr "Marquer comme actif"
 msgid "plugins.importexport.crossref.action.export"
 msgstr "Télécharger le XML"
 
-#, fuzzy
 msgid "plugins.importexport.crossref.statusLegend"
 msgstr ""
 "\n"
@@ -87,13 +86,11 @@ msgstr ""
 "Valider XML. Utilisez cette option pour télécharger le XML nécessaire à "
 "l'enregistrement manuel du DOI."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
 msgstr ""
-"Utiliser l'API test Crossref (environnement de test) pour le dépôt de DOI. "
-"N'oubliez pas de désactiver option lors du passage en production."
+"Utilisez l'API de test Crossref (environnement de test) pour le dépôt du "
+"DOI. N'oubliez pas de désactiver cette option en production."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
 msgstr ""
 "OJS déposera automatiquement les DOI assignés auprès de Crossref. Veuillez "
