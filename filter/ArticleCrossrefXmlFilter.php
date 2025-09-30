@@ -63,7 +63,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
      * @param DOMDocument $doc
      * @param Submission $submission
      *
-     * @return DOMElement|null
+     * @return DOMElement
      */
     public function createJournalIssueNode($doc, $submission)
     {
@@ -72,13 +72,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $context = $deployment->getContext();
         $cache = $deployment->getCache();
         assert($submission instanceof Submission);
-        
         $issueId = $submission->getCurrentPublication()->getData('issueId');
-
-        if (!$issueId) {
-            return null;
-        }
-
         if ($cache->isCached('issues', $issueId)) {
             $issue = $cache->get('issues', $issueId);
         } else {
@@ -268,14 +262,60 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             }
         }
 
+        // Add Crossmark BEFORE doi_data with full structure
+        $version = $publication->getData('version') ?? '1';
+        $plugin = $deployment->getPlugin();
+        $crossmarkPolicyDOI = $plugin->getSetting($context->getId(), 'crossmarkPolicyDOI');
+        if (!empty($crossmarkPolicyDOI)) {
+            $crossmarkNode = $doc->createElementNS($deployment->getNamespace(), 'crossmark');
+            
+            // Crossmark policy
+            $crossmarkPolicyNode = $doc->createElementNS($deployment->getNamespace(), 'crossmark_policy', htmlspecialchars($crossmarkPolicyDOI, ENT_COMPAT, 'UTF-8'));
+            $crossmarkNode->appendChild($crossmarkPolicyNode);
+            
+            // Crossmark domains
+            $crossmarkDomainsNode = $doc->createElementNS($deployment->getNamespace(), 'crossmark_domains');
+            $crossmarkDomainNode = $doc->createElementNS($deployment->getNamespace(), 'crossmark_domain');
+            
+            // Get domain from journal URL
+            $journalUrl = $request->getBaseUrl();
+            $parsedUrl = parse_url($journalUrl);
+            $domainName = $parsedUrl['host'] ?? $context->getPath();
+            
+            $domainNode = $doc->createElementNS($deployment->getNamespace(), 'domain', $domainName);
+            $crossmarkDomainNode->appendChild($domainNode);
+            $crossmarkDomainsNode->appendChild($crossmarkDomainNode);
+            $crossmarkNode->appendChild($crossmarkDomainsNode);
+            
+            // Crossmark domain exclusive
+            $crossmarkDomainExclusiveNode = $doc->createElementNS($deployment->getNamespace(), 'crossmark_domain_exclusive', 'false');
+            $crossmarkNode->appendChild($crossmarkDomainExclusiveNode);
+            
+            // Custom metadata
+            $customMetadataNode = $doc->createElementNS($deployment->getNamespace(), 'custom_metadata');
+                        
+            // Add license to custom_metadata
+            if ($publication->getData('licenseUrl')) {
+                $aiProgramNode = $doc->createElementNS($deployment->getAINamespace(), 'ai:program');
+                $aiProgramNode->setAttribute('name', 'AccessIndicators');
+                $aiLicenseRefNode = $doc->createElementNS($deployment->getAINamespace(), 'ai:license_ref', htmlspecialchars($publication->getData('licenseUrl'), ENT_COMPAT, 'UTF-8'));
+                $aiLicenseRefNode->setAttribute('applies_to', 'vor');
+                $aiProgramNode->appendChild($aiLicenseRefNode);
+                $customMetadataNode->appendChild($aiProgramNode);
+            }
+            
+            $crossmarkNode->appendChild($customMetadataNode);
+            $journalArticleNode->appendChild($crossmarkNode);
+        }
+
         // license
-        if ($publication->getData('licenseUrl')) {
+        if ($publication->getData('licenseUrl') && empty($crossmarkPolicyDOI)) {
             $licenseNode = $doc->createElementNS($deployment->getAINamespace(), 'ai:program');
             $licenseNode->setAttribute('name', 'AccessIndicators');
             $licenseNode->appendChild($node = $doc->createElementNS($deployment->getAINamespace(), 'ai:license_ref', htmlspecialchars($publication->getData('licenseUrl'), ENT_COMPAT, 'UTF-8')));
             $journalArticleNode->appendChild($licenseNode);
         }
-
+        
         // DOI data
         $dispatcher = $this->_getDispatcher($request);
         $url = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'view', [$publication->getData('urlPath') ?? $submission->getId()], null, null, true, '');
@@ -328,6 +368,8 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         // text-mining - collection nodes
         $submissionGalleys = array_merge($submissionGalleys, $remoteGalleys);
         $this->appendTextMiningCollectionNodes($doc, $doiDataNode, $submission, $submissionGalleys);
+        
+        
         $journalArticleNode->appendChild($doiDataNode);
 
         // component list (supplementary files)

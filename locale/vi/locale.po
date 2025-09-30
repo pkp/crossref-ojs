@@ -208,3 +208,27 @@ msgstr ""
 "xem bài nộp trong <a href=\"https://doi.crossref.org/servlet/"
 "submissionAdmin?sf=detail&submissionID={$submissionId}\">bảng quản trị "
 "Crossref</a>."
+
+msgid "plugins.generic.crossref.issueId.required"
+msgstr "Bài báo \"{$publicationTitle}\" phải được gán vào một số tạp chí trước khi có thể xuất bản."
+
+msgid "plugins.generic.crossref.doi.required"
+msgstr "Bài báo \"{$publicationTitle}\" phải có DOI được gán trước khi có thể xuất bản."
+
+msgid "plugins.generic.crossref.doi.url"
+msgstr "Bài báo \"{$publicationTitle}\" phải có URL DOI hợp lệ trước khi có thể xuất bản."
+
+msgid "plugins.generic.crossref.issn.requiredWithout"
+msgstr "Phải cấu hình ISSN online hoặc ISSN in trước khi các bài báo có thể được xuất bản."
+
+msgid "plugins.importexport.crossref.settings.crossmark.title"
+msgstr "Cài đặt Crossmark"
+
+msgid "plugins.importexport.crossref.settings.crossmark.description"
+msgstr "Crossmark cung cấp cho người đọc quyền truy cập nhanh chóng và dễ dàng vào thông tin trạng thái xuất bản hiện tại."
+
+msgid "plugins.importexport.crossref.settings.form.crossmarkPolicyUrl"
+msgstr "URL Chính sách Crossmark"
+
+msgid "plugins.importexport.crossref.settings.form.crossmarkPolicyUrl.description"
+msgstr "Nhập URL của trang chính sách Crossmark của tạp chí của bạn (ví dụ: https://doi.org/10.xxxxxx/policy)."

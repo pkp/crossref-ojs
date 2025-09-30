@@ -51,6 +51,10 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                 ],
                 'testMode' => (object) [
                     'type' => 'boolean',
+                ],
+                'crossmarkPolicyDOI' => (object) [
+                    'type' => 'string',
+                    'validation' => ['nullable', 'max:255'],
                 ]
             ],
         ];
@@ -97,6 +101,16 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                     ['value' => true, 'label' => __('plugins.importexport.crossref.settings.form.testMode.description')]
                 ],
                 'value' => (bool) $this->agencyPlugin->getSetting($context->getId(), 'testMode'),
+            ]),
+            new FieldHTML('crossmarkSection', [
+                'label' => __('plugins.importexport.crossref.settings.crossmark.title'),
+                'description' => __('plugins.importexport.crossref.settings.crossmark.description'),
+            ]),
+            new FieldText('crossmarkPolicyDOI', [
+                'label' => __('plugins.importexport.crossref.settings.form.crossmarkPolicyDOI'),
+                'description' => __('plugins.importexport.crossref.settings.form.crossmarkPolicyDOI.description'),
+                'value' => $this->agencyPlugin->getSetting($context->getId(), 'crossmarkPolicyDOI'),
+                'inputType' => 'text',
             ])
         ];
     }

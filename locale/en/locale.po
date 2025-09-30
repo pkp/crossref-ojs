@@ -183,3 +183,14 @@ msgstr "The submission \"{$publicationTitle}\" is not associated with a DOI and 
 msgid "plugins.generic.crossref.doi.url"
 msgstr "The submission \"{$publicationTitle}\" is not associated with a valid DOI url and cannot be deposited with CrossRef."
 
+msgid "plugins.importexport.crossref.settings.crossmark.title"
+msgstr "Crossmark Settings"
+
+msgid "plugins.importexport.crossref.settings.crossmark.description"
+msgstr "Crossmark provides readers with quick and easy access to current publication status information."
+
+msgid "plugins.importexport.crossref.settings.form.crossmarkPolicyUrl"
+msgstr "Crossmark Policy URL"
+
+msgid "plugins.importexport.crossref.settings.form.crossmarkPolicyUrl.description"
+msgstr "Enter the URL of your journal's Crossmark policy page (e.g., https://doi.org/10.xxxxxx/policy)."
