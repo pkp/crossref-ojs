@@ -1,10 +1,10 @@
-# Alexandra Fogtmann-Schulz <alfo@kb.dk>, 2022, 2023.
+# Alexandra Fogtmann-Schulz <alfo@kb.dk>, 2022, 2023, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-19T11:05:35+00:00\n"
-"PO-Revision-Date: 2023-05-24 09:49+0000\n"
+"PO-Revision-Date: 2025-10-03 15:38+0000\n"
 "Last-Translator: Alexandra Fogtmann-Schulz <alfo@kb.dk>\n"
 "Language-Team: Danish <http://translate.pkp.sfu.ca/projects/plugins/crossref/"
 "da/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.13.1\n"
+"X-Generator: Weblate 4.18.2\n"
 
 msgid "plugins.importexport.crossref.displayName"
 msgstr "Crossref XML Eksport-plugin"
@@ -42,8 +42,8 @@ msgstr "Alle plugin-krav er opfyldt."
 
 msgid "plugins.importexport.crossref.error.publisherNotConfigured"
 msgstr ""
-"Et tidsskriftsforlag mangler at blive indskrevet! Der skal tilføjes en "
-"forlæggerinstitution på <a href=\"{$journalSettingsUrl}\" target=\"_blank\""
+"Du mangler at indskrive en udgiver af tidsskriftet! Der skal tilføjes en "
+"udgiverinstitution på <a href=\"{$journalSettingsUrl}\" target=\"_blank\""
 ">Konfigurationssiden</a>."
 
 msgid "plugins.importexport.crossref.error.issnNotConfigured"
