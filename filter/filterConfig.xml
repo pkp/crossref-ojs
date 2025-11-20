@@ -17,14 +17,14 @@
 			symbolic="issue=>crossref-xml"
 			displayName="plugins.importexport.crossref.displayName"
 			description="plugins.importexport.crossref.description"
-			inputType="class::classes.issue.Issue[]"
+			inputType="class::APP\issue\Issue[]"
 			outputType="xml::schema(https://www.crossref.org/schemas/crossref5.4.0.xsd)" />
 		<!-- Crossref XML article output -->
 		<filterGroup
 			symbolic="article=>crossref-xml"
 			displayName="plugins.importexport.crossref.displayName"
 			description="plugins.importexport.crossref.description"
-			inputType="class::classes.submission.Submission[]"
+			inputType="class::APP\submission\Submission[]"
 			outputType="xml::schema(https://www.crossref.org/schemas/crossref5.4.0.xsd)" />
 	</filterGroups>
 	<filters>
