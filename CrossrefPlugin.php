@@ -61,6 +61,9 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
                 return true;
             }
 
+            PluginRegistry::register('importexport', new CrossrefExportPlugin($this), $this->getPluginPath());
+            $this->_exportPlugin = PluginRegistry::getPlugin('importexport', 'CrossrefExportPlugin');
+
             if ($this->getEnabled($mainContextId)) {
                 $this->_pluginInitialization();
             }
@@ -94,8 +97,6 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
      */
     private function _pluginInitialization()
     {
-        PluginRegistry::register('importexport', new CrossrefExportPlugin($this), $this->getPluginPath());
-
         Hook::add('DoiSettingsForm::setEnabledRegistrationAgencies', $this->addAsRegistrationAgencyOption(...));
         Hook::add('DoiSetupSettingsForm::getObjectTypes', $this->addAllowedObjectTypes(...));
         Hook::add('Context::validate', $this->validateAllowedPubObjectTypes(...));
