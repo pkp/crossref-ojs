@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/crossref/classes/CrossrefSettings.php
  *
- * Copyright (c) 2014-2023 Simon Fraser University
- * Copyright (c) 2003-2023 John Willinsky
+ * Copyright (c) 2014-2025 Simon Fraser University
+ * Copyright (c) 2003-2025 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefSettings
@@ -51,6 +51,10 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                 ],
                 'testMode' => (object) [
                     'type' => 'boolean',
+                ],
+                'updatePolicyDoi' => (object) [
+                    'type' => 'string',
+                    'validation' => ['nullable', "regex:/^\\d+(.\\d+)+\\//"],
                 ]
             ],
         ];
@@ -59,7 +63,7 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
     /** @inheritDoc */
     public function getFields(Context $context): array
     {
-        return [
+        $settingsFields = [
             new FieldHTML('preamble', [
                 'label' => __('plugins.importexport.crossref.settings'),
                 'description' => $this->_getPreambleText($context),
@@ -97,8 +101,22 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                     ['value' => true, 'label' => __('plugins.importexport.crossref.settings.form.testMode.description')]
                 ],
                 'value' => (bool) $this->agencyPlugin->getSetting($context->getId(), 'testMode'),
-            ])
+            ]),
         ];
+        if ($context->getData(Context::SETTING_DOI_VERSIONING)) {
+            $updatePolicyDoiField = [new FieldText('updatePolicyDoi', [
+                'label' => __('plugins.importexport.crossref.settings.form.updatePolicy'),
+                'description' => __('plugins.importexport.crossref.settings.form.updatePolicy.description'),
+                'isRequired' => true,
+                'value' => $this->agencyPlugin->getSetting($context->getId(), 'updatePolicyDoi'),
+            ])];
+            $settingsFields = array_merge(
+                array_slice($settingsFields, 0, 3, true),
+                $updatePolicyDoiField,
+                array_slice($settingsFields, 3, count($settingsFields)-3, true)
+            );
+        }
+        return $settingsFields;
     }
 
     protected function _getPreambleText(Context $context): string

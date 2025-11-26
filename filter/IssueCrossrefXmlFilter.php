@@ -15,7 +15,12 @@
 namespace APP\plugins\generic\crossref\filter;
 
 use APP\core\Application;
+use APP\core\Request;
+use APP\issue\Issue;
 use APP\plugins\generic\crossref\CrossrefExportDeployment;
+use DOMDocument;
+use DOMElement;
+use PKP\core\Dispatcher;
 use PKP\core\PKPApplication;
 
 class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\NativeExportFilter
@@ -37,7 +42,7 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
     /**
      * @see \PKP\filter\Filter::process()
      *
-     * @param array $pubObjects Array of Issues or Submissions
+     * @param array $pubObjects Array of Issues
      *
      * @return \DOMDocument
      */
@@ -62,7 +67,6 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
         $rootNode->appendChild($bodyNode);
 
         foreach ($pubObjects as $pubObject) {
-            // pubObject is either Issue or Submission
             $journalNode = $this->createJournalNode($doc, $pubObject);
             $bodyNode->appendChild($journalNode);
         }
@@ -74,12 +78,8 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
     //
     /**
      * Create and return the root node 'doi_batch'.
-     *
-     * @param \DOMDocument $doc
-     *
-     * @return \DOMElement
      */
-    public function createRootNode($doc)
+    public function createRootNode(DOMDocument $doc): DOMElement
     {
         /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
@@ -87,6 +87,7 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
         $rootNode->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xsi', $deployment->getXmlSchemaInstance());
         $rootNode->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:jats', $deployment->getJATSNamespace());
         $rootNode->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:ai', $deployment->getAINamespace());
+        $rootNode->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:rel', $deployment->getRelNamespace());
         $rootNode->setAttribute('version', $deployment->getXmlSchemaVersion());
         $rootNode->setAttribute('xsi:schemaLocation', $deployment->getNamespace() . ' ' . $deployment->getSchemaFilename());
         return $rootNode;
@@ -94,12 +95,8 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
 
     /**
      * Create and return the head node 'head'.
-     *
-     * @param \DOMDocument $doc
-     *
-     * @return \DOMElement
      */
-    public function createHeadNode($doc)
+    public function createHeadNode(DOMDocument $doc): DOMElement
     {
         /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
@@ -127,34 +124,20 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
 
     /**
      * Create and return the journal node 'journal'.
-     *
-     * @param \DOMDocument $doc
-     * @param object $pubObject Issue or Submission
-     *
-     * @return \DOMElement
      */
-    public function createJournalNode($doc, $pubObject)
+    public function createJournalNode(DOMDocument $doc, Issue $pubObject): DOMElement
     {
         $deployment = $this->getDeployment();
         $journalNode = $doc->createElementNS($deployment->getNamespace(), 'journal');
         $journalNode->appendChild($this->createJournalMetadataNode($doc));
-
-        $issueNode = $this->createJournalIssueNode($doc, $pubObject);
-        if ($issueNode) {
-            $journalNode->appendChild($issueNode);
-        }
-
+        $journalNode->appendChild($this->createJournalIssueNode($doc, $pubObject));
         return $journalNode;
     }
 
     /**
      * Create and return the journal metadata node 'journal_metadata'.
-     *
-     * @param \DOMDocument $doc
-     *
-     * @return \DOMElement
      */
-    public function createJournalMetadataNode($doc)
+    public function createJournalMetadataNode(DOMDocument $doc): DOMElement
     {
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
@@ -188,18 +171,9 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
 
     /**
      * Create and return the journal issue node 'journal_issue'.
-     *
-     * @param \DOMDocument $doc
-     * @param \APP\issue\Issue|null $issue
-     *
-     * @return \DOMElement|null
      */
-    public function createJournalIssueNode($doc, $issue)
+    public function createJournalIssueNode(DOMDocument $doc, Issue $issue): DOMElement
     {
-        if ($issue === null) {
-            return null;
-        }
-        
         /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
@@ -207,7 +181,7 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
 
         $journalIssueNode = $doc->createElementNS($deployment->getNamespace(), 'journal_issue');
         if ($issue->getDatePublished()) {
-            $journalIssueNode->appendChild($this->createPublicationDateNode($doc, $issue->getDatePublished()));
+            $journalIssueNode->appendChild($this->createDateNode($doc, $issue->getDatePublished(), 'publication_date'));
         }
         if ($issue->getVolume() && $issue->getShowVolume()) {
             $journalVolumeNode = $doc->createElementNS($deployment->getNamespace(), 'journal_volume');
@@ -227,18 +201,13 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
     }
 
     /**
-     * Create and return the publication date node 'publication_date'.
-     *
-     * @param \DOMDocument $doc
-     * @param string $objectPublicationDate
-     *
-     * @return \DOMElement
+     * Create and return the given date node
      */
-    public function createPublicationDateNode($doc, $objectPublicationDate)
+    public function createDateNode(DOMDocument $doc, string $objectPublicationDate, string $elementName): DOMElement
     {
         $deployment = $this->getDeployment();
         $publicationDate = strtotime($objectPublicationDate);
-        $publicationDateNode = $doc->createElementNS($deployment->getNamespace(), 'publication_date');
+        $publicationDateNode = $doc->createElementNS($deployment->getNamespace(), $elementName);
         $publicationDateNode->setAttribute('media_type', 'online');
         if (date('m', $publicationDate)) {
             $publicationDateNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'month', date('m', $publicationDate)));
@@ -252,14 +221,8 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
 
     /**
      * Create and return the DOI date node 'doi_data'.
-     *
-     * @param \DOMDocument $doc
-     * @param string $doi
-     * @param string $url
-     *
-     * @return \DOMElement
      */
-    public function createDOIDataNode($doc, $doi, $url)
+    public function createDOIDataNode(DOMDocument $doc, string $doi, string $url): DOMElement
     {
         $deployment = $this->getDeployment();
         $doiDataNode = $doc->createElementNS($deployment->getNamespace(), 'doi_data');
@@ -270,15 +233,13 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
 
     /**
      * Helper to ensure dispatcher is available even when called from CLI tools
-     *
      */
-    protected function _getDispatcher(\APP\core\Request $request): \PKP\core\Dispatcher
+    protected function _getDispatcher(Request $request): Dispatcher
     {
         $dispatcher = $request->getDispatcher();
         if ($dispatcher === null) {
             $dispatcher = Application::get()->getDispatcher();
         }
-
         return $dispatcher;
     }
 }

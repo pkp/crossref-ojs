@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/crossref/CrossrefExportPlugin.php
  *
- * Copyright (c) 2014-2022 Simon Fraser University
- * Copyright (c) 2003-2022 John Willinsky
+ * Copyright (c) 2014-2025 Simon Fraser University
+ * Copyright (c) 2003-2025 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefExportPlugin
@@ -26,7 +26,6 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use PKP\config\Config;
-use PKP\core\DataObject;
 use PKP\doi\Doi;
 use PKP\file\FileManager;
 use PKP\file\TemporaryFileManager;
@@ -58,13 +57,6 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     public function register($category, $path, $mainContextId = null)
     {
         $success = parent::register($category, $path, $mainContextId);
-        if ($success) {
-            // register hooks. This will prevent DB access attempts before the
-            // schema is installed.
-            if (Application::isUnderMaintenance()) {
-                return true;
-            }
-        }
         return $success;
     }
 
@@ -197,7 +189,12 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
         return (string) \APP\plugins\generic\crossref\CrossrefExportDeployment::class;
     }
 
-    public function exportAndDeposit($context, $objects, $filter, string &$responseMessage, $noValidation = null): bool
+    /**
+     * Exports and deposit XML
+     *
+     * @param (Issue|Submission)[] $objects
+    */
+    public function exportAndDeposit(Journal $context, array $objects, string $filter, string &$responseMessage, ?bool $noValidation = null): bool
     {
         $fileManager = new FileManager();
         $resultErrors = [];
@@ -253,10 +250,9 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     /**
      * Exports and stores XML as a TemporaryFile
      *
-     *
-     * @throws Exception
-     */
-    public function exportAsDownload(\PKP\context\Context $context, array $objects, string $filter, string $objectsFileNamePart, ?bool $noValidation = null, ?array &$exportErrors = null): ?int
+     * @param (Issue|Submission)[] $objects
+    */
+    public function exportAsDownload(Journal $context, array $objects, string $filter, string $objectsFileNamePart, ?bool $noValidation = null, ?array &$exportErrors = null): ?int
     {
         $fileManager = new TemporaryFileManager();
 
@@ -391,17 +387,9 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
 
     /**
      * Check the Crossref APIs, if deposits and registration have been successful
-     *
-     * @param Journal $context
-     * @param DataObject $object The object getting deposited
-     * @param int $status
-     * @param string $batchId
-     * @param string $failedMsg (optional)
-     * @param null|mixed $successMsg
      */
-    public function updateDepositStatus($context, $object, $status, $batchId = null, $failedMsg = null, $successMsg = null)
+    public function updateDepositStatus(Journal $context, Issue|Submission $object, int $status, ?string $batchId = null, ?string $failedMsg = null, ?string $successMsg = null)
     {
-        assert($object instanceof Submission || $object instanceof Issue);
         if ($object instanceof Submission) {
             $doiIds = Repo::doi()->getDoisForSubmission($object->getId());
         } else {
@@ -427,14 +415,11 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
         }
     }
 
-
     /**
      * Get deposit batch ID setting name.
      * NB Changed as of 3.4
-     *
-     * @return string
      */
-    public function getDepositBatchIdSettingName()
+    public function getDepositBatchIdSettingName(): string
     {
         return $this->getPluginSettingsPrefix() . '_batchId';
     }
@@ -445,18 +430,9 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     }
 
     /**
-     * @copydoc PubObjectsExportPlugin::getDepositSuccessNotificationMessageKey()
+     * Get par of the file name based on the object that is being exported
      */
-    public function getDepositSuccessNotificationMessageKey()
-    {
-        return 'plugins.importexport.common.register.success';
-    }
-
-    /**
-     * @param Submission|Issue $object
-     *
-     */
-    private function _getObjectFileNamePart(DataObject $object): string
+    private function _getObjectFileNamePart(Submission|Issue $object): string
     {
         if ($object instanceof Submission) {
             return 'articles-' . $object->getId();
