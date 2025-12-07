@@ -16,9 +16,8 @@
 namespace APP\plugins\generic\crossref;
 
 use APP\issue\Issue;
-use APP\journal\Journal;
+use APP\plugins\PubObjectCache;
 use PKP\context\Context;
-use PKP\plugins\Plugin;
 
 class CrossrefExportDeployment
 {
@@ -30,28 +29,26 @@ class CrossrefExportDeployment
     public const CROSSREF_XMLNS_JATS = 'http://www.ncbi.nlm.nih.gov/JATS1';
     public const CROSSREF_XMLNS_AI = 'http://www.crossref.org/AccessIndicators.xsd';
     public const CROSSREF_XMLNS_XML = 'http://www.w3.org/XML/1998/namespace';
+    public const CROSSREF_XMLNS_REL = 'http://www.crossref.org/relations.xsd';
 
-    /** @var Journal The current import/export context */
-    public $_context;
+    public Context $_context;
 
-    /** @var Plugin The current import/export plugin */
-    public $_plugin;
+    public CrossrefExportPlugin $_plugin;
 
-    /** @var Issue */
-    public $_issue;
+    public Issue $_issue;
 
-    public function getCache()
+    /**
+     * Get plugin cache
+     */
+    public function getCache(): PubObjectCache
     {
         return $this->_plugin->getCache();
     }
 
     /**
      * Constructor
-     *
-     * @param Context $context
-     * @param Plugin $plugin
      */
-    public function __construct($context, $plugin)
+    public function __construct(Context $context, CrossrefExportPlugin $plugin)
     {
         $this->setContext($context);
         $this->setPlugin($plugin);
@@ -62,153 +59,128 @@ class CrossrefExportDeployment
     //
     /**
      * Get the root element name
-     *
-     * @return string
      */
-    public function getRootElementName()
+    public function getRootElementName(): string
     {
         return 'doi_batch';
     }
 
     /**
      * Get the namespace URN
-     *
-     * @return string
      */
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return static::CROSSREF_XMLNS;
     }
 
     /**
      * Get the schema instance URN
-     *
-     * @return string
      */
-    public function getXmlSchemaInstance()
+    public function getXmlSchemaInstance(): string
     {
         return static::CROSSREF_XMLNS_XSI;
     }
 
     /**
      * Get the schema version
-     *
-     * @return string
      */
-    public function getXmlSchemaVersion()
+    public function getXmlSchemaVersion(): string
     {
         return static::CROSSREF_XSI_SCHEMAVERSION;
     }
 
     /**
      * Get the schema location URL
-     *
-     * @return string
      */
-    public function getXmlSchemaLocation()
+    public function getXmlSchemaLocation(): string
     {
         return static::CROSSREF_XSI_SCHEMALOCATION;
     }
 
     /**
      * Get the JATS namespace URN
-     *
-     * @return string
      */
-    public function getJATSNamespace()
+    public function getJATSNamespace(): string
     {
         return static::CROSSREF_XMLNS_JATS;
     }
 
     /**
      * Get the access indicators namespace URN
-     *
-     * @return string
      */
-    public function getAINamespace()
+    public function getAINamespace(): string
     {
         return static::CROSSREF_XMLNS_AI;
     }
 
     /**
      * Get the XML namespace URN
-     *
-     * @return string
      */
-    public function getXMLNamespace()
+    public function getXMLNamespace(): string
     {
         return static::CROSSREF_XMLNS_XML;
     }
 
     /**
-     * Get the schema filename.
-     *
-     * @return string
+     * Get the XML namespace URN
      */
-    public function getSchemaFilename()
+    public function getRelNamespace(): string
+    {
+        return static::CROSSREF_XMLNS_REL;
+    }
+
+    /**
+     * Get the schema filename.
+     */
+    public function getSchemaFilename(): string
     {
         return $this->getXmlSchemaLocation();
     }
 
-    //
-    // Getter/setters
-    //
     /**
      * Set the import/export context.
-     *
-     * @param Context $context
      */
-    public function setContext($context)
+    public function setContext(Context $context): void
     {
         $this->_context = $context;
     }
 
     /**
      * Get the import/export context.
-     *
-     * @return Context
      */
-    public function getContext()
+    public function getContext(): Context
     {
         return $this->_context;
     }
 
     /**
      * Set the import/export plugin.
-     *
-     * @param Plugin $plugin
      */
-    public function setPlugin($plugin)
+    public function setPlugin(CrossrefExportPlugin $plugin): void
     {
         $this->_plugin = $plugin;
     }
 
     /**
      * Get the import/export plugin.
-     *
-     * @return Plugin
      */
-    public function getPlugin()
+    public function getPlugin(): CrossrefExportPlugin
     {
         return $this->_plugin;
     }
 
     /**
      * Set the import/export issue.
-     *
-     * @param Issue $issue
      */
-    public function setIssue($issue)
+    public function setIssue(Issue $issue): void
     {
         $this->_issue = $issue;
     }
 
     /**
      * Get the import/export issue.
-     *
-     * @return Issue
      */
-    public function getIssue()
+    public function getIssue(): Issue
     {
         return $this->_issue;
     }
