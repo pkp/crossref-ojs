@@ -98,6 +98,16 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     }
 
     /**
+     * @copydoc \PKP\plugins\Plugin::getEncryptedSettingFieldNames()
+     */
+    public function getEncryptedSettingFieldNames(): array
+    {
+        return [
+            'password',
+        ];
+    }
+
+    /**
      * Helper to register hooks that are used in normal plugin setup and in CLI tool usage.
      */
     private function _pluginInitialization(): void
