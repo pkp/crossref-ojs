@@ -91,7 +91,6 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
             ]),
             new FieldText('password', [
                 'label' => __('plugins.importexport.common.settings.form.password'),
-                'description' => __('plugins.importexport.common.settings.form.password.description'),
                 'value' => $this->agencyPlugin->getSetting($context->getId(), 'password'),
                 'inputType' => 'password',
             ]),
