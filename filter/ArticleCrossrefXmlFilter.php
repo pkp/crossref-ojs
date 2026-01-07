@@ -157,10 +157,10 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                 // Check if both givenName and familyName is set for the submission language.
                 if (!empty($familyNames[$locale]) && !empty($givenNames[$locale])) {
                     $personNameNode->setAttribute('language', \Locale::getPrimaryLanguage($locale));
-                    $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'given_name', htmlspecialchars(ucfirst($givenNames[$locale]), ENT_COMPAT, 'UTF-8')));
-                    $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($familyNames[$locale]), ENT_COMPAT, 'UTF-8')));
+                    $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'given_name', htmlspecialchars($givenNames[$locale], ENT_COMPAT, 'UTF-8')));
+                    $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars($familyNames[$locale], ENT_COMPAT, 'UTF-8')));
                 } else {
-                    $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($givenNames[$locale]), ENT_COMPAT, 'UTF-8')));
+                    $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars($givenNames[$locale], ENT_COMPAT, 'UTF-8')));
                 }
 
                 $affiliations = $author->getAffiliations();
@@ -201,9 +201,9 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                             $nameNode = $doc->createElementNS($deployment->getNamespace(), 'name');
                             $nameNode->setAttribute('language', \Locale::getPrimaryLanguage($otherLocal));
 
-                            $nameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars(ucfirst($familyName), ENT_COMPAT, 'UTF-8')));
+                            $nameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars($familyName, ENT_COMPAT, 'UTF-8')));
                             if (isset($givenNames[$otherLocal]) && !empty($givenNames[$otherLocal])) {
-                                $nameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'given_name', htmlspecialchars(ucfirst($givenNames[$otherLocal]), ENT_COMPAT, 'UTF-8')));
+                                $nameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'given_name', htmlspecialchars($givenNames[$otherLocal], ENT_COMPAT, 'UTF-8')));
                             }
 
                             $altNameNode->appendChild($nameNode);
