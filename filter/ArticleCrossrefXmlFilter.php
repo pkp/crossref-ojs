@@ -300,7 +300,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             if (!$galley->getData('urlRemote')) {
                 $galleyFile = $galley->getFile();
                 if ($galleyFile) {
-                    $genre = Repo::genre()->get($galleyFile->getGenreId());
+                    $genre = Genre::findById((int) $galleyFile->getGenreId());
                     if ($genre !== null && $genre->supplementary && $galley->getDoi()) {
                         $componentGalleys[] = $galley;
                     } else {
