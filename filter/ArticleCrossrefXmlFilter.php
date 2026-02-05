@@ -29,6 +29,7 @@ use Illuminate\Support\Enumerable;
 use PKP\citation\Citation;
 use PKP\citation\enum\CitationSourceType;
 use PKP\citation\enum\CitationType;
+use PKP\config\Config;
 use PKP\context\Context;
 use PKP\core\PKPApplication;
 use PKP\db\DAORegistry;
@@ -266,15 +267,15 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             }
         }
 
-        // ai:program (AccessIndicators) element, that contains the license URL
-        $this->appendProgramNode($doc, $journalArticleNode, $publication);
-
-        if ($context->getData(Context::SETTING_DOI_VERSIONING) && $this->versionsDois) {
-            // crossmark updates
-            $this->appendCrossmarkNode($doc, $journalArticleNode, $this->versionsDois, $datePublished);
-
+        if ($context->getData(Context::SETTING_DOI_VERSIONING)) {
+            // crossmark
+            $this->appendCrossmarkNode($doc, $journalArticleNode, $this->versionsDois, $publication);
             // rel:program
             $this->appendRelationships($doc, $journalArticleNode, $this->versionsDois);
+        } else {
+            // if no crossmark element is used, append ai:program here
+            // ai:program (AccessIndicators) element, that contains the license URL
+            $this->appendProgramNode($doc, $journalArticleNode, $publication);
         }
 
         // doi_data
@@ -568,9 +569,9 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             $citationListNode = $doc->createElementNS($deployment->getNamespace(), 'citation_list');
             foreach ($citations as $citation) {
                 /** @var Citation $citation */
-                $rawCitation = $citation->getRawCitation();
+                $rawCitation = strip_tags($citation->getRawCitation());
                 $isStructured = $citation->isStructured();
-                if (!empty($rawCitation)) { // This should not be the case any more, but lets leave it here
+                if (!empty($rawCitation)) {
                     $citationNode = $doc->createElementNS($deployment->getNamespace(), 'citation');
                     $citationNode->setAttribute('key', $citation->getId());
                     if ($isStructured) {
@@ -701,24 +702,55 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Create crossmark update field, used to register the update of the previous version
      */
-    public function appendCrossmarkNode(DOMDocument $doc, DOMElement $parentNode, array $versionsDois, string $datePublished): void
+    public function appendCrossmarkNode(DOMDocument $doc, DOMElement $parentNode, array $versionsDois, Publication $publication): void
     {
         /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $plugin = $deployment->getPlugin();
 
-        $crossmarkPolicyDoi = $plugin->getSetting($context->getId(), 'updatePolicyDoi');
         $crossmarkNode = $doc->createElementNS($deployment->getNamespace(), 'crossmark');
-        $crossmarkNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'crossmark_policy', htmlspecialchars($crossmarkPolicyDoi, ENT_COMPAT, 'UTF-8')));
-        $updatesNode = $doc->createElementNS($deployment->getNamespace(), 'updates');
-        foreach ($versionsDois as $versionDoi) {
-            $updateNode = $doc->createElementNS($deployment->getNamespace(), 'update', htmlspecialchars($versionDoi, ENT_COMPAT, 'UTF-8'));
-            $updateNode->setAttribute('type', 'new_version');
-            $updateNode->setAttribute('date', $datePublished);
-            $updatesNode->appendChild($updateNode);
+        // crossmark_policy
+        $updatePolicyDoi = $plugin->getSetting($context->getId(), 'updatePolicyDoi');
+        $crossmarkNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'crossmark_policy', htmlspecialchars($updatePolicyDoi, ENT_COMPAT, 'UTF-8')));
+        // updates
+        if (!empty($versionsDois)) {
+            $updatesNode = $doc->createElementNS($deployment->getNamespace(), 'updates');
+            foreach ($versionsDois as $versionDoi) {
+                $updateNode = $doc->createElementNS($deployment->getNamespace(), 'update', htmlspecialchars($versionDoi, ENT_COMPAT, 'UTF-8'));
+                $updateNode->setAttribute('type', 'new_version');
+                $updateNode->setAttribute('date', $publication->getData('datePublished'));
+                $updatesNode->appendChild($updateNode);
+            }
+            $crossmarkNode->appendChild($updatesNode);
         }
-        $crossmarkNode->appendChild($updatesNode);
+
+        // custom_metadata
+        // it is needed for the funding information, so that funding plugin does not need to add it
+        // add assertion for published date, so that custom_metadata is never empty
+        $customMetadataNode = $doc->createElementNS($deployment->getNamespace(), 'custom_metadata');
+        $assertionPublishedNode = $doc->createElementNS($deployment->getNamespace(), 'assertion', $publication->getData('datePublished'));
+        $assertionPublishedNode->setAttribute('name', 'published');
+        $assertionPublishedNode->setAttribute('label', 'Published');
+        $assertionPublishedNode->setAttribute('group_name', 'publication_history');
+        $assertionPublishedNode->setAttribute('group_label', 'Publication History');
+        $customMetadataNode->appendChild($assertionPublishedNode);
+
+        // funding statement
+        $fundingStatement = $publication->getData('fundingStatement', $publication->getData('locale'));
+        if (!empty($fundingStatement)) {
+            $assertionFundingStatementNode = $doc->createElementNS($deployment->getNamespace(), 'assertion', htmlspecialchars(strip_tags($fundingStatement), ENT_COMPAT, 'UTF-8'));
+            $assertionFundingStatementNode->setAttribute('name', 'funding_statement');
+            $assertionFundingStatementNode->setAttribute('label', 'Funding Statement');
+            $assertionFundingStatementNode->setAttribute('group_name', 'funding_information');
+            $assertionFundingStatementNode->setAttribute('group_label', 'Funding Information');
+            $customMetadataNode->appendChild($assertionFundingStatementNode);
+        }
+
+        // ai:program (AccessIndicators) element, that contains the license URL
+        $this->appendProgramNode($doc, $customMetadataNode, $publication);
+
+        $crossmarkNode->appendChild($customMetadataNode);
         $parentNode->appendChild($crossmarkNode);
     }
 
@@ -727,18 +759,19 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
      */
     public function appendRelationships(DOMDocument $doc, DOMElement $parentNode, array $versionsDois): void
     {
-		/** @var CrossrefExportDeployment $deployment */
-		$deployment = $this->getDeployment();
-
-        $programNode = $doc->createElementNS($deployment->getRelNamespace(), 'rel:program');
-        foreach ($versionsDois as $versionDoi) {
-            $relatedItemNode = $doc->createElementNS($deployment->getRelNamespace(), 'rel:related_item');
-            $intraWorkRel = $doc->createElementNS($deployment->getRelNamespace(), 'rel:intra_work_relation', htmlspecialchars($versionDoi, ENT_COMPAT, 'UTF-8'));
-            $intraWorkRel->setAttribute('relationship-type', 'isVersionOf');
-            $intraWorkRel->setAttribute('identifier-type', 'doi');
-            $relatedItemNode->appendChild($intraWorkRel);
-            $programNode->appendChild($relatedItemNode);
+        if (!empty($versionsDois)) {
+            /** @var CrossrefExportDeployment $deployment */
+            $deployment = $this->getDeployment();
+            $programNode = $doc->createElementNS($deployment->getRelNamespace(), 'rel:program');
+            foreach ($versionsDois as $versionDoi) {
+                $relatedItemNode = $doc->createElementNS($deployment->getRelNamespace(), 'rel:related_item');
+                $intraWorkRel = $doc->createElementNS($deployment->getRelNamespace(), 'rel:intra_work_relation', htmlspecialchars($versionDoi, ENT_COMPAT, 'UTF-8'));
+                $intraWorkRel->setAttribute('relationship-type', 'isVersionOf');
+                $intraWorkRel->setAttribute('identifier-type', 'doi');
+                $relatedItemNode->appendChild($intraWorkRel);
+                $programNode->appendChild($relatedItemNode);
+            }
+            $parentNode->appendChild($programNode);
         }
-        $parentNode->appendChild($programNode);
     }
 }
