@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/crossref/CrossrefExportPlugin.php
  *
- * Copyright (c) 2014-2025 Simon Fraser University
- * Copyright (c) 2003-2025 John Willinsky
+ * Copyright (c) 2014-2026 Simon Fraser University
+ * Copyright (c) 2003-2026 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefExportPlugin
@@ -21,10 +21,13 @@ use APP\issue\Issue;
 use APP\journal\Journal;
 use APP\plugins\DOIPubIdExportPlugin;
 use APP\plugins\IDoiRegistrationAgency;
+use APP\publication\Publication;
 use APP\submission\Submission;
+use DOMDocument;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Enumerable;
 use PKP\config\Config;
 use PKP\doi\Doi;
 use PKP\file\FileManager;
@@ -188,6 +191,41 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     {
         return (string) \APP\plugins\generic\crossref\CrossrefExportDeployment::class;
     }
+
+    // Settings and configuration methods
+
+    /**
+     * Get deposit batch ID setting name.
+     * NB Changed as of 3.4
+     */
+    public function getDepositBatchIdSettingName(): string
+    {
+        return $this->getPluginSettingsPrefix() . '_batchId';
+    }
+
+    public function getSuccessMsgSettingName(): string
+    {
+        return $this->getPluginSettingsPrefix() . '_successMsg';
+    }
+
+    /**
+     * Get citations diagnostic ID setting name.
+     */
+    public function getCitationsDiagnosticIdSettingName(): string
+    {
+        return 'crossref::citationsDiagnosticId';
+    }
+
+    /**
+     * Get setting name, that defines if the scheduled task for the automatic check
+     * of the found Crossref citations DOIs should be run, if set up so in the plugin settings.
+     */
+    public function getAutoCheckSettingName(): string
+    {
+        return 'crossref::checkCitationsDOIs';
+    }
+
+    // Main export and deposit operations
 
     /**
      * Exports and deposit XML
@@ -373,8 +411,25 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
             if ($warningCount > 0) {
                 $result = [['plugins.importexport.crossref.register.success.warning', htmlspecialchars($response->getBody())]];
             }
-            // A possibility for other plugins (e.g. reference linking) to work with the response
+
+            // A possibility for other plugins to work with the response
+            // TO-DO: maybe not needed any more
             Hook::run('crossrefexportplugin::deposited', [[$this, $response->getBody(), $objects]]);
+
+            if (is_a($objects, Submission::class)) {
+                // Get DOMDocument from the response XML string
+                $xmlDoc = new DOMDocument();
+                $xmlDoc->loadXML($response->getBody());
+                if ($xmlDoc->getElementsByTagName('citations_diagnostic')->length > 0) {
+                    $citationsDiagnosticNode = $xmlDoc->getElementsByTagName('citations_diagnostic')->item(0); /** @var DOMNodeList $citationsDiagnosticNode */
+                    $citationsDiagnosticCode = $citationsDiagnosticNode->getAttribute('deferred') ;
+                    //set the citations diagnostic code and the setting for the automatic check
+                    $objects->setData($this->getCitationsDiagnosticIdSettingName(), $citationsDiagnosticCode);
+                    $objects->setData($this->getAutoCheckSettingName(), true);
+                    Repo::submission()->edit($objects, []);
+                    $objects = Repo::submission()->get($objects->getId());
+                }
+            }
         }
 
         // Update the status
@@ -416,17 +471,34 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     }
 
     /**
-     * Get deposit batch ID setting name.
-     * NB Changed as of 3.4
+     * Get the publications that can be exported/deposited.
+     * Only the last minor versions are considered.
      */
-    public function getDepositBatchIdSettingName(): string
+    public function getLatestMinorPublications(Enumerable $publications): array
     {
-        return $this->getPluginSettingsPrefix() . '_batchId';
-    }
+        $latestMinorPublications = [];
+        foreach ($publications as $publication) {
+            if (!$publication->getDoi() ||
+                $publication->getData('status') != Publication::STATUS_PUBLISHED) {
 
-    public function getSuccessMsgSettingName(): string
-    {
-        return $this->getPluginSettingsPrefix() . '_successMsg';
+                    continue;
+            }
+
+            $versionStage = $publication->getData('versionStage');
+            $versionMajor = $publication->getData('versionMajor');
+            $versionMinor = $publication->getData('versionMinor');
+            if (!array_key_exists($versionStage, $latestMinorPublications)) {
+                $latestMinorPublications[$versionStage] = [];
+            }
+            if (!array_key_exists($versionMajor, $latestMinorPublications[$versionStage])) {
+                $latestMinorPublications[$versionStage][$versionMajor] = $publication;
+                continue;
+            }
+            if ($versionMinor > $latestMinorPublications[$versionStage][$versionMajor]->getData('versionMinor')) {
+                $latestMinorPublications[$versionStage][$versionMajor] = $publication;
+            }
+        }
+        return $latestMinorPublications;
     }
 
     /**

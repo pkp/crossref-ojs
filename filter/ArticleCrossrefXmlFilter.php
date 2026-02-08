@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/crossref/filter/ArticleCrossrefXmlFilter.php
  *
- * Copyright (c) 2014-2025 Simon Fraser University
- * Copyright (c) 2000-2025 John Willinsky
+ * Copyright (c) 2014-2026 Simon Fraser University
+ * Copyright (c) 2000-2026 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class ArticleCrossrefXmlFilter
@@ -25,11 +25,9 @@ use APP\submission\Submission;
 use DOMDocument;
 use DOMElement;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Enumerable;
 use PKP\citation\Citation;
 use PKP\citation\enum\CitationSourceType;
 use PKP\citation\enum\CitationType;
-use PKP\config\Config;
 use PKP\context\Context;
 use PKP\core\PKPApplication;
 use PKP\db\DAORegistry;
@@ -66,8 +64,10 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $doc = new \DOMDocument('1.0', 'utf-8');
         $doc->preserveWhiteSpace = false;
         $doc->formatOutput = true;
+        /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
+        $plugin = $deployment->getPlugin();
 
         // Create the root node
         $rootNode = $this->createRootNode($doc);
@@ -86,7 +86,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                 $journalNode = $this->createSubmissionJournalNode($doc, $pubObject, $publication);
                 $bodyNode->appendChild($journalNode);
             } else {
-                $latestMinorPublications = $this->getLatestMinorPublications($pubObject->getData('publications'));
+                $latestMinorPublications = $plugin->getLatestMinorPublications($pubObject->getData('publications'));
                 foreach ($latestMinorPublications as $versionStage) {
                     foreach ($versionStage as $publication) {
                         $journalNode = $this->createSubmissionJournalNode($doc, $pubObject, $publication);
@@ -100,37 +100,6 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         return $doc;
     }
 
-    /**
-     * Get the publications that can be exported/deposited.
-     * Only the last minor versions are considered.
-     */
-    protected function getLatestMinorPublications(Enumerable $publications): array
-    {
-        $latestMinorPublications = [];
-        foreach ($publications as $publication) {
-            if (!$publication->getDoi() ||
-                $publication->getData('status') != Publication::STATUS_PUBLISHED) {
-
-                    continue;
-            }
-
-            $versionStage = $publication->getData('versionStage');
-            $versionMajor = $publication->getData('versionMajor');
-            $versionMinor = $publication->getData('versionMinor');
-            if (!array_key_exists($versionStage, $latestMinorPublications)) {
-                $latestMinorPublications[$versionStage] = [];
-            }
-            if (!array_key_exists($versionMajor, $latestMinorPublications[$versionStage])) {
-                $latestMinorPublications[$versionStage][$versionMajor] = $publication;
-                continue;
-            }
-            if ($versionMinor > $latestMinorPublications[$versionStage][$versionMajor]->getData('versionMinor')) {
-                $latestMinorPublications[$versionStage][$versionMajor] = $publication;
-            }
-        }
-        return $latestMinorPublications;
-    }
-
     //
     // Submission conversion functions
     //
@@ -141,7 +110,6 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     {
         /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
-        $context = $deployment->getContext();
 
         $journalNode = $doc->createElementNS($deployment->getNamespace(), 'journal');
         $journalNode->appendChild($this->createJournalMetadataNode($doc));

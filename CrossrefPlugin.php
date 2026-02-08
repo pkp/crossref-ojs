@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/crossref/CrossrefPlugin.php
  *
- * Copyright (c) 2014-2025 Simon Fraser University
- * Copyright (c) 2003-2025 John Willinsky
+ * Copyright (c) 2014-2026 Simon Fraser University
+ * Copyright (c) 2003-2026 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefPlugin
@@ -26,15 +26,23 @@ use APP\submission\Submission;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
+use PKP\citation\Citation;
+use PKP\citation\pid\Doi;
 use PKP\context\Context;
 use PKP\doi\RegistrationAgencySettings;
 use PKP\plugins\GenericPlugin;
 use PKP\plugins\Hook;
+use PKP\plugins\interfaces\HasTaskScheduler;
 use PKP\plugins\PluginRegistry;
+use PKP\scheduledTask\PKPScheduler;
 use PKP\services\PKPSchemaService;
 
-class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
+
+class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, HasTaskScheduler
 {
+    public const CROSSREF_API_REFS_URL = 'https://doi.crossref.org/getResolvedRefs';
+    public const CROSSREF_API_REFS_URL_DEV = 'https://test.crossref.org/getResolvedRefs';
+
     private CrossrefSettings $_settingsObject;
     private ?CrossrefExportPlugin $_exportPlugin = null;
 
@@ -68,9 +76,12 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
             $this->_exportPlugin = PluginRegistry::getPlugin('importexport', 'CrossrefExportPlugin');
 
             Hook::add('Schema::get::doi', $this->addToSchema(...));
+            Hook::add('Schema::get::submission', $this->addSubmissionSchema(...));
+            Hook::add('Citation::importCitations::after', $this->citationsChanged(...));
 
             if ($this->getEnabled($mainContextId)) {
                 $this->_pluginInitialization();
+                Hook::add('Templates::Article::Details::Reference', [$this, 'displayReferenceDOI']);
             }
         }
 
@@ -122,6 +133,18 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     }
 
     /**
+     * @copydoc \PKP\plugins\interfaces\HasTaskScheduler::registerSchedules()
+     */
+    public function registerSchedules(PKPScheduler $scheduler): void
+    {
+        $scheduler
+            ->addSchedule(new CrossrefCitationsDiagnosticInfoSender([]))
+            ->hourly()
+            ->name(CrossrefCitationsDiagnosticInfoSender::class)
+            ->withoutOverlapping();
+    }
+
+    /**
      * Add properties for Crossref to the DOI entity for storage in the database.
      *
      * @param string $hookName `Schema::get::doi`
@@ -146,6 +169,213 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
         }
 
         return Hook::CONTINUE;
+    }
+
+    /**
+     * Add properties to the submission entity (SchemaDAO-based)
+     *
+     * @param string $hookName `Schema::get::submission`
+     * @param array $args [
+     *      @option stdClass $schema
+     * ]
+     */
+    public function addSubmissionSchema(string $hookName, array $args): bool
+    {
+        $schema = $args[0];
+
+        $schema->properties->{$this->_exportPlugin->getCitationsDiagnosticIdSettingName()} = (object) [
+            'type' => 'string',
+            'apiSummary' => true,
+            'validation' => ['nullable']
+        ];
+
+        $schema->properties->{$this->_exportPlugin->getAutoCheckSettingName()} = (object) [
+            'type' => 'boolean',
+            'apiSummary' => true,
+            'validation' => ['nullable']
+        ];
+        return Hook::CONTINUE;
+    }
+
+    /**
+     * Resets the submission's citations diagnostic ID and authomatic check settings every time all citations are changed,
+     * so that the submission will not be checked for found Crossref references DOIs in the next scheduled task run.
+     *
+     * @param string $hookName Hook name 'Citation::importCitations::after'
+     */
+    public function citationsChanged(string $hookName, int $publicationId, array $existingCitations, array $importedCitations): bool
+    {
+        if (!$this->getEnabled() ||
+            !$this->hasCrossrefCredentials() ||
+            !$this->citationsEnabled()) {
+
+                return Hook::CONTINUE;
+        }
+
+        $publication = Repo::publication()->get($publicationId);
+        $submission = Repo::submission()->get($publication->getData('submissionId'));
+
+        if ($submission->getData($this->_exportPlugin->getCitationsDiagnosticIdSettingName())) {
+            $submission->setData($this->_exportPlugin->getCitationsDiagnosticIdSettingName(), null);
+            $submission->setData($this->_exportPlugin->getAutoCheckSettingName(), null);
+            Repo::submission()->edit($submission, []);
+        }
+        return Hook::CONTINUE;
+    }
+
+    /**
+     * Insert reference DOI on the citations and article view page.
+     *
+     * @param string $hookName Hook name 'Templates::Article::Details::Reference'
+     * @param array $params [
+     *  @option Citation
+     *  @option Smarty
+     *  @option string Rendered smarty template
+     * ]
+     */
+    public function displayReferenceDOI(string $hookName, array $params): bool
+    {
+        /** @var Citation $citation */
+        $citation = $params[0]['citation'];
+        /** @var \Smarty $smarty */
+        $smarty = &$params[1];
+        /** @var string $output */
+        $output = &$params[2];
+
+        if ($citation->getData('doi')) {
+            $rawString = str_ireplace('http://', 'https://', $citation->getRawCitation());
+            $doi = Doi::extractFromString($rawString);
+            // Display DOI only if the raw citation string doesn't already contain the DOI as a link, to avoid duplicate DOIs on the page
+            if (empty($doi)) {
+                $crossrefFullUrl = 'https://doi.org/' . $citation->getData('doi');
+                $smarty->assign('crossrefFullUrl', $crossrefFullUrl);
+                $output .= $smarty->fetch($this->getTemplateResource('displayDOI.tpl'));
+            }
+        }
+        return Hook::CONTINUE;
+    }
+
+    /**
+     * Are Crossref username and password set in Crossref plugin
+     */
+    public function hasCrossrefCredentials(?int $contextId = null): bool
+    {
+        if (!isset($contextId)) {
+            $contextId = $this->getCurrentContextId();
+        }
+        return strlen((string) $this->getSetting($contextId, 'username')) > 0
+            && strlen((string) $this->getSetting($contextId, 'password')) > 0;
+    }
+
+    /**
+     * Are citations submission metadata enabled in this journal
+     */
+    public function citationsEnabled(?int $contextId = null): bool
+    {
+        if (!isset($contextId)) {
+            $contextId = $this->getCurrentContextId();
+        }
+        $contextDao = Application::getContextDAO();
+        $context = $contextDao->getById($contextId);
+        return !empty($context->getData('citations'));
+    }
+
+    /**
+     * Retrieve submission's publication that should be checked for the found Crossref citations DOIs.
+     *
+     * @return Publication[]
+     */
+    protected function getPublicationsToCheck(Submission $submission, Context $context): array
+    {
+        $publicationsToCheck = [];
+        if (!$context->getData(Context::SETTING_DOI_VERSIONING)) {
+            $publication = $submission->getCurrentPublication();
+            if ($publication->getDoi() && $publication->getData('status') == Publication::STATUS_PUBLISHED) {
+                $publicationsToCheck[] = $publication;
+            }
+        } else {
+            $latestMinorPublications = $this->_exportPlugin->getLatestMinorPublications($submission->getData('publications'));
+            foreach ($latestMinorPublications as $versionStage) {
+                foreach ($versionStage as $publication) {
+                    $publicationsToCheck[] = $publication;
+                }
+            }
+        }
+        return $publicationsToCheck;
+    }
+
+    /**
+     * Consider found Crossref references DOIs.
+     */
+    public function considerFoundCrossrefReferencesDOIs(Context $context): void
+    {
+        // Retrieve all articles with their DOIs deposited together with the references.
+        // i.e. with the citations diagnostic ID setting
+        $submissionIds = Repo::submission()->getIdsBySetting($this->_exportPlugin->getAutoCheckSettingName(), true, $context->getId())->toArray();
+        $submissions = Repo::submission()->getCollector()->filterBySubmissionIds($submissionIds)->getMany();
+        foreach ($submissions as $submission) {
+            $publicationsToCheck = $this->getPublicationsToCheck($submission, $context); // always contain DOI and are published
+            foreach ($publicationsToCheck as $publication) { /** @var Publication $publication */
+                $citations = $publication->getData('citations') ?? [];
+
+                $citationsToCheck = [];
+                foreach ($citations as $citation) { /** @var Citation $citation */
+                    if (!$citation->getData('doi')) {
+                        $citationsToCheck[$citation->getId()] = $citation;
+                    }
+                }
+                if (empty($citationsToCheck)) {
+                    continue;
+                }
+
+                $matchedReferences = $this->getResolvedRefs($publication->getDoi(), $context->getId());
+                if ($matchedReferences) {
+                    foreach ($matchedReferences as $matchedReference) {
+                        $key = $matchedReference['key'] ?? null;
+                        if ($key === null || !isset($citationsToCheck[$key])) {
+                            continue;
+                        }
+                        $citation = $citationsToCheck[$key];
+                        $citation->setData('doi', $matchedReference['doi']);
+                        Repo::citation()->edit($citation, []);
+                    }
+                }
+            }
+            // remove auto check setting
+            $submission->setData($this->_exportPlugin->getAutoCheckSettingName(), null);
+            Repo::submission()->edit($submission, []);
+        }
+    }
+
+    /**
+     * Use Crossref API to get the references DOIs for the the given article DOI.
+     */
+    protected function getResolvedRefs(string $doi, int $contextId): ?array
+    {
+        $matchedReferences = null;
+
+        $username = $this->getSetting($contextId, 'username');
+        $password = $this->getSetting($contextId, 'password');
+
+        // Use a different endpoint for testing and production.
+        $isTestMode = $this->getSetting($contextId, 'testMode') == 1;
+        $endpoint = ($isTestMode ? self::CROSSREF_API_REFS_URL_DEV : self::CROSSREF_API_REFS_URL);
+
+        $url = $endpoint . '?doi=' . $doi . '&usr=' . urlencode($username) . '&pwd=' . urlencode($password);
+
+        $httpClient = Application::get()->getHttpClient();
+        try {
+            $response = $httpClient->request('POST', $url);
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            return null;
+        }
+
+        if ($response?->getStatusCode() == 200) {
+            $response = json_decode($response->getBody(), true);
+            $matchedReferences = $response['matched-references'] ?? [];
+        }
+
+        return $matchedReferences;
     }
 
     /**
