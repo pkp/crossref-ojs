@@ -93,6 +93,7 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                 'label' => __('plugins.importexport.common.settings.form.password'),
                 'value' => $this->agencyPlugin->getSetting($context->getId(), 'password'),
                 'inputType' => 'password',
+                'autocomplete' => 'off',
             ]),
             new FieldOptions('testMode', [
                 'label' => __('plugins.importexport.common.settings.form.testMode.label'),
