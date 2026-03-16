@@ -273,7 +273,9 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             // rel:program
             $this->appendRelationships($doc, $journalArticleNode, $this->versionsDois);
         } else {
-            // if no crossmark element is used, append ai:program here
+            // if no crossmark element is used, append program nodes here
+            // fr:program (FundRef)
+            $this->appendFundrefNode($doc, $journalArticleNode, $publication);
             // ai:program (AccessIndicators) element, that contains the license URL
             $this->appendProgramNode($doc, $journalArticleNode, $publication);
         }
@@ -469,6 +471,72 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             $licenseNode->appendChild($node = $doc->createElementNS($deployment->getAINamespace(), 'ai:license_ref', htmlspecialchars($publication->getData('licenseUrl'), ENT_COMPAT, 'UTF-8')));
             $parentNode->appendChild($licenseNode);
         }
+    }
+
+    /**
+     * Append fr:program (FundRef) node with funding information
+     */
+    public function appendFundrefNode(DOMDocument $doc, DOMElement $parentNode, Publication $publication): void
+    {
+        /** @var CrossrefExportDeployment $deployment */
+        $deployment = $this->getDeployment();
+
+        $funders = $publication->getData('funders');
+
+        if (empty($funders)) {
+            return;
+        }
+
+        $locale = $publication->getData('locale');
+
+        $programNode = $doc->createElementNS($deployment->getFundrefNamespace(), 'fr:program');
+        $programNode->setAttribute('name', 'fundref');
+
+        foreach ($funders as $funder) {
+
+            $groupNode = $doc->createElementNS($deployment->getFundrefNamespace(), 'fr:assertion');
+            $groupNode->setAttribute('name', 'fundgroup');
+
+            $funderName = $funder->name[$locale];
+
+            if (!empty($funderName)) {
+                $funderNameNode = $doc->createElementNS(
+                    $deployment->getFundrefNamespace(),
+                    'fr:assertion',
+                    htmlspecialchars($funderName, ENT_COMPAT, 'UTF-8')
+                );
+                $funderNameNode->setAttribute('name', 'funder_name');
+                $groupNode->appendChild($funderNameNode);
+            }
+
+            if (!empty($funder->ror)) {
+                $rorNode = $doc->createElementNS(
+                    $deployment->getFundrefNamespace(),
+                    'fr:assertion',
+                    $funder->ror
+                );
+                $rorNode->setAttribute('name', 'ror');
+                $groupNode->appendChild($rorNode);
+            }
+
+            if (!empty($funder->grants)) {
+                foreach ($funder->grants as $grant) {
+                    if (!empty($grant['grantNumber'])) {
+                        $awardNode = $doc->createElementNS(
+                            $deployment->getFundrefNamespace(),
+                            'fr:assertion',
+                            htmlspecialchars($grant['grantNumber'], ENT_COMPAT, 'UTF-8')
+                        );
+                        $awardNode->setAttribute('name', 'award_number');
+                        $groupNode->appendChild($awardNode);
+                    }
+                }
+            }
+
+            $programNode->appendChild($groupNode);
+        }
+
+        $parentNode->appendChild($programNode);
     }
 
     /**
@@ -746,6 +814,9 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             $assertionFundingStatementNode->setAttribute('group_label', 'Funding Information');
             $customMetadataNode->appendChild($assertionFundingStatementNode);
         }
+
+        // fr:program (FundRef)
+        $this->appendFundrefNode($doc, $customMetadataNode, $publication);
 
         // ai:program (AccessIndicators) element, that contains the license URL
         $this->appendProgramNode($doc, $customMetadataNode, $publication);
