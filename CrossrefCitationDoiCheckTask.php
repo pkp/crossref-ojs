@@ -1,14 +1,14 @@
 <?php
 
 /**
- * @file CrossrefCitationsDiagnosticInfoSender.php
+ * @file CrossrefCitationDoiCheckTask.php
  *
  * Copyright (c) 2013-2026 Simon Fraser University
  * Copyright (c) 2003-2026 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file LICENSE.
  *
- * @class CrossrefCitationsDiagnosticInfoSender
- * @brief Scheduled task to check for found Crossref citation DOIs.
+ * @class CrossrefCitationDoiCheckTask
+ * @brief Scheduled task to fetch and store matched citation DOIs from Crossref.
  */
 
 namespace APP\plugins\generic\crossref;
@@ -20,10 +20,10 @@ use PKP\db\DAOResultFactory;
 use PKP\plugins\PluginRegistry;
 use PKP\scheduledTask\ScheduledTask;
 
-class CrossrefCitationsDiagnosticInfoSender extends ScheduledTask
+class CrossrefCitationDoiCheckTask extends ScheduledTask
 {
 
-    protected CrossrefPlugin $plugin;
+    protected ?CrossrefPlugin $plugin = null;
 
     /**
      * Constructor.
@@ -32,8 +32,11 @@ class CrossrefCitationsDiagnosticInfoSender extends ScheduledTask
     public function __construct(array $args)
     {
         parent::__construct($args);
-        $this->plugin = PluginRegistry::getPlugin('generic', 'crossrefplugin');
-        $this->plugin->addLocaleData();
+        $plugin = PluginRegistry::getPlugin('generic', 'crossrefplugin');
+        if ($plugin instanceof CrossrefPlugin) {
+            $this->plugin = $plugin;
+            $this->plugin->addLocaleData();
+        }
     }
 
     /**
@@ -53,14 +56,13 @@ class CrossrefCitationsDiagnosticInfoSender extends ScheduledTask
             return false;
         }
         foreach ($this->getJournals() as $journal) {
-            $this->plugin->considerFoundCrossrefReferencesDOIs($journal);
+            $this->plugin->processPendingCitationDois($journal);
         }
         return true;
     }
 
     /**
-     * Get all journals that meet the requirements to have
-     * their articles or issues DOIs sent to Crossref.
+     * Get all journals eligible for Crossref citation DOI matching.
      *
      * @return Journal[]
      */

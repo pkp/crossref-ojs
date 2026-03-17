@@ -37,7 +37,7 @@ use PKP\submission\GenreDAO;
 
 class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 {
-    // Processed versions DOIs
+    // DOIs of already-processed publication versions
     protected array $versionsDois = [];
 
     /**
@@ -86,9 +86,9 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                 $journalNode = $this->createSubmissionJournalNode($doc, $pubObject, $publication);
                 $bodyNode->appendChild($journalNode);
             } else {
-                $latestMinorPublications = $plugin->getLatestMinorPublications($pubObject->getData('publications'));
-                foreach ($latestMinorPublications as $versionStage) {
-                    foreach ($versionStage as $publication) {
+                $latestMinorPublications = Repo::doi()->getLatestMinorPublicationsForDoiDeposit($pubObject->getData('publications'));
+                foreach ($latestMinorPublications as $publicationsByMajor) {
+                    foreach ($publicationsByMajor as $publication) {
                         $journalNode = $this->createSubmissionJournalNode($doc, $pubObject, $publication);
                         $bodyNode->appendChild($journalNode);
                         $this->versionsDois[] = $publication->getDoi();
@@ -261,11 +261,11 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $submissionGalleys = $pdfGalleys = $remoteGalleys = [];
         // preferred PDF full-text for the as-crawled URL
         $pdfGalleyInArticleLocale = null;
-        // get immediately also supplementary files for component list
+        // Also collect supplementary files with DOIs for the component list
         $componentGalleys = [];
         $genreDao = DAORegistry::getDAO('GenreDAO'); /** @var GenreDAO $genreDao */
         foreach ($galleys as $galley) {
-            // filter supp files with DOI
+            // Only include supplementary files that have a DOI
             if (!$galley->getData('urlRemote')) {
                 $galleyFile = $galley->getFile();
                 if ($galleyFile) {
@@ -563,7 +563,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Append structured citation elements
      */
-    public function appendStructuredCitationElements(DOMDocument$doc, DOMElement $parentNode, Citation $citation): void
+    public function appendStructuredCitationElements(DOMDocument $doc, DOMElement $parentNode, Citation $citation): void
     {
         /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
@@ -647,7 +647,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
         // Create the base node
         $componentListNode = $doc->createElementNS($deployment->getNamespace(), 'component_list');
-        // Run through supp files and add component nodes.
+        // Add a component node for each supplementary file galley.
         foreach ($componentGalleys as $componentGalley) {
             $componentFile = $componentGalley->getFile();
             $componentNode = $doc->createElementNS($deployment->getNamespace(), 'component');

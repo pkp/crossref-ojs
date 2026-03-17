@@ -9,7 +9,7 @@
  *
  * @class CrossrefExportPlugin
  *
- * @brief Crossref/MEDLINE XML metadata export plugin
+ * @brief Crossref XML metadata export and deposit plugin.
  */
 
 namespace APP\plugins\generic\crossref;
@@ -20,20 +20,16 @@ use APP\facades\Repo;
 use APP\issue\Issue;
 use APP\journal\Journal;
 use APP\plugins\DOIPubIdExportPlugin;
-use APP\plugins\IDoiRegistrationAgency;
-use APP\publication\Publication;
 use APP\submission\Submission;
 use DOMDocument;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
-use Illuminate\Support\Enumerable;
 use PKP\config\Config;
 use PKP\doi\Doi;
 use PKP\file\FileManager;
 use PKP\file\TemporaryFileManager;
 use PKP\plugins\Hook;
-use PKP\plugins\Plugin;
 
 class CrossrefExportPlugin extends DOIPubIdExportPlugin
 {
@@ -44,23 +40,15 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     public const CROSSREF_API_DEPOSIT_ERROR_UNAUTHORIZED = 401;
     public const CROSSREF_API_DEPOSIT_ERROR_FROM_CROSSREF = 403;
     public const CROSSREF_API_URL = 'https://api.crossref.org/v2/deposits';
-    //TESTING
     public const CROSSREF_API_URL_DEV = 'https://test.crossref.org/v2/deposits';
     public const CROSSREF_API_STATUS_URL = 'https://doi.crossref.org/servlet/submissionDownload';
-    //TESTING
     public const CROSSREF_API_STATUS_URL_DEV = 'https://test.crossref.org/servlet/submissionDownload';
     // The name of the setting used to save the registered DOI and the URL with the deposit status.
     public const CROSSREF_DEPOSIT_STATUS = 'depositStatus';
 
-    public function __construct(protected IDoiRegistrationAgency|Plugin $agencyPlugin)
+    public function __construct(protected CrossrefPlugin $agencyPlugin)
     {
         parent::__construct();
-    }
-
-    public function register($category, $path, $mainContextId = null)
-    {
-        $success = parent::register($category, $path, $mainContextId);
-        return $success;
     }
 
     /**
@@ -103,7 +91,9 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
         return 'issue=>crossref-xml';
     }
 
-    /** Proxy to main plugin class's `getSetting` method */
+    /**
+     * @copydoc CrossrefPlugin::getSetting()
+     */
     public function getSetting($contextId, $name)
     {
         return $this->agencyPlugin->getSetting($contextId, $name);
@@ -196,39 +186,25 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
 
     /**
      * Get deposit batch ID setting name.
-     * NB Changed as of 3.4
+     * Note: Since 3.4 the separator is underscore (_) instead of double colon (::).
      */
     public function getDepositBatchIdSettingName(): string
     {
         return $this->getPluginSettingsPrefix() . '_batchId';
     }
 
+    /**
+     * Get success message setting name.
+     */
     public function getSuccessMsgSettingName(): string
     {
         return $this->getPluginSettingsPrefix() . '_successMsg';
     }
 
-    /**
-     * Get citations diagnostic ID setting name.
-     */
-    public function getCitationsDiagnosticIdSettingName(): string
-    {
-        return 'crossref::citationsDiagnosticId';
-    }
-
-    /**
-     * Get setting name, that defines if the scheduled task for the automatic check
-     * of the found Crossref citations DOIs should be run, if set up so in the plugin settings.
-     */
-    public function getAutoCheckSettingName(): string
-    {
-        return 'crossref::checkCitationsDOIs';
-    }
-
     // Main export and deposit operations
 
     /**
-     * Exports and deposit XML
+     * Exports and deposits XML
      *
      * @param (Issue|Submission)[] $objects
     */
@@ -413,22 +389,10 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
             }
 
             // A possibility for other plugins to work with the response
-            // TO-DO: maybe not needed any more
             Hook::run('crossrefexportplugin::deposited', [[$this, $response->getBody(), $objects]]);
 
-            if (is_a($objects, Submission::class)) {
-                // Get DOMDocument from the response XML string
-                $xmlDoc = new DOMDocument();
-                $xmlDoc->loadXML($response->getBody());
-                if ($xmlDoc->getElementsByTagName('citations_diagnostic')->length > 0) {
-                    $citationsDiagnosticNode = $xmlDoc->getElementsByTagName('citations_diagnostic')->item(0); /** @var DOMNodeList $citationsDiagnosticNode */
-                    $citationsDiagnosticCode = $citationsDiagnosticNode->getAttribute('deferred') ;
-                    //set the citations diagnostic code and the setting for the automatic check
-                    $objects->setData($this->getCitationsDiagnosticIdSettingName(), $citationsDiagnosticCode);
-                    $objects->setData($this->getAutoCheckSettingName(), true);
-                    Repo::submission()->edit($objects, []);
-                    $objects = Repo::submission()->get($objects->getId());
-                }
+            if ($objects instanceof Submission) {
+                $this->agencyPlugin->getCitationDoiHandler()?->handleDepositResponse((string) $response->getBody(), $objects);
             }
         }
 
@@ -441,7 +405,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     }
 
     /**
-     * Check the Crossref APIs, if deposits and registration have been successful
+     * Update the local DOI deposit status and related metadata for the given object.
      */
     public function updateDepositStatus(Journal $context, Issue|Submission $object, int $status, ?string $batchId = null, ?string $failedMsg = null, ?string $successMsg = null)
     {
@@ -471,47 +435,13 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     }
 
     /**
-     * Get the publications that can be exported/deposited.
-     * Only the last minor versions are considered.
-     */
-    public function getLatestMinorPublications(Enumerable $publications): array
-    {
-        $latestMinorPublications = [];
-        foreach ($publications as $publication) {
-            if (!$publication->getDoi() ||
-                $publication->getData('status') != Publication::STATUS_PUBLISHED) {
-
-                    continue;
-            }
-
-            $versionStage = $publication->getData('versionStage');
-            $versionMajor = $publication->getData('versionMajor');
-            $versionMinor = $publication->getData('versionMinor');
-            if (!array_key_exists($versionStage, $latestMinorPublications)) {
-                $latestMinorPublications[$versionStage] = [];
-            }
-            if (!array_key_exists($versionMajor, $latestMinorPublications[$versionStage])) {
-                $latestMinorPublications[$versionStage][$versionMajor] = $publication;
-                continue;
-            }
-            if ($versionMinor > $latestMinorPublications[$versionStage][$versionMajor]->getData('versionMinor')) {
-                $latestMinorPublications[$versionStage][$versionMajor] = $publication;
-            }
-        }
-        return $latestMinorPublications;
-    }
-
-    /**
-     * Get par of the file name based on the object that is being exported
+     * Get part of the file name based on the object that is being exported
      */
     private function _getObjectFileNamePart(Submission|Issue $object): string
     {
         if ($object instanceof Submission) {
             return 'articles-' . $object->getId();
-        } elseif ($object instanceof Issue) {
-            return 'issues-' . $object->getId();
-        } else {
-            return '';
         }
+        return 'issues-' . $object->getId();
     }
 }
