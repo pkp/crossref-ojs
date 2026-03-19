@@ -73,14 +73,13 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
             PluginRegistry::register('importexport', new CrossrefExportPlugin($this), $this->getPluginPath());
             $this->_exportPlugin = PluginRegistry::getPlugin('importexport', 'CrossrefExportPlugin');
 
-            $this->_citationDoiHandler = new CrossrefCitationDoiHandler($this);
-            $this->_citationDoiHandler->registerHooks();
+            $this->getCitationDoiHandler()->registerHooks();
 
             Hook::add('Schema::get::doi', $this->addToSchema(...));
 
             if ($this->getEnabled($mainContextId)) {
                 $this->_pluginInitialization();
-                $this->_citationDoiHandler->registerEnabledHooks();
+                $this->getCitationDoiHandler()->registerEnabledHooks();
             }
         }
 
@@ -198,9 +197,9 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
     /**
      * Get the CrossrefCitationDoiHandler instance.
      */
-    public function getCitationDoiHandler(): ?CrossrefCitationDoiHandler
+    public function getCitationDoiHandler(): CrossrefCitationDoiHandler
     {
-        return $this->_citationDoiHandler;
+        return $this->_citationDoiHandler ??= new CrossrefCitationDoiHandler($this);
     }
 
     /**
@@ -208,7 +207,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
      */
     public function processPendingCitationDois(Context $context): void
     {
-        $this->_citationDoiHandler->processPendingCitationDois($context);
+        $this->getCitationDoiHandler()->processPendingCitationDois($context);
     }
 
     /**
