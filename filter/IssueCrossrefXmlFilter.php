@@ -145,23 +145,22 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
         $journalMetadataNode = $doc->createElementNS($deployment->getNamespace(), 'journal_metadata');
         // Full title
         $journalTitle = $context->getName($context->getPrimaryLocale());
-        // Attempt a fall back, in case the localized name is not set.
+        // Fall back to the journal abbreviation if the full title is not set in the primary locale.
         if ($journalTitle == '') {
             $journalTitle = $context->getData('abbreviation', $context->getPrimaryLocale());
         }
         $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'full_title', htmlspecialchars($journalTitle, ENT_COMPAT, 'UTF-8')));
-        /* Abbreviated title - defaulting to initials if no abbreviation found */
+        // Abbreviated title — falling back to the journal acronym if no abbreviation is set.
         $journalAbbrev = $context->getData('abbreviation', $context->getPrimaryLocale());
         if ($journalAbbrev == '') {
             $journalAbbrev = $context->getData('acronym', $context->getPrimaryLocale());
         }
         $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'abbrev_title', htmlspecialchars($journalAbbrev, ENT_COMPAT, 'UTF-8')));
-        /* Both ISSNs are permitted for Crossref, so sending whichever one (or both) */
+        // Both online and print ISSNs are permitted by Crossref — send whichever are available.
         if ($ISSN = $context->getData('onlineIssn')) {
             $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'issn', $ISSN));
             $node->setAttribute('media_type', 'electronic');
         }
-        /* Both ISSNs are permitted for Crossref so sending whichever one (or both) */
         if ($ISSN = $context->getData('printIssn')) {
             $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'issn', $ISSN));
             $node->setAttribute('media_type', 'print');
@@ -220,7 +219,7 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
     }
 
     /**
-     * Create and return the DOI date node 'doi_data'.
+     * Create and return the DOI data node 'doi_data'.
      */
     public function createDOIDataNode(DOMDocument $doc, string $doi, string $url): DOMElement
     {

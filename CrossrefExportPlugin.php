@@ -3,13 +3,13 @@
 /**
  * @file plugins/generic/crossref/CrossrefExportPlugin.php
  *
- * Copyright (c) 2014-2025 Simon Fraser University
- * Copyright (c) 2003-2025 John Willinsky
+ * Copyright (c) 2014-2026 Simon Fraser University
+ * Copyright (c) 2003-2026 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefExportPlugin
  *
- * @brief Crossref/MEDLINE XML metadata export plugin
+ * @brief Crossref XML metadata export and deposit plugin.
  */
 
 namespace APP\plugins\generic\crossref;
@@ -20,8 +20,8 @@ use APP\facades\Repo;
 use APP\issue\Issue;
 use APP\journal\Journal;
 use APP\plugins\DOIPubIdExportPlugin;
-use APP\plugins\IDoiRegistrationAgency;
 use APP\submission\Submission;
+use DOMDocument;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -30,7 +30,6 @@ use PKP\doi\Doi;
 use PKP\file\FileManager;
 use PKP\file\TemporaryFileManager;
 use PKP\plugins\Hook;
-use PKP\plugins\Plugin;
 
 class CrossrefExportPlugin extends DOIPubIdExportPlugin
 {
@@ -41,23 +40,15 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     public const CROSSREF_API_DEPOSIT_ERROR_UNAUTHORIZED = 401;
     public const CROSSREF_API_DEPOSIT_ERROR_FROM_CROSSREF = 403;
     public const CROSSREF_API_URL = 'https://api.crossref.org/v2/deposits';
-    //TESTING
     public const CROSSREF_API_URL_DEV = 'https://test.crossref.org/v2/deposits';
     public const CROSSREF_API_STATUS_URL = 'https://doi.crossref.org/servlet/submissionDownload';
-    //TESTING
     public const CROSSREF_API_STATUS_URL_DEV = 'https://test.crossref.org/servlet/submissionDownload';
     // The name of the setting used to save the registered DOI and the URL with the deposit status.
     public const CROSSREF_DEPOSIT_STATUS = 'depositStatus';
 
-    public function __construct(protected IDoiRegistrationAgency|Plugin $agencyPlugin)
+    public function __construct(protected CrossrefPlugin $agencyPlugin)
     {
         parent::__construct();
-    }
-
-    public function register($category, $path, $mainContextId = null)
-    {
-        $success = parent::register($category, $path, $mainContextId);
-        return $success;
     }
 
     /**
@@ -100,7 +91,9 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
         return 'issue=>crossref-xml';
     }
 
-    /** Proxy to main plugin class's `getSetting` method */
+    /**
+     * @copydoc CrossrefPlugin::getSetting()
+     */
     public function getSetting($contextId, $name)
     {
         return $this->agencyPlugin->getSetting($contextId, $name);
@@ -189,8 +182,29 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
         return (string) \APP\plugins\generic\crossref\CrossrefExportDeployment::class;
     }
 
+    // Settings and configuration methods
+
     /**
-     * Exports and deposit XML
+     * Get deposit batch ID setting name.
+     * Note: Since 3.4 the separator is underscore (_) instead of double colon (::).
+     */
+    public function getDepositBatchIdSettingName(): string
+    {
+        return $this->getPluginSettingsPrefix() . '_batchId';
+    }
+
+    /**
+     * Get success message setting name.
+     */
+    public function getSuccessMsgSettingName(): string
+    {
+        return $this->getPluginSettingsPrefix() . '_successMsg';
+    }
+
+    // Main export and deposit operations
+
+    /**
+     * Exports and deposits XML
      *
      * @param (Issue|Submission)[] $objects
     */
@@ -373,8 +387,13 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
             if ($warningCount > 0) {
                 $result = [['plugins.importexport.crossref.register.success.warning', htmlspecialchars($response->getBody())]];
             }
-            // A possibility for other plugins (e.g. reference linking) to work with the response
+
+            // A possibility for other plugins to work with the response
             Hook::run('crossrefexportplugin::deposited', [[$this, $response->getBody(), $objects]]);
+
+            if ($objects instanceof Submission) {
+                $this->agencyPlugin->getCitationDoiHandler()?->handleDepositResponse((string) $response->getBody(), $objects);
+            }
         }
 
         // Update the status
@@ -386,7 +405,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     }
 
     /**
-     * Check the Crossref APIs, if deposits and registration have been successful
+     * Update the local DOI deposit status and related metadata for the given object.
      */
     public function updateDepositStatus(Journal $context, Issue|Submission $object, int $status, ?string $batchId = null, ?string $failedMsg = null, ?string $successMsg = null)
     {
@@ -416,30 +435,13 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     }
 
     /**
-     * Get deposit batch ID setting name.
-     * NB Changed as of 3.4
-     */
-    public function getDepositBatchIdSettingName(): string
-    {
-        return $this->getPluginSettingsPrefix() . '_batchId';
-    }
-
-    public function getSuccessMsgSettingName(): string
-    {
-        return $this->getPluginSettingsPrefix() . '_successMsg';
-    }
-
-    /**
-     * Get par of the file name based on the object that is being exported
+     * Get part of the file name based on the object that is being exported
      */
     private function _getObjectFileNamePart(Submission|Issue $object): string
     {
         if ($object instanceof Submission) {
             return 'articles-' . $object->getId();
-        } elseif ($object instanceof Issue) {
-            return 'issues-' . $object->getId();
-        } else {
-            return '';
         }
+        return 'issues-' . $object->getId();
     }
 }

@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/crossref/CrossrefPlugin.php
  *
- * Copyright (c) 2014-2025 Simon Fraser University
- * Copyright (c) 2003-2025 John Willinsky
+ * Copyright (c) 2014-2026 Simon Fraser University
+ * Copyright (c) 2003-2026 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefPlugin
@@ -30,13 +30,19 @@ use PKP\context\Context;
 use PKP\doi\RegistrationAgencySettings;
 use PKP\plugins\GenericPlugin;
 use PKP\plugins\Hook;
+use PKP\plugins\interfaces\HasTaskScheduler;
 use PKP\plugins\PluginRegistry;
+use PKP\scheduledTask\PKPScheduler;
 use PKP\services\PKPSchemaService;
 
-class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
+class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, HasTaskScheduler
 {
+    public const CROSSREF_API_REFS_URL = 'https://doi.crossref.org/getResolvedRefs';
+    public const CROSSREF_API_REFS_URL_DEV = 'https://test.crossref.org/getResolvedRefs';
+
     private CrossrefSettings $_settingsObject;
     private ?CrossrefExportPlugin $_exportPlugin = null;
+    private ?CrossrefCitationDoiHandler $_citationDoiHandler = null;
 
     public function getDisplayName(): string
     {
@@ -67,10 +73,13 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
             PluginRegistry::register('importexport', new CrossrefExportPlugin($this), $this->getPluginPath());
             $this->_exportPlugin = PluginRegistry::getPlugin('importexport', 'CrossrefExportPlugin');
 
+            $this->getCitationDoiHandler()->registerHooks();
+
             Hook::add('Schema::get::doi', $this->addToSchema(...));
 
             if ($this->getEnabled($mainContextId)) {
                 $this->_pluginInitialization();
+                $this->getCitationDoiHandler()->registerEnabledHooks();
             }
         }
 
@@ -108,7 +117,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
     }
 
     /**
-     * Helper to register hooks that are used in normal plugin setup and in CLI tool usage.
+     * Register plugin hooks.
      */
     private function _pluginInitialization(): void
     {
@@ -119,6 +128,18 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
         Hook::add('Doi::markRegistered', $this->editMarkRegisteredParams(...));
         Hook::add('DoiListPanel::setConfig', $this->addRegistrationAgencyName(...));
         Hook::add('Publication::validatePublish', $this->validate(...));
+    }
+
+    /**
+     * @copydoc \PKP\plugins\interfaces\HasTaskScheduler::registerSchedules()
+     */
+    public function registerSchedules(PKPScheduler $scheduler): void
+    {
+        $scheduler
+            ->addSchedule(new CrossrefCitationDoiCheckTask([]))
+            ->hourly()
+            ->name(CrossrefCitationDoiCheckTask::class)
+            ->withoutOverlapping();
     }
 
     /**
@@ -146,6 +167,47 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency
         }
 
         return Hook::CONTINUE;
+    }
+
+    /**
+     * Check whether Crossref credentials (username and password) are configured for the given context.
+     */
+    public function hasCrossrefCredentials(?int $contextId = null): bool
+    {
+        if (!isset($contextId)) {
+            $contextId = $this->getCurrentContextId();
+        }
+        return strlen((string) $this->getSetting($contextId, 'username')) > 0
+            && strlen((string) $this->getSetting($contextId, 'password')) > 0;
+    }
+
+    /**
+     * Check whether citation metadata is enabled for the given context.
+     */
+    public function citationsEnabled(?int $contextId = null): bool
+    {
+        if (!isset($contextId)) {
+            $contextId = $this->getCurrentContextId();
+        }
+        $contextDao = Application::getContextDAO();
+        $context = $contextDao->getById($contextId);
+        return !empty($context->getData('citations'));
+    }
+
+    /**
+     * Get the CrossrefCitationDoiHandler instance.
+     */
+    public function getCitationDoiHandler(): CrossrefCitationDoiHandler
+    {
+        return $this->_citationDoiHandler ??= new CrossrefCitationDoiHandler($this);
+    }
+
+    /**
+     * Fetch resolved citation DOIs from Crossref and store them for all pending submissions.
+     */
+    public function processPendingCitationDois(Context $context): void
+    {
+        $this->getCitationDoiHandler()->processPendingCitationDois($context);
     }
 
     /**

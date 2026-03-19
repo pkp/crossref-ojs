@@ -147,6 +147,9 @@ msgstr "Mark active"
 msgid "plugins.importexport.crossref.senderTask.name"
 msgstr "Crossref automatic registration task"
 
+msgid "plugins.generic.crossref.citationsDiagnostic.senderTask.name"
+msgstr "Crossref citations diagnostic task"
+
 msgid "plugins.importexport.crossref.cliUsage"
 msgstr ""
 "Usage:\n"
