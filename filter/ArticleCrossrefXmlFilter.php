@@ -113,13 +113,41 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $deployment = $this->getDeployment();
 
         $journalNode = $doc->createElementNS($deployment->getNamespace(), 'journal');
-        $journalNode->appendChild($this->createJournalMetadataNode($doc));
+        $journalNode->appendChild($this->createSubmissionJournalMetadataNode($doc, $publication));
         $issueNode = $this->createSubmissionJournalIssueNode($doc, $publication);
         if ($issueNode) {
             $journalNode->appendChild($issueNode);
         }
         $journalNode->appendChild($this->createJournalArticleNode($doc, $publication, $pubObject));
         return $journalNode;
+    }
+
+    /**
+     * Create and return the journal metadata node 'journal_metadata'.
+     */
+    public function createSubmissionJournalMetadataNode(DOMDocument $doc, Publication $publication): ?DOMElement
+    {
+        /** @var CrossrefExportDeployment $deployment */
+        $deployment = $this->getDeployment();
+        $context = $deployment->getContext();
+        $cache = $deployment->getCache();
+
+        $issueId = $publication->getData('issueId');
+
+        if (!$issueId) {
+            return null;
+        }
+
+        if ($cache->isCached('issues', $issueId)) {
+            $issue = $cache->get('issues', $issueId);
+        } else {
+            $issue = Repo::issue()->get($issueId);
+            $issue = $issue->getJournalId() == $context->getId() ? $issue : null;
+            if ($issue) {
+                $cache->add($issue, null);
+            }
+        }
+        return parent::createJournalMetadataNode($doc, $issue);
     }
 
     /**
