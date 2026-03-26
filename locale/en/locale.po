@@ -88,7 +88,6 @@ msgstr "Please enter the username you got from Crossref."
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
 msgstr "OJS will deposit assigned DOIs automatically to Crossref. Please note that this may take a short amount of time after publication to process  (e.g. depending on your cronjob configuration). You can check for all unregistered DOIs."
 
-#, fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
 msgstr "Use the Crossref test API (testing environment) for the DOI deposit. Please do not forget to remove this option in production."
 
