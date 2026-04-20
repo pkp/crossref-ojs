@@ -83,6 +83,11 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
         return 'article=>crossref-xml';
     }
 
+    public function getPeerReviewFilter(): string
+    {
+        return 'peerReview=>crossref-xml';
+
+    }
     /**
      * @copydoc PubObjectsExportPlugin::getIssueFilter()
      */
