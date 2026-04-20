@@ -349,6 +349,15 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         return ['temporaryFileId' => $temporaryFileId, 'xmlErrors' => $xmlErrors];
     }
 
+
+    public function exportPeerReviews(array $reviews, Context $context): array{
+        $filterName = $this->_exportPlugin->getPeerReviewFilter();
+        $xmlErrors = [];
+
+        $temporaryFileId = $this->_exportPlugin->exportAsDownload($context, $reviews, $filterName, 'peerReviews', null, $xmlErrors);
+
+        return  ['temporaryFileId' => $temporaryFileId, 'xmlErrors' => $xmlErrors];
+    }
     /**
      * @param Submission[] $submissions
      */
@@ -439,7 +448,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
      */
     public function getAllowedDoiTypes(): array
     {
-        return [Repo::doi()::TYPE_PUBLICATION, Repo::doi()::TYPE_ISSUE];
+        return [Repo::doi()::TYPE_PUBLICATION, Repo::doi()::TYPE_ISSUE, Repo::doi()::TYPE_PEER_REVIEW];
     }
 
     /**
