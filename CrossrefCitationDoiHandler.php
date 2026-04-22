@@ -21,7 +21,7 @@ use APP\publication\Publication;
 use APP\submission\Submission;
 use DOMDocument;
 use PKP\citation\Citation;
-use PKP\citation\pid\Doi;
+use PKP\pid\Doi;
 use PKP\context\Context;
 use PKP\plugins\Hook;
 
