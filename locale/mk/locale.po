@@ -1,8 +1,8 @@
 # Teodora Fildishevska <t.fildishevska@gmail.com>, 2023.
-# Mirko Spiroski <mspiroski@id-press.eu>, 2023, 2024.
+# Mirko Spiroski <mspiroski@id-press.eu>, 2023, 2024, 2026.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-08-03 04:22+0000\n"
+"PO-Revision-Date: 2026-04-22 19:20+0000\n"
 "Last-Translator: Mirko Spiroski <mspiroski@id-press.eu>\n"
 "Language-Team: Macedonian <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/mk/>\n"
@@ -163,7 +163,7 @@ msgstr "Неуспешно"
 
 msgid "plugins.importexport.crossref.issues.description"
 msgstr ""
-"Забелешка: За експорт/регистрација ќе се земат предвид само изданија (а не "
+"Забелешка: За експорт/регистрација ќе бидат разгледани само изданија (а не "
 "нивните трудови)."
 
 msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
