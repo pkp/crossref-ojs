@@ -350,13 +350,17 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
     }
 
 
-    public function exportPeerReviews(array $reviews, Context $context): array{
+    /*
+     * @copyDoc IDoiRegistrationAgency::exportPeerReviews()
+     */
+    public function exportPeerReviews(array $reviewAssignments, Context $context): array
+    {
         $filterName = $this->_exportPlugin->getPeerReviewFilter();
         $xmlErrors = [];
 
-        $temporaryFileId = $this->_exportPlugin->exportAsDownload($context, $reviews, $filterName, 'peerReviews', null, $xmlErrors);
+        $temporaryFileId = $this->_exportPlugin->exportAsDownload($context, $reviewAssignments, $filterName, 'peerReviews', null, $xmlErrors);
 
-        return  ['temporaryFileId' => $temporaryFileId, 'xmlErrors' => $xmlErrors];
+        return ['temporaryFileId' => $temporaryFileId, 'xmlErrors' => $xmlErrors];
     }
     /**
      * @param Submission[] $submissions
@@ -373,6 +377,20 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         ];
     }
 
+    /*
+     * @copyDoc IDoiRegistrationAgency::depositPeerReviews()
+     */
+    public function depositPeerReviews(array $peerReviews, Context $context): array
+    {
+        $filterName = $this->_exportPlugin->getPeerReviewFilter();
+        $responseMessage = '';
+        $status = $this->_exportPlugin->exportAndDeposit($context, $peerReviews, $filterName, $responseMessage);
+
+        return [
+            'hasErrors' => !$status,
+            'responseMessage' => $responseMessage
+        ];
+    }
     /**
      * @param Issue[] $issues
      */
