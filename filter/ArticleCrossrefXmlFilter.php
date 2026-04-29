@@ -56,12 +56,12 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
      *
      * @param array $pubObjects Array of Submissions
      *
-     * @return \DOMDocument
+     * @return DOMDocument
      */
     public function &process(&$pubObjects)
     {
         // Create the XML document
-        $doc = new \DOMDocument('1.0', 'utf-8');
+        $doc = new DOMDocument('1.0', 'utf-8');
         $doc->preserveWhiteSpace = false;
         $doc->formatOutput = true;
         /** @var CrossrefExportDeployment $deployment */
@@ -76,7 +76,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         // Create and append the 'head' node and all parts inside it
         $rootNode->appendChild($this->createHeadNode($doc));
 
-        // Create and append the 'body' node, that contains everything
+        // Create and append the 'body' node that contains everything
         $bodyNode = $doc->createElementNS($deployment->getNamespace(), 'body');
         $rootNode->appendChild($bodyNode);
 
@@ -235,6 +235,15 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             }
         }
 
+        // article number
+        if ($publication->getData('articleNumber')) {
+            $publisherItemNode = $doc->createElementNS($deployment->getNamespace(), 'publisher_item');
+            $articleNumberNode = $doc->createElementNS($deployment->getNamespace(), 'item_number', $publication->getData('articleNumber'));
+            $articleNumberNode->setAttribute('item_number_type', 'article_number');
+            $publisherItemNode->appendChild($articleNumberNode);
+            $journalArticleNode->appendChild($publisherItemNode);
+        }
+
         if ($context->getData(Context::SETTING_DOI_VERSIONING)) {
             // crossmark
             $this->appendCrossmarkNode($doc, $journalArticleNode, $this->versionsDois, $publication);
@@ -255,7 +264,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         }
         $doiDataNode = $this->createDOIDataNode($doc, $publication->getDoi(), $url);
 
-        // Append galleys files and collection nodes to the DOI data node
+        // Append galley files and collection nodes to the DOI data node
         $galleys = $publication->getData('galleys');
         // All full-texts, PDF full-texts and remote galleys for text-mining and as-crawled URL
         $submissionGalleys = $pdfGalleys = $remoteGalleys = [];
@@ -415,7 +424,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $deployment = $this->getDeployment();
 
         $abstracts = $publication->getData('abstract') ?: [];
-        foreach($abstracts as $lang => $abstract) {
+        foreach ($abstracts as $lang => $abstract) {
             $abstractNode = $doc->createElementNS($deployment->getJATSNamespace(), 'jats:abstract');
             $abstractNode->setAttributeNS($deployment->getXMLNamespace(), 'xml:lang', LocaleConversion::toBcp47($lang));
             $abstractNode->appendChild($doc->createElementNS($deployment->getJATSNamespace(), 'jats:p', htmlspecialchars(html_entity_decode(strip_tags($abstract), ENT_COMPAT, 'UTF-8'), ENT_COMPAT, 'utf-8')));
@@ -572,12 +581,13 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             $issnNode = $doc->createElementNS($deployment->getNamespace(), 'issn', $issn);
             $parentNode->appendChild($issnNode);
         }
-        if (($citation->getData('sourceType') == CitationSourceType::JOURNAL->value && $journalTitle = $citation->getData('sourceName')) ||
-            ($citation->getData('type') == CitationSourceType::JOURNAL->value && $journalTitle = $citation->getData('title'))) {
-
-                $journalTitleNode = $doc->createElementNS($deployment->getNamespace(), 'journal_title');
-                $journalTitleNode->appendChild($doc->createTextNode($journalTitle));
-                $parentNode->appendChild($journalTitleNode);
+        if (
+            ($citation->getData('sourceType') == CitationSourceType::JOURNAL->value && $journalTitle = $citation->getData('sourceName')) ||
+            ($citation->getData('type') == CitationSourceType::JOURNAL->value && $journalTitle = $citation->getData('title'))
+        ) {
+            $journalTitleNode = $doc->createElementNS($deployment->getNamespace(), 'journal_title');
+            $journalTitleNode->appendChild($doc->createTextNode($journalTitle));
+            $parentNode->appendChild($journalTitleNode);
         }
         if ($authors = $citation->getData('authors')) {
             $firstAuthorNames = $authors[0]['givenName'] ? [$authors[0]['givenName']] : [];
@@ -613,24 +623,26 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             $doiNode->appendChild($doc->createTextNode($doi));
             $parentNode->appendChild($doiNode);
         }
-        if (($citation->getData('sourceType') == CitationSourceType::BOOK_SERIES->value && $seriesTitle = $citation->getData('sourceName')) ||
-            ($citation->getData('type') == CitationType::BOOK_SERIES->value && $seriesTitle = $citation->getData('title'))) {
-
-                $seriesTitleNode = $doc->createElementNS($deployment->getNamespace(), 'series_title');
-                $seriesTitleNode->appendChild($doc->createTextNode($seriesTitle));
-                $parentNode->appendChild($seriesTitleNode);
+        if (
+            ($citation->getData('sourceType') == CitationSourceType::BOOK_SERIES->value && $seriesTitle = $citation->getData('sourceName')) ||
+            ($citation->getData('type') == CitationType::BOOK_SERIES->value && $seriesTitle = $citation->getData('title'))
+        ) {
+            $seriesTitleNode = $doc->createElementNS($deployment->getNamespace(), 'series_title');
+            $seriesTitleNode->appendChild($doc->createTextNode($seriesTitle));
+            $parentNode->appendChild($seriesTitleNode);
         }
-        if (($citation->getData('type') == CitationType::BOOK->value || $citation->getData('type') == CitationType::MONOGRAPH->value) &&
-            $volumeTitle = $citation->getData('title')) {
-
-                $volumeTitleNode = $doc->createElementNS($deployment->getNamespace(), 'volume_title');
-                $volumeTitleNode->appendChild($doc->createTextNode($volumeTitle));
-                $parentNode->appendChild($volumeTitleNode);
+        if (
+            ($citation->getData('type') == CitationType::BOOK->value || $citation->getData('type') == CitationType::MONOGRAPH->value) &&
+            $volumeTitle = $citation->getData('title')
+        ) {
+            $volumeTitleNode = $doc->createElementNS($deployment->getNamespace(), 'volume_title');
+            $volumeTitleNode->appendChild($doc->createTextNode($volumeTitle));
+            $parentNode->appendChild($volumeTitleNode);
         }
         if ($citation->getData('type') == CitationType::JOURNAL_ARTICLE->value && $articleTitle = $citation->getData('title')) {
-                $articleTitleNode = $doc->createElementNS($deployment->getNamespace(), 'article_title');
-                $articleTitleNode->appendChild($doc->createTextNode($articleTitle));
-                $parentNode->appendChild($articleTitleNode);
+            $articleTitleNode = $doc->createElementNS($deployment->getNamespace(), 'article_title');
+            $articleTitleNode->appendChild($doc->createTextNode($articleTitle));
+            $parentNode->appendChild($articleTitleNode);
         }
     }
 
