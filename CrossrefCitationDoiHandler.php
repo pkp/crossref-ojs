@@ -96,13 +96,15 @@ class CrossrefCitationDoiHandler
      * references DOIs in the next scheduled task run.
      *
      * @param string $hookName Hook name 'Citation::importCitations::after'
+     * @param array{int, array<Citation>, array<Citation>} $args Hook name 'Citation::importCitations::after'
+
      */
-    public function citationsChanged(string $hookName, int $publicationId, array $existingCitations, array $importedCitations): bool
+    public function citationsChanged(string $hookName, array $args): bool
     {
+        [$publicationId] = $args;
         if (!$this->plugin->getEnabled() ||
             !$this->plugin->hasCrossrefCredentials() ||
             !$this->plugin->citationsEnabled()) {
-
                 return Hook::CONTINUE;
         }
 
