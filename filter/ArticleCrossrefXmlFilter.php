@@ -33,6 +33,7 @@ use PKP\core\PKPApplication;
 use PKP\db\DAORegistry;
 use PKP\filter\FilterGroup;
 use PKP\i18n\LocaleConversion;
+use PKP\publication\PKPPublication;
 use PKP\submission\GenreDAO;
 
 class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
@@ -158,6 +159,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $request = Application::get()->getRequest();
+        $plugin = $deployment->getPlugin();
 
         $locale = $publication->getData('locale');
 
@@ -244,11 +246,13 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             $journalArticleNode->appendChild($publisherItemNode);
         }
 
-        if ($context->getData(Context::SETTING_DOI_VERSIONING)) {
+        if ($context->getData(Context::SETTING_DOI_VERSIONING) || $plugin->getSetting($context->getId(), 'crossmark')) {
             // crossmark
             $this->appendCrossmarkNode($doc, $journalArticleNode, $this->versionsDois, $publication);
-            // rel:program
-            $this->appendRelationships($doc, $journalArticleNode, $this->versionsDois);
+            // rel:program — only needed for DOI versioning
+            if ($context->getData(Context::SETTING_DOI_VERSIONING)) {
+                $this->appendRelationships($doc, $journalArticleNode, $this->versionsDois);
+            }
         } else {
             // if no crossmark element is used, append ai:program here
             // ai:program (AccessIndicators) element, that contains the license URL
@@ -694,11 +698,25 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $updatePolicyDoi = $plugin->getSetting($context->getId(), 'updatePolicyDoi');
         $crossmarkNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'crossmark_policy', htmlspecialchars($updatePolicyDoi, ENT_COMPAT, 'UTF-8')));
         // updates
-        if (!empty($versionsDois)) {
+        // In-situ: only relevant when crossmark is enabled — another published version shares this DOI
+        // (no-DOI-versioning case, or minor versions within a major when DOI versioning is on)
+        $isInSitu = $plugin->getSetting($context->getId(), 'crossmark') &&
+            Repo::publication()->getCollector()
+                ->filterBySubmissionIds([$publication->getData('submissionId')])
+                ->filterByDoiIds([$publication->getData('doiId')])
+                ->filterByStatus([PKPPublication::STATUS_PUBLISHED])
+                ->getMany()
+                ->contains(fn($p) => $p->getId() !== $publication->getId());
+
+        $updateDois = $isInSitu
+            ? array_merge([$publication->getDoi()], $versionsDois)
+            : $versionsDois;
+
+        if (!empty($updateDois)) {
             $updatesNode = $doc->createElementNS($deployment->getNamespace(), 'updates');
-            foreach ($versionsDois as $versionDoi) {
-                $updateNode = $doc->createElementNS($deployment->getNamespace(), 'update', htmlspecialchars($versionDoi, ENT_COMPAT, 'UTF-8'));
-                $updateNode->setAttribute('type', 'new_version');
+            foreach ($updateDois as $updateDoi) {
+                $updateNode = $doc->createElementNS($deployment->getNamespace(), 'update', htmlspecialchars($updateDoi, ENT_COMPAT, 'UTF-8'));
+                $updateNode->setAttribute('type', $publication->getData('updateType'));
                 $updateNode->setAttribute('date', $publication->getData('datePublished'));
                 $updatesNode->appendChild($updateNode);
             }
