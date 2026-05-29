@@ -1,13 +1,14 @@
 # Huw Robert Grange <huw.r.grange@uit.no>, 2023.
 # Johanna Skaug <johanna.skaug@ub.uio.no>, 2024.
 # Eirik Hanssen <eirikh@oslomet.no>, 2026.
+# Amalie Ask <amalie.v.ask@uit.no>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-19T11:05:36+00:00\n"
 "PO-Revision-Date: 2026-05-29 13:05+0000\n"
-"Last-Translator: Eirik Hanssen <eirikh@oslomet.no>\n"
+"Last-Translator: Amalie Ask <amalie.v.ask@uit.no>\n"
 "Language-Team: Norwegian Bokmål <http://translate.pkp.sfu.ca/projects/"
 "plugins/crossref/nb_NO/>\n"
 "Language: nb_NO\n"
@@ -57,9 +58,8 @@ msgstr ""
 "Overføringen mislyktes. Serveren som skal registrere DOI meldte en feil: "
 "«{$param}»."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.senderTask.name"
-msgstr "Crossref automatisk registreringsoppgave"
+msgstr "Crossrefs automatiske registreringsjobb"
 
 msgid "plugins.importexport.crossref.action.markRegistered"
 msgstr "Marker aktiv"
@@ -105,13 +105,11 @@ msgstr ""
 "Valider XML. Bruk dette valget for nedlasting av XML ved manuell DOI-"
 "registrering."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.testMode.description"
 msgstr ""
 "Bruk Crossref test API (testmiljø) for DOI-deponering. Ikke glem å skru av "
 "dette valget for produksjonen."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
 msgstr ""
 "OJS vil deponere tildelt DOI-nummer automatisk til Crossref. Vær oppmerksom "
@@ -119,9 +117,8 @@ msgstr ""
 "avhengig av din cronjob-konfigurasjon). Du kan sjekke av for alle "
 "uregistrerte DOI-numre."
 
-#,fuzzy
 msgid "plugins.importexport.crossref.settings.form.usernameRequired"
-msgstr "Vennligst skriv inn brukernavnet du fikk fra Crossref."
+msgstr "Skriv inn brukernavnet du fikk fra Crossref."
 
 msgid "plugins.importexport.crossref.settings.form.username"
 msgstr "Brukernavn"
@@ -190,7 +187,6 @@ msgstr ""
 msgid "plugins.importexport.crossref.status.notDeposited"
 msgstr "Ikke deponert"
 
-#, fuzzy
 msgid "plugins.generic.crossref.successMessage"
 msgstr ""
 "Metadata for dette elementet har blitt deponert hos Crossref. For å se "
@@ -215,7 +211,6 @@ msgstr ""
 "Navn på organisasjonen som registrerer DOI-ene. Dette inkluderes i deponerte "
 "metadata og brukes til å registrere hvem som utførte deponeringen."
 
-#, fuzzy
 msgid "plugins.importexport.crossref.settings.form.username.description"
 msgstr ""
 "Crossref-brukernavnet som vil bli brukt for å autentisere dine deponeringer. "
