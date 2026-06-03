@@ -127,7 +127,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
 
         Hook::add('Doi::markRegistered', $this->editMarkRegisteredParams(...));
         Hook::add('DoiListPanel::setConfig', $this->addRegistrationAgencyName(...));
-        Hook::add('Publication::validatePublish', $this->validate(...));
+        Hook::add('Publication::validatePublishWarnings', $this->validate(...));
     }
 
     /**
@@ -440,10 +440,10 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
     }
 
     /**
-     * Make additional validation checks against publishing requirements
+     * Make additional warning checks against publishing requirements. Failed validations will not block publishing.
      *
      * @throws Exception
-     * @see PKPPublicationService::validatePublish()
+     * @see PKPPublicationService::validatePublishWarnings()
      */
     public function validate(string $hookName, array $args): bool
     {
