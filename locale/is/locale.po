@@ -1,3 +1,107 @@
 # Helgi Sigurbjörnsson <helgi.sigurbjornsson@landsbokasafn.is>, 2026.
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2026-06-04 16:25+0000\n"
+"Last-Translator: Helgi Sigurbjörnsson <helgi.sigurbjornsson@landsbokasafn.is>"
+"\n"
+"Language-Team: Icelandic <http://translate.pkp.sfu.ca/projects/plugins/"
+"crossref/is/>\n"
+"Language: is\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11;\n"
+"X-Generator: Weblate 4.18.2\n"
+
+msgid "plugins.importexport.crossref.settings.form.depositorName.description"
+msgstr ""
+"Heiti stofnunarinnar sem skráir DOI-auðkennin. Það er haft með í innsendum "
+"lýsigögnum og notað til að skrá hver skilaði inn gögnunum."
+
+msgid "plugins.importexport.crossref.displayName"
+msgstr "Crossref XML útflutningsviðbót"
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Crossref-stjórnunarviðbót"
+
+msgid "plugins.generic.crossref.description"
+msgstr "Sér um útflutning og skráningu Crossref-lýsigagna"
+
+msgid "plugins.importexport.crossref.requirements"
+msgstr "Kröfur"
+
+msgid "plugins.importexport.crossref.requirements.satisfied"
+msgstr "Öllum kröfum viðbótar hefur verið mætt."
+
+msgid "plugins.importexport.crossref.settings.form.depositorName"
+msgstr "Nafn skilaaðila"
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail"
+msgstr "Netfang skilaaðila"
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail.description"
+msgstr ""
+"Netfang þess einstaklings sem ber ábyrgð á skráningu efnis hjá Crossref. Það "
+"er haft með í innsendum lýsigögnum og notað þegar staðfestingarpóstur vegna "
+"skila er sendur."
+
+msgid "plugins.importexport.crossref.settings.form.depositorNameRequired"
+msgstr "Skráið nafn skilaaðila."
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
+msgstr "Skráið tölvupóst skilaaðila."
+
+msgid "plugins.importexport.crossref.settings.form.username"
+msgstr "Notandanafn"
+
+msgid "plugins.importexport.crossref.settings.form.username.description"
+msgstr ""
+"Crossref-notandanafnið sem verður notað til að auðkenna skilin þín. Ef þú "
+"notar persónulegan aðgang skaltu kynna þér leiðbeiningarnar hér að ofan."
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Crossref stillingar"
+
+msgid "plugins.importexport.crossref.description"
+msgstr "Flytja út lýsigögn í Crossref XML formati."
+
+msgid "plugins.importexport.crossref.settings.depositorIntro"
+msgstr "Eftirfarandi atrið eru nauðsynleg til að skil í Crossref heppnist."
+
+msgid "plugins.importexport.crossref.error.publisherNotConfigured"
+msgstr ""
+"Útgefandi tímarits hefur ekki verið stilltur! Þú verður að bæta við "
+"útgáfustofnun á <a href=\"{$journalSettingsUrl}\" target=\"_blank\""
+">stillingasíðu tímaritsins</a>."
+
+msgid "plugins.importexport.crossref.error.issnNotConfigured"
+msgstr ""
+"ISSN tímarits hefur ekki verið stillt! Þú verður að bæta við ISSN-númeri á "
+"<a href=\"{$journalSettingsUrl}\" target=\"_blank\">stillingasíðu "
+"tímaritsins</a>."
+
+msgid "plugins.importexport.crossref.error.noDOIContentObjects"
+msgstr ""
+"Greinar eru ekki valdar fyrir DOI-úthlutun í viðbótinni fyrir opinber "
+"auðkenni DOI og því er hvorki hægt að skila inn né flytja út gögn í þessari "
+"viðbót."
+
+msgid "plugins.importexport.crossref.registrationIntro"
+msgstr ""
+"<p>Ef þú vilt nota þessa viðbót til að skrá Digital Object Identifiers (DOI) "
+"beint hjá <a href=\"http://www.crossref.org/\">Crossref</a> þarftu að bæta "
+"<a href=\"https://www.crossref.org/documentation/member-setup/"
+"account-credentials/\">Crossref-aðgangsupplýsingunum þínum</a> við í reitina "
+"fyrir notandanafn og lykilorð hér fyrir neðan.</p><p>Það fer eftir Crossref-"
+"aðild þinni hvernig þú skráir notandanafn og lykilorð:</p><ul><li>Ef þú "
+"notar stofnanaaðgang skaltu bæta við <a href=\"https://www.crossref.org/"
+"documentation/member-setup/account-credentials/#00376\">sameiginlegu "
+"notandanafni og lykilorði</a></li><li>Ef þú notar <a href=\"https://www."
+"crossref.org/documentation/member-setup/account-credentials/#00368\""
+">persónulegan aðgang</a> skaltu slá inn netfangið þitt og hlutverkið í "
+"reitinn fyrir notandanafn. Notandanafnið mun líta svona út: email@example."
+"com/role</li><li>Ef þú þekkir ekki Crossref-aðgangsupplýsingarnar þínar eða "
+"hefur ekki aðgang að þeim geturðu haft samband við <a href=\"https://support."
+"crossref.org/\">þjónustuver Crossref</a> til að fá aðstoð. Án "
+"aðgangsupplýsinga geturðu samt flutt lýsigögn út á Crossref XML-sniði, en þú "
+"getur ekki skráð DOI-auðkenni hjá Crossref úr OJS.</li></ul>"
