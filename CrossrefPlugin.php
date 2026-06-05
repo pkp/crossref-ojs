@@ -23,6 +23,7 @@ use APP\plugins\IDoiRegistrationAgency;
 use APP\publication\Publication;
 use APP\services\ContextService;
 use APP\submission\Submission;
+use APP\template\TemplateManager;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
@@ -128,6 +129,8 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         Hook::add('Doi::markRegistered', $this->editMarkRegisteredParams(...));
         Hook::add('DoiListPanel::setConfig', $this->addRegistrationAgencyName(...));
         Hook::add('Publication::validatePublishWarnings', $this->validate(...));
+        Hook::add('ArticleHandler::view', $this->addCrossmarkDoiMeta(...));
+        Hook::add('Templates::Article::Details', $this->displayCrossmarkButton(...));
     }
 
     /**
@@ -520,6 +523,78 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
             'printIssn.required_without' => __('plugins.generic.crossref.issn.requiredWithout'),
             'publisherInstitution.required' => __('plugins.generic.crossref.publisherInstitution.required')
         ];
+    }
+
+    /**
+     * Inject the DC.Identifier.DOI meta tag into the article page head for the Crossmark widget.
+     *
+     * @param string $hookName ArticleHandler::view
+     */
+    public function addCrossmarkDoiMeta(string $hookName, array $args): bool
+    {
+        $request = $args[0];
+        /** @var Submission $article */
+        $article = $args[2];
+
+        if (!$this->getSetting($request->getContext()->getId(), 'crossmark')) {
+            return Hook::CONTINUE;
+        }
+
+        $requestArgs = $request->getRequestedArgs();
+        if (count($requestArgs) > 1 && $requestArgs[1] === 'version') {
+            $publicationId = (int) ($requestArgs[2] ?? 0);
+            $publication = $article->getData('publications')->first(fn($p) => $p->getId() === $publicationId);
+        } else {
+            $publication = $article->getCurrentPublication();
+        }
+
+        if (!$publication?->getDoi()) {
+            return Hook::CONTINUE;
+        }
+
+        // The Dublin Core Meta plugin also adds this tag for the latest version, so a harmless
+        // duplicate may exist when that plugin is active. The Crossmark widget uses
+        // document.querySelector() which reads the first match, so both coexist without issue.
+        // We add it unconditionally to ensure it is present on older version pages, which the
+        // Dublin Core Meta plugin intentionally skips.
+        $templateMgr = TemplateManager::getManager($request);
+        $templateMgr->addHeader(
+            'crossmarkDoi',
+            '<meta name="DC.Identifier.DOI" content="' . htmlspecialchars($publication->getDoi(), ENT_QUOTES, 'UTF-8') . '" />'
+        );
+
+        return Hook::CONTINUE;
+    }
+
+    /**
+     * Inject the Crossmark button and widget script into the article landing page.
+     *
+     * @param string $hookName Templates::Article::Details
+     */
+    public function displayCrossmarkButton(string $hookName, array $params): bool
+    {
+        /** @var TemplateManager $templateMgr */
+        $templateMgr = &$params[1];
+        $output = &$params[2];
+
+        if (!$this->getSetting($this->getCurrentContextId(), 'crossmark')) {
+            return Hook::CONTINUE;
+        }
+
+        /** @var Publication $publication */
+        $publication = $templateMgr->getTemplateVars('publication');
+        if (!$publication?->getDoi()) {
+            return Hook::CONTINUE;
+        }
+
+        $templateMgr->addJavaScript(
+            'crossmarkWidget',
+            'https://crossmark-cdn.crossref.org/widget/v2.0/widget.js',
+            ['contexts' => ['frontend'], 'priority' => TemplateManager::STYLE_SEQUENCE_LAST]
+        );
+
+        $output .= $templateMgr->fetch($this->getTemplateResource('crossmarkButton.tpl'));
+        return Hook::CONTINUE;
     }
 
     /**

@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/crossref/classes/CrossrefSettings.php
  *
- * Copyright (c) 2014-2025 Simon Fraser University
- * Copyright (c) 2003-2025 John Willinsky
+ * Copyright (c) 2014-2026 Simon Fraser University
+ * Copyright (c) 2003-2026 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefSettings
@@ -55,7 +55,10 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                 'updatePolicyDoi' => (object) [
                     'type' => 'string',
                     'validation' => ['nullable', "regex:/^\\d+(.\\d+)+\\//"],
-                ]
+                ],
+                'crossmark' => (object) [
+                    'type' => 'boolean',
+                ],
             ],
         ];
     }
@@ -80,6 +83,29 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                 'isRequired' => true,
                 'value' => $this->agencyPlugin->getSetting($context->getId(), 'depositorEmail'),
             ]),
+            new FieldOptions('crossmark', [
+                'label' => __('plugins.generic.crossref.settings.crossmark.label'),
+                'options' => [
+                    ['value' => true, 'label' => __('plugins.generic.crossref.settings.crossmark.description')]
+                ],
+                'value' => (bool) $this->agencyPlugin->getSetting($context->getId(), 'crossmark'),
+            ]),
+        ];
+
+        $doiVersioning = $context->getData(Context::SETTING_DOI_VERSIONING);
+        $updatePolicyDoiArgs = [
+            'label' => __('plugins.importexport.crossref.settings.form.updatePolicy'),
+            'description' => __('plugins.importexport.crossref.settings.form.updatePolicy.description'),
+            'isRequired' => true,
+            'value' => $this->agencyPlugin->getSetting($context->getId(), 'updatePolicyDoi'),
+        ];
+        if (!$doiVersioning) {
+            $updatePolicyDoiArgs['showWhen'] = 'crossmark';
+        }
+        $settingsFields[] = new FieldText('updatePolicyDoi', $updatePolicyDoiArgs);
+
+        array_push(
+            $settingsFields,
             new FieldHTML('credentialsExplanation', [
                 'description' => __('plugins.importexport.crossref.registrationIntro'),
             ]),
@@ -101,21 +127,9 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                     ['value' => true, 'label' => __('plugins.importexport.crossref.settings.form.testMode.description')]
                 ],
                 'value' => (bool) $this->agencyPlugin->getSetting($context->getId(), 'testMode'),
-            ]),
-        ];
-        if ($context->getData(Context::SETTING_DOI_VERSIONING)) {
-            $updatePolicyDoiField = [new FieldText('updatePolicyDoi', [
-                'label' => __('plugins.importexport.crossref.settings.form.updatePolicy'),
-                'description' => __('plugins.importexport.crossref.settings.form.updatePolicy.description'),
-                'isRequired' => true,
-                'value' => $this->agencyPlugin->getSetting($context->getId(), 'updatePolicyDoi'),
-            ])];
-            $settingsFields = array_merge(
-                array_slice($settingsFields, 0, 3, true),
-                $updatePolicyDoiField,
-                array_slice($settingsFields, 3, count($settingsFields)-3, true)
-            );
-        }
+            ])
+        );
+
         return $settingsFields;
     }
 

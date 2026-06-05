@@ -27,6 +27,12 @@ msgstr "Crossref Manager Plugin"
 msgid "plugins.generic.crossref.description"
 msgstr "Handles depositing and exporting Crossref metadata"
 
+msgid "plugins.generic.crossref.settings.crossmark.label"
+msgstr "Crossmark"
+
+msgid "plugins.generic.crossref.settings.crossmark.description"
+msgstr "Enable participation in Crossmark to allow readers to check the publication status of articles. <a href=\"https://www.crossref.org/documentation/crossmark/\">Learn more.</a>"
+
 msgid "plugins.importexport.crossref.requirements"
 msgstr "Requirements"
 
