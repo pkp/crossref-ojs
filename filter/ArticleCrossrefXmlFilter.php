@@ -676,7 +676,18 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                 $componentNode->appendChild($titlesNode);
             }
             // DOI data node
-            $resourceURL = $dispatcher->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'download', [$publication->getData('urlPath') ?? $submission->getId(), $componentGalley->getBestGalleyId()], null, null, true, '');
+            $resourceURL = $dispatcher->url(
+                $request,
+                PKPApplication::ROUTE_PAGE,
+                $context->getPath(),
+                'article',
+                'download',
+                [$publication->getData('urlPath') ?? $submission->getId(), $componentGalley->getBestGalleyId()],
+                null,
+                null,
+                true,
+                ''
+            );
             $componentNode->appendChild($this->createDOIDataNode($doc, $componentGalley->getStoredPubId('doi'), $resourceURL));
             $componentListNode->appendChild($componentNode);
         }
