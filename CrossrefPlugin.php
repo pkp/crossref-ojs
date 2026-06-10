@@ -59,6 +59,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
      * @copydoc Plugin::register()
      *
      * @param null|mixed $mainContextId
+     * @throws Exception
      */
     public function register($category, $path, $mainContextId = null)
     {
@@ -350,8 +351,8 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
     }
 
 
-    /*
-     * @copyDoc IDoiRegistrationAgency::exportPeerReviews()
+    /**
+     * @copydoc IDoiRegistrationAgency::exportPeerReviews()
      */
     public function exportPeerReviews(array $reviewAssignments, Context $context): array
     {
@@ -377,8 +378,8 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         ];
     }
 
-    /*
-     * @copyDoc IDoiRegistrationAgency::depositPeerReviews()
+    /**
+     * @copydoc IDoiRegistrationAgency::depositPeerReviews()
      */
     public function depositPeerReviews(array $peerReviews, Context $context): array
     {
