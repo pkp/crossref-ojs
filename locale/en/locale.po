@@ -195,4 +195,4 @@ msgid "plugins.generic.crossref.publisherInstitution.required"
 msgstr "Journal publisher must be provided before submissions can be deposited with Crossref."
 
 msgid "plugins.importexport.crossref.reviewTitle"
-msgstr "Review: {publicationTitle}"
+msgstr "Review: {$publicationTitle}"

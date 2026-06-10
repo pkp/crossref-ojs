@@ -45,10 +45,10 @@
 			inGroup="article=>crossref-xml"
 			class="APP\plugins\generic\crossref\filter\ArticleCrossrefXmlFilter"
 			isTemplate="0" />
-        <!-- Crossref XML peer review output       -->
-		<filter
-			inGroup="peerReview=>crossref-xml"
-			class="APP\plugins\generic\crossref\filter\PeerReviewCrossrefXmlFilter"
-			isTemplate="0" />
+        <!-- Crossref XML peer review output -->
+        <filter
+            inGroup="peerReview=>crossref-xml"
+            class="APP\plugins\generic\crossref\filter\PeerReviewCrossrefXmlFilter"
+            isTemplate="0" />
 	</filters>
 </filterConfig>

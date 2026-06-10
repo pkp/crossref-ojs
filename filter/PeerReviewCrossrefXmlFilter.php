@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/crossref/filter/PeerReviewCrossrefXmlFilter.php
  *
- * Copyright (c) 2014-2026 Simon Fraser University
- * Copyright (c) 2000-2026 John Willinsky
+ * Copyright (c) 2026 Simon Fraser University
+ * Copyright (c) 2026 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class PeerReviewCrossrefXmlFilter
@@ -24,6 +24,7 @@ use APP\publication\Publication;
 use DOMDocument;
 use DOMElement;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Enumerable;
 use PKP\context\Context;
 use PKP\core\PKPApplication;
@@ -39,7 +40,7 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
     use CrossrefFilterBuilder;
 
     private Enumerable $publications;
-    private Enumerable $reviewRounds;
+    private Collection $reviewRounds;
     private Enumerable $reviewers;
 
     private array $reviewAssignments = [];
@@ -56,12 +57,11 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
     /**
      * @param ReviewAssignment[] $pubObjects Array of Review Assignments
      *
-     * @return \DOMDocument
      * @throws \Exception
      * @see \PKP\filter\Filter::process()
      *
      */
-    public function &process(&$pubObjects)
+    public function &process(&$pubObjects): DOMDocument
     {
         $this->reviewAssignments = $pubObjects;
 
@@ -90,13 +90,11 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
         foreach ($pubObjects as $reviewAssignment) {
             $peerReviewNode = $doc->createElementNS($deployment->getNamespace(), 'peer_review');
             $publication = $this->getPublication($reviewAssignment);
-            $locale = $publication->getData('locale');
-
             /**
              * Set Review round attribute. See https://www.crossref.org/documentation/schema-library/markup-guide-record-types/peer-reviews/#:~:text=Revision%20round%20number%2C%20first%20submission%20is%20defined%20as%20revision%20round%200
              */
             $peerReviewNode->setAttribute('revision-round', $reviewAssignment->getRound() - 1);
-            $peerReviewNode->setAttribute('language', \Locale::getPrimaryLanguage($locale));
+            $peerReviewNode->setAttribute('type', 'referee-report');
             $bodyNode->appendChild($peerReviewNode);
 
             $peerReviewNode->appendChild($this->createContributorsNode($doc, $reviewAssignment));
@@ -124,7 +122,7 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
                     Repo::submission()->get($publication->getData('submissionId'))->getId(),
                 ],
                 [
-                    'tab' =>'peer-review-record',
+                    'tab' => 'peer-review-record',
                     'reviewId' => $reviewAssignment->getId(),
                 ],
                 null,
@@ -132,7 +130,7 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
                 ''
             );
 
-            $peerReviewNode->appendChild($this->createDoiDataNode($doc, $reviewAssignment->getDoi(), $resourceURL));
+            $peerReviewNode->appendChild($this->createDOIDataNode($doc, $reviewAssignment->getDoi(), $resourceURL));
         }
 
         return $doc;
@@ -140,9 +138,6 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create the contributor node.
-     * @param DOMDocument $doc
-     * @param ReviewAssignment $reviewAssignment
-     * @return DOMElement
      * @throws \DOMException
      */
     private function createContributorsNode(DOMDocument $doc, ReviewAssignment $reviewAssignment): DOMElement
@@ -226,20 +221,18 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create the titles node.
-     * @param DOMDocument $doc
-     * @param ReviewAssignment $reviewAssignment
-     * @return DOMElement
      * @throws \DOMException
      */
     private function createTitlesNode(DOMDocument $doc, ReviewAssignment $reviewAssignment): DOMElement
     {
         $deployment = $this->getDeployment();
         $publication = $this->getPublication($reviewAssignment);
-
+        $locale = $publication->getData('locale');
         $titlesNode = $doc->createElementNS($deployment->getNamespace(), 'titles');
+
         $titleText = __('plugins.importexport.crossref.reviewTitle', [
-            'publicationTitle' => $publication->getLocalizedTitle($publication->getData('locale')),
-        ]);
+            'publicationTitle' => $publication->getLocalizedTitle($locale),
+        ], $locale);
 
         $titleNode = $doc->createElementNS(
             $deployment->getNamespace(),
@@ -254,9 +247,6 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create the review date node.
-     * @param DOMDocument $doc
-     * @param ReviewAssignment $reviewAssignment
-     * @return DOMElement
      * @throws \DOMException
      */
     private function createReviewDateNode(DOMDocument $doc, ReviewAssignment $reviewAssignment): DOMElement
@@ -266,18 +256,15 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
         $reviewDateNode = $doc->createElementNS($deployment->getNamespace(), 'review_date');
         $dateParsed = Carbon::parse($reviewAssignment->getDateCompleted());
 
-        $reviewDateNode->appendChild($doc->createElementNS($deployment->getNamespace(), 'month', $dateParsed->month));
-        $reviewDateNode->appendChild($doc->createElementNS($deployment->getNamespace(), 'day', $dateParsed->day));
-        $reviewDateNode->appendChild($doc->createElementNS($deployment->getNamespace(), 'year', $dateParsed->year));
+        $reviewDateNode->appendChild($doc->createElementNS($deployment->getNamespace(), 'month', $dateParsed->format('m')));
+        $reviewDateNode->appendChild($doc->createElementNS($deployment->getNamespace(), 'day', $dateParsed->format('d')));
+        $reviewDateNode->appendChild($doc->createElementNS($deployment->getNamespace(), 'year', $dateParsed->format('Y')));
 
         return $reviewDateNode;
     }
 
     /**
      * Create the competing interest node.
-     * @param DOMDocument $doc
-     * @param ReviewAssignment $reviewAssignment
-     * @return DOMElement
      * @throws \DOMException
      */
     private function createCompetingInterestNode(DOMDocument $doc, ReviewAssignment $reviewAssignment): DOMElement
@@ -288,9 +275,6 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create the running number node.
-     * @param DOMDocument $doc
-     * @param ReviewAssignment $reviewAssignment
-     * @return DOMElement
      * @throws \DOMException
      */
     private function createRunningNumberNode(DOMDocument $doc, ReviewAssignment $reviewAssignment): DOMElement
@@ -301,9 +285,6 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Create the relationship node to associate a review with a publication.
-     * @param DOMDocument $doc
-     * @param ReviewAssignment $reviewAssignment
-     * @return DOMElement
      * @throws \DOMException
      */
     private function createRelationshipNode(DOMDocument $doc, ReviewAssignment $reviewAssignment): DOMElement
@@ -316,8 +297,7 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
         $relatedItemNode = $doc->createElementNS($relationsNs, 'rel:related_item');
         $publication = $this->getPublication($reviewAssignment);
 
-
-        $doiVersioning =$deployment->getContext()->getData(Context::SETTING_DOI_VERSIONING);
+        $doiVersioning = $deployment->getContext()->getData(Context::SETTING_DOI_VERSIONING);
         // If same DOI is used for all publication versions then link the peer review to the current publication as that publication would be the one deposited to crossref
         $publicationDoi = null;
         if (!$doiVersioning) {
@@ -328,11 +308,11 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
             $publicationDoi = $publication->getDoi();
         }
 
-        $InterRelationNode = $doc->createElementNS($relationsNs, 'rel:inter_work_relation', $publicationDoi);
-        $InterRelationNode->setAttribute('relationship-type', 'isReviewOf');
-        $InterRelationNode->setAttribute('identifier-type', 'doi');
+        $interRelationNode = $doc->createElementNS($relationsNs, 'rel:inter_work_relation', $publicationDoi);
+        $interRelationNode->setAttribute('relationship-type', 'isReviewOf');
+        $interRelationNode->setAttribute('identifier-type', 'doi');
 
-        $relatedItemNode->appendChild($InterRelationNode);
+        $relatedItemNode->appendChild($interRelationNode);
         $programNode->appendChild($relatedItemNode);
 
         return $programNode;
@@ -350,7 +330,7 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
         }
 
         /** @var Publication $publication */
-        $publication = $this->publications->get($reviewRound->getpublicationId());
+        $publication = $this->publications->get($reviewRound->getPublicationId());
         return $publication;
     }
 
@@ -371,7 +351,7 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
     /**
      * Get the review round for a review assignment.
      */
-    private function getReviewRound($id): ReviewRound
+    private function getReviewRound(int $id): ReviewRound
     {
         if (empty($this->reviewRounds)) {
             $this->loadReviewRounds();
@@ -385,7 +365,6 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Load the review rounds for all review assignments.
-     * @return void
      * @throws \Exception
      */
     private function loadReviewRounds(): void
@@ -396,7 +375,6 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
 
         /** @var ReviewRoundDAO $reviewRoundDao */
         $reviewRoundDao = DAORegistry::getDAO('ReviewRoundDAO');
-        $this->reviewRounds = collect();
 
         foreach ($this->reviewAssignments as $reviewAssignment) {
             $this->reviewRounds->put(
@@ -409,9 +387,9 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
 
     /**
      * Load the reviewers for all review assignments
-     * @return void
      */
-    private function loadReviewers(): void{
+    private function loadReviewers(): void
+    {
         if (!empty($this->reviewers)) {
             return;
         }
@@ -423,11 +401,11 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
         $this->reviewers = Repo::user()->getCollector()
             ->filterByUserIds($reviewerIds)
             ->getMany()
-            ->keyBy(fn(User $user)=> $user->getId());
+            ->keyBy(fn(User $user) => $user->getId());
     }
+
     /**
      * Load the publications for all review assignments.
-     * @return void
      */
     private function loadPublications(): void
     {
