@@ -163,21 +163,27 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                     $personNameNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'surname', htmlspecialchars($givenNames[$locale], ENT_COMPAT, 'UTF-8')));
                 }
 
-                $affiliations = $author->getAffiliations();
-                if (count($affiliations) > 0) {
-                    $affiliationsNode = $doc->createElementNS($deployment->getNamespace(), 'affiliations');
-                    foreach ($affiliations as $affiliation) {
-                        $institutionNode = $doc->createElementNS($deployment->getNamespace(), 'institution');
-                        $institutionNameNode = $doc->createElementNS($deployment->getNamespace(), 'institution_name', htmlspecialchars($affiliation->getLocalizedName($locale), ENT_COMPAT, 'UTF-8'));
-                        $institutionNode->appendChild($institutionNameNode);
-                        $rorId = $affiliation->getRor();
-                        if ($rorId) {
-                            $institutionIdNode = $doc->createElementNS($deployment->getNamespace(), 'institution_id', $rorId);
-                            $institutionIdNode->setAttribute('type', 'ror');
-                            $institutionNode->appendChild($institutionIdNode);
-                        }
-                        $affiliationsNode->appendChild($institutionNode);
+                $affiliationsNode = null;
+                foreach ($author->getAffiliations() as $affiliation) {
+                    $institutionName = $affiliation->getLocalizedName($locale);
+                    if (trim($institutionName ?? '') === '') {
+                        continue;
                     }
+                    if ($affiliationsNode === null) {
+                        $affiliationsNode = $doc->createElementNS($deployment->getNamespace(), 'affiliations');
+                    }
+                    $institutionNode = $doc->createElementNS($deployment->getNamespace(), 'institution');
+                    $institutionNameNode = $doc->createElementNS($deployment->getNamespace(), 'institution_name', htmlspecialchars($institutionName, ENT_COMPAT, 'UTF-8'));
+                    $institutionNode->appendChild($institutionNameNode);
+                    $rorId = $affiliation->getRor();
+                    if ($rorId) {
+                        $institutionIdNode = $doc->createElementNS($deployment->getNamespace(), 'institution_id', $rorId);
+                        $institutionIdNode->setAttribute('type', 'ror');
+                        $institutionNode->appendChild($institutionIdNode);
+                    }
+                    $affiliationsNode->appendChild($institutionNode);
+                }
+                if ($affiliationsNode !== null) {
                     $personNameNode->appendChild($affiliationsNode);
                 }
 
