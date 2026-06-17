@@ -18,6 +18,7 @@ use APP\core\Application;
 use APP\core\Request;
 use APP\issue\Issue;
 use APP\plugins\generic\crossref\CrossrefExportDeployment;
+use APP\publication\Publication;
 use DOMDocument;
 use DOMElement;
 use PKP\core\Dispatcher;
@@ -137,14 +138,14 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
     /**
      * Create and return the journal metadata node 'journal_metadata'.
      */
-    public function createJournalMetadataNode(DOMDocument $doc, Issue $issue): DOMElement
+    public function createJournalMetadataNode(DOMDocument $doc, Issue|Publication $identitySource): DOMElement
     {
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
 
         $journalMetadataNode = $doc->createElementNS($deployment->getNamespace(), 'journal_metadata');
         // Full title
-        $journalTitle = $issue->getData('contextName', $context->getPrimaryLocale());
+        $journalTitle = $identitySource->getPrimaryContextName($context);
         // Fall back to the journal abbreviation if the full title is not set in the primary locale.
         if ($journalTitle == '') {
             $journalTitle = $context->getData('abbreviation', $context->getPrimaryLocale());
@@ -157,11 +158,11 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
         }
         $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'abbrev_title', htmlspecialchars($journalAbbrev, ENT_COMPAT, 'UTF-8')));
         // Both online and print ISSNs are permitted by Crossref — send whichever are available.
-        if ($ISSN = $issue->getData('onlineIssn')) {
+        if ($ISSN = $identitySource->getOnlineIssn($context)) {
             $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'issn', $ISSN));
             $node->setAttribute('media_type', 'electronic');
         }
-        if ($ISSN = $issue->getData('printIssn')) {
+        if ($ISSN = $identitySource->getPrintIssn($context)) {
             $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'issn', $ISSN));
             $node->setAttribute('media_type', 'print');
         }

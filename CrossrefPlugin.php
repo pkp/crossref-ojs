@@ -488,9 +488,9 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         ];
 
         $metadata = [
-            'publisherInstitution' => $publication->getData('publisherInstitution'),
-            'onlineIssn' => $publication->getData('onlineIssn'),
-            'printIssn' => $publication->getData('printIssn'),
+            'publisherInstitution' => $publication->getPublisher($context),
+            'onlineIssn' => $publication->getOnlineIssn($context),
+            'printIssn' => $publication->getPrintIssn($context),
             'doi' => $publication->getDoi(),
             'issueId' => $issueId,
         ];
