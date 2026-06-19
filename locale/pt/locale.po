@@ -183,9 +183,6 @@ msgstr "Lida com o depósito e exportação de metadados Crossref"
 msgid "plugins.generic.crossref.displayName"
 msgstr "Plugin de Gestão Crossref"
 
-msgid "plugins.generic.crossref.displayName"
-msgstr "Plugin de Gestão CrossRef"
-
 msgid "plugins.importexport.crossref.settings.form.username.description"
 msgstr ""
 "O nome de utilizador da Crossref que será usado para autenticar os seus "
