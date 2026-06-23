@@ -113,7 +113,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $deployment = $this->getDeployment();
 
         $journalNode = $doc->createElementNS($deployment->getNamespace(), 'journal');
-        $journalNode->appendChild($this->createJournalMetadataNode($doc));
+        $journalNode->appendChild($this->createJournalMetadataNode($doc, $publication));
         $issueNode = $this->createSubmissionJournalIssueNode($doc, $publication);
         if ($issueNode) {
             $journalNode->appendChild($issueNode);
