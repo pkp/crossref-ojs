@@ -30,6 +30,7 @@ class CrossrefExportDeployment
     public const CROSSREF_XMLNS_AI = 'http://www.crossref.org/AccessIndicators.xsd';
     public const CROSSREF_XMLNS_XML = 'http://www.w3.org/XML/1998/namespace';
     public const CROSSREF_XMLNS_REL = 'http://www.crossref.org/relations.xsd';
+    public const CROSSREF_XMLNS_FR = 'http://www.crossref.org/fundref.xsd';
 
     public Context $_context;
 
@@ -95,6 +96,14 @@ class CrossrefExportDeployment
     public function getXmlSchemaLocation(): string
     {
         return static::CROSSREF_XSI_SCHEMALOCATION;
+    }
+
+    /**
+     * Get the FundRef namespace URN
+     */
+    public function getFundrefNamespace(): string
+    {
+        return static::CROSSREF_XMLNS_FR;
     }
 
     /**
