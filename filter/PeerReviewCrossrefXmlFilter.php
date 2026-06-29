@@ -44,8 +44,9 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
     private Collection $reviewRounds;
     private Enumerable $submissions;
     private Enumerable $reviewers;
-
     private array $reviewAssignments = [];
+    private Enumerable $allReviewsPerRound;
+
 
     /**
      * @copydoc NativeExportFilter::__construct()
@@ -72,6 +73,7 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
         $this->loadReviewers();
         $this->loadPublications();
         $this->loadSubmissions();
+        $this->loadAllReviewsPerRound();
 
         // Create the XML document
         $doc = new \DOMDocument('1.0', 'utf-8');
@@ -233,7 +235,6 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
         $titlesNode = $doc->createElementNS($deployment->getNamespace(), 'titles');
         $reviewRound = $this->getReviewRound($reviewAssignment->getReviewRoundId());
 
-
         /**
          * Prepare review title below.
          * This includes:
@@ -249,15 +250,11 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
 
         /** Get Review Number (position of the review assignment within the round) */
         // 1 - Get all reviews in the round
-        $allReviewsInRound = array_filter($this->reviewAssignments, fn (ReviewAssignment $reviewAssignment) => $reviewAssignment->getReviewRoundId() === $reviewRound->getId());
+        $allReviewsInRound = $this->allReviewsPerRound->get($reviewRound->getId()) ?? [];
+        $reviewIds = array_map(fn (ReviewAssignment $ra) => $ra->getId(), $allReviewsInRound);
 
-        // 2 - Sort reviews by date completed; from earliest to most recent so reviews appear in the order that they were completed.
-        usort($allReviewsInRound, function (ReviewAssignment $a, ReviewAssignment $b) {
-            return strtotime($a->getDateCompleted()) <=> strtotime($b->getDateCompleted());
-        });
-
-        // 3 - Find index of current review assignment within the sorted reviews for the round
-        $reviewNumber = array_search($reviewAssignment, $allReviewsInRound, true) + 1;
+        // 2 - Find index of current review assignment within the sorted reviews for the round
+        $reviewNumber = array_search($reviewAssignment->getId(), $reviewIds) + 1;
 
         $titleText = __('plugins.importexport.crossref.reviewTitle', [
             'publicationTitle' => $publicationTitle,
@@ -435,13 +432,13 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
         }
 
         $reviewerIds = array_unique(
-            array_map(fn(ReviewAssignment $review) => $review->getReviewerId(), $this->reviewAssignments)
+            array_map(fn (ReviewAssignment $review) => $review->getReviewerId(), $this->reviewAssignments)
         );
 
         $this->reviewers = Repo::user()->getCollector()
             ->filterByUserIds($reviewerIds)
             ->getMany()
-            ->keyBy(fn(User $user) => $user->getId());
+            ->keyBy(fn (User $user) => $user->getId());
     }
 
     /**
@@ -465,7 +462,7 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
         $publications = Repo::publication()->getCollector()
             ->filterByPublicationIds(array_unique($publicationIds))
             ->getMany()
-            ->keyBy(fn(Publication $publication) => $publication->getId());
+            ->keyBy(fn (Publication $publication) => $publication->getId());
 
         $this->publications = $publications;
     }
@@ -493,7 +490,7 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
             ->filterByContextIds([$context->getId()])
             ->filterBySubmissionIds(array_unique($submissionIds))
             ->getMany()
-            ->keyBy(fn(Submission $submission) => $submission->getId());
+            ->keyBy(fn (Submission $submission) => $submission->getId());
 
         $this->submissions = $submissions;
     }
@@ -511,5 +508,33 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
         $submission = $this->submissions->get($submissionId);
 
         return $submission;
+    }
+
+    /**
+     * Load all reviews associated with each review round. Reviews are grouped by review round ID then sorted by date completed in ascending order.
+     */
+    private function loadAllReviewsPerRound(): void
+    {
+        if (!empty($this->allReviewsPerRound)) {
+            return;
+        }
+
+        $roundIds = array_unique(
+            array_map(fn (ReviewAssignment $ra) => $ra->getReviewRoundId(), $this->reviewAssignments)
+        );
+
+        $this->allReviewsPerRound = Repo::reviewAssignment()
+            ->getCollector()
+            ->filterByReviewRoundIds($roundIds)
+            ->filterByIsPubliclyVisible(true)
+            ->filterByIsConfirmedByEditor(true)
+            ->getMany()
+            ->groupBy(fn (ReviewAssignment $ra) => $ra->getReviewRoundId())
+            ->map(function ($group) {
+                $items = $group->all();
+                usort($items, fn (ReviewAssignment $a, ReviewAssignment $b) => strtotime($a->getDateCompleted()) <=> strtotime($b->getDateCompleted())
+                );
+                return $items;
+            });
     }
 }

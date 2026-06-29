@@ -363,6 +363,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
 
         return ['temporaryFileId' => $temporaryFileId, 'xmlErrors' => $xmlErrors];
     }
+
     /**
      * @param Submission[] $submissions
      */

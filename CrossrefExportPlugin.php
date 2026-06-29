@@ -21,7 +21,6 @@ use APP\issue\Issue;
 use APP\journal\Journal;
 use APP\plugins\DOIPubIdExportPlugin;
 use APP\submission\Submission;
-use DOMDocument;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -90,8 +89,8 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     public function getPeerReviewFilter(): string
     {
         return 'peerReview=>crossref-xml';
-
     }
+
     /**
      * @copydoc PubObjectsExportPlugin::getIssueFilter()
      */
