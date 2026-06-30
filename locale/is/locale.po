@@ -1,0 +1,204 @@
+# Helgi Sigurbjörnsson <helgi.sigurbjornsson@landsbokasafn.is>, 2026.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2026-06-05 16:32+0000\n"
+"Last-Translator: Helgi Sigurbjörnsson <helgi.sigurbjornsson@landsbokasafn.is>"
+"\n"
+"Language-Team: Icelandic <http://translate.pkp.sfu.ca/projects/plugins/"
+"crossref/is/>\n"
+"Language: is\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11;\n"
+"X-Generator: Weblate 4.18.2\n"
+
+msgid "plugins.importexport.crossref.settings.form.depositorName.description"
+msgstr ""
+"Heiti stofnunarinnar sem skráir DOI-auðkennin. Það er haft með í innsendum "
+"lýsigögnum og notað til að skrá hver skilaði inn gögnunum."
+
+msgid "plugins.importexport.crossref.displayName"
+msgstr "Crossref XML útflutningsviðbót"
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Crossref-stjórnunarviðbót"
+
+msgid "plugins.generic.crossref.description"
+msgstr "Sér um útflutning og skráningu Crossref-lýsigagna"
+
+msgid "plugins.importexport.crossref.requirements"
+msgstr "Kröfur"
+
+msgid "plugins.importexport.crossref.requirements.satisfied"
+msgstr "Öllum kröfum viðbótar hefur verið mætt."
+
+msgid "plugins.importexport.crossref.settings.form.depositorName"
+msgstr "Nafn skilaaðila"
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail"
+msgstr "Netfang skilaaðila"
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail.description"
+msgstr ""
+"Netfang þess einstaklings sem ber ábyrgð á skráningu efnis hjá Crossref. Það "
+"er haft með í innsendum lýsigögnum og notað þegar staðfestingarpóstur vegna "
+"skila er sendur."
+
+msgid "plugins.importexport.crossref.settings.form.depositorNameRequired"
+msgstr "Skráið nafn skilaaðila."
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
+msgstr "Skráið tölvupóst skilaaðila."
+
+msgid "plugins.importexport.crossref.settings.form.username"
+msgstr "Notandanafn"
+
+msgid "plugins.importexport.crossref.settings.form.username.description"
+msgstr ""
+"Crossref-notandanafnið sem verður notað til að auðkenna skilin þín. Ef þú "
+"notar persónulegan aðgang skaltu kynna þér leiðbeiningarnar hér að ofan."
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Crossref stillingar"
+
+msgid "plugins.importexport.crossref.description"
+msgstr "Flytja út lýsigögn í Crossref XML formati."
+
+msgid "plugins.importexport.crossref.settings.depositorIntro"
+msgstr "Eftirfarandi atrið eru nauðsynleg til að skil í Crossref heppnist."
+
+msgid "plugins.importexport.crossref.error.publisherNotConfigured"
+msgstr ""
+"Útgefandi tímarits hefur ekki verið stilltur! Þú verður að bæta við "
+"útgáfustofnun á <a href=\"{$journalSettingsUrl}\" target=\"_blank\""
+">stillingasíðu tímaritsins</a>."
+
+msgid "plugins.importexport.crossref.error.issnNotConfigured"
+msgstr ""
+"ISSN tímarits hefur ekki verið stillt! Þú verður að bæta við ISSN-númeri á "
+"<a href=\"{$journalSettingsUrl}\" target=\"_blank\">stillingasíðu "
+"tímaritsins</a>."
+
+msgid "plugins.importexport.crossref.error.noDOIContentObjects"
+msgstr ""
+"Greinar eru ekki valdar fyrir DOI-úthlutun í viðbótinni fyrir opinber "
+"auðkenni DOI og því er hvorki hægt að skila inn né flytja út gögn í þessari "
+"viðbót."
+
+msgid "plugins.importexport.crossref.registrationIntro"
+msgstr ""
+"<p>Ef þú vilt nota þessa viðbót til að skrá Digital Object Identifiers (DOI) "
+"beint hjá <a href=\"http://www.crossref.org/\">Crossref</a> þarftu að bæta "
+"<a href=\"https://www.crossref.org/documentation/member-setup/"
+"account-credentials/\">Crossref-aðgangsupplýsingunum þínum</a> við í reitina "
+"fyrir notandanafn og lykilorð hér fyrir neðan.</p><p>Það fer eftir Crossref-"
+"aðild þinni hvernig þú skráir notandanafn og lykilorð:</p><ul><li>Ef þú "
+"notar stofnanaaðgang skaltu bæta við <a href=\"https://www.crossref.org/"
+"documentation/member-setup/account-credentials/#00376\">sameiginlegu "
+"notandanafni og lykilorði</a></li><li>Ef þú notar <a href=\"https://www."
+"crossref.org/documentation/member-setup/account-credentials/#00368\""
+">persónulegan aðgang</a> skaltu slá inn netfangið þitt og hlutverkið í "
+"reitinn fyrir notandanafn. Notandanafnið mun líta svona út: email@example."
+"com/role</li><li>Ef þú þekkir ekki Crossref-aðgangsupplýsingarnar þínar eða "
+"hefur ekki aðgang að þeim geturðu haft samband við <a href=\"https://support."
+"crossref.org/\">þjónustuver Crossref</a> til að fá aðstoð. Án "
+"aðgangsupplýsinga geturðu samt flutt lýsigögn út á Crossref XML-sniði, en þú "
+"getur ekki skráð DOI-auðkenni hjá Crossref úr OJS.</li></ul>"
+
+msgid "plugins.importexport.crossref.settings.form.usernameRequired"
+msgstr "Vinsamlegast sláðu inn notandanafnið sem þú fékkst frá Crossref."
+
+msgid "plugins.importexport.crossref.settings.form.validation"
+msgstr ""
+"Staðfesta XML. Notaður þennan valkost við niðurhal XML-skjals fyrir "
+"handvirka DOI-skráningu."
+
+msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
+msgstr "Aðeins staðfesta útflutning. Ekki hlaða niður skránni."
+
+msgid "plugins.importexport.crossref.status.failed"
+msgstr "Mistókst"
+
+msgid "plugins.importexport.crossref.status.registered"
+msgstr "Virkt"
+
+msgid "plugins.importexport.crossref.status.markedRegistered"
+msgstr "Merkt virkt"
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "Hefur ekki verið skilað inn"
+
+msgid "plugins.importexport.crossref.action.register"
+msgstr "Skila inn"
+
+msgid "plugins.importexport.crossref.action.export"
+msgstr "Flytja út"
+
+msgid "plugins.importexport.crossref.action.markRegistered"
+msgstr "Merkja virkt"
+
+msgid "plugins.importexport.crossref.senderTask.name"
+msgstr "Crossref sjálfvirkt skráningarverk"
+
+msgid "plugins.importexport.crossref.cliUsage"
+msgstr ""
+"Notkun:\n"
+"{$scriptName} {$pluginName} export [xmlFileName] [journal_path] articles "
+"objectId1 [objectId2] ...\n"
+"{$scriptName} {$pluginName} register [journal_path] articles objectId1 "
+"[objectId2] ...\n"
+
+msgid "plugins.importexport.crossref.register.error.mdsError"
+msgstr "Skráning tókst ekki að fullu! DOI-skráningarþjónninn skilaði villu."
+
+msgid "plugins.importexport.crossref.register.success.warning"
+msgstr "Skráning tókst en eftirfarandi viðvörun átti sér stað: '{$param}'."
+
+msgid "plugins.importexport.crossref.export.error.issueNotFound"
+msgstr "Ekkert tölublað fannst með tilgreinda tölublaðsauðkennið „{$issueId}“."
+
+msgid "plugins.importexport.crossref.export.error.articleNotFound"
+msgstr "Engin grein fannst með tilgreinda greinarauðkennið \"{$articleId}\"."
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
+
+msgid "plugins.generic.crossref.successMessage"
+msgstr ""
+"Lýsigögnum fyrir þetta atriði hefur verið skilað inn til Crossref. Nánari "
+"upplýsingar má sjá í innsendingunni á <a href=\"https://doi.crossref.org/"
+"servlet/submissionAdmin?sf=detail&submissionID={$submissionId}\">stjórnborði "
+"Crossref</a>."
+
+msgid "plugins.importexport.crossref.settings.form.testMode.description"
+msgstr ""
+"Nota Crossref-prófunar-API (prófunarumhverfi) fyrir DOI-skilin. Vinsamlegast "
+"mundu að fjarlægja þennan valkost í raunumhverfi."
+
+msgid "plugins.importexport.crossref.issues.description"
+msgstr ""
+"Athugið: Aðeins heftin (og ekki greinar þeirra) koma til greina fyrir ú"
+"tfluttning/skráningu hér."
+
+msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
+msgstr ""
+"OJS mun skila úthlutuðum DOI-auðkennum sjálfkrafa til Crossref. Vinsamlegast "
+"athugaðu að úrvinnslan getur tekið stutta stund eftir birtingu, t.d. eftir "
+"því hvernig cronjob-stillingar þínar eru settar upp. Þú getur kannað öll "
+"óskráð DOI-auðkenni."
+
+msgid "plugins.importexport.crossref.statusLegend"
+msgstr ""
+"\n"
+"\t\t<p>Staða skila:</p>\n"
+"\t\t<p>\n"
+"\t\t- Ekki skilað inn: engin tilraun hefur verið gerð til að skila þessu DOI-"
+"auðkenni.<br />\n"
+"\t\t- Virkt: DOI-auðkenninu hefur verið skilað inn og það vísar rétt.<br />\n"
+"\t\t- Mistókst: DOI-skilin mistókust.<br />\n"
+"\t\t- Merkt virkt: DOI-auðkennið var handvirkt merkt sem virkt.\n"
+"\t\t</p>\n"
+"\t\t<p>Aðeins staða síðustu skilatilraunar er birt.</p>\n"
+"\t\t<p>Ef skil hafa mistekist skaltu leysa vandamálið og reyna aftur að skrá "
+"DOI-auðkennið.</p>"
