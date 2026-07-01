@@ -21,7 +21,6 @@ use APP\issue\Issue;
 use APP\journal\Journal;
 use APP\plugins\DOIPubIdExportPlugin;
 use APP\submission\Submission;
-use DOMDocument;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -30,6 +29,7 @@ use PKP\doi\Doi;
 use PKP\file\FileManager;
 use PKP\file\TemporaryFileManager;
 use PKP\plugins\Hook;
+use PKP\submission\reviewAssignment\ReviewAssignment;
 
 class CrossrefExportPlugin extends DOIPubIdExportPlugin
 {
@@ -81,6 +81,14 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     public function getSubmissionFilter()
     {
         return 'article=>crossref-xml';
+    }
+
+    /**
+     * @copydoc PubObjectsExportPlugin::getPeerReviewFilter()
+     */
+    public function getPeerReviewFilter(): string
+    {
+        return 'peerReview=>crossref-xml';
     }
 
     /**
@@ -283,7 +291,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     }
 
     /**
-     * @param Submission $objects
+     * @param mixed $objects
      * @param Journal $context
      * @param string $filename Export XML filename
      *
@@ -407,12 +415,14 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     /**
      * Update the local DOI deposit status and related metadata for the given object.
      */
-    public function updateDepositStatus(Journal $context, Issue|Submission $object, int $status, ?string $batchId = null, ?string $failedMsg = null, ?string $successMsg = null)
+    public function updateDepositStatus(Journal $context, Issue|Submission|ReviewAssignment $object, int $status, ?string $batchId = null, ?string $failedMsg = null, ?string $successMsg = null)
     {
         if ($object instanceof Submission) {
             $doiIds = Repo::doi()->getDoisForSubmission($object->getId());
-        } else {
+        } else if ($object instanceof Issue) {
             $doiIds = Repo::doi()->getDoisForIssue($object->getId(), true);
+        } else {
+            $doiIds = Repo::doi()->getDoisForReviewAssignment($object->getId(), true);
         }
 
         foreach ($doiIds as $doiId) {
@@ -437,10 +447,14 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     /**
      * Get part of the file name based on the object that is being exported
      */
-    private function _getObjectFileNamePart(Submission|Issue $object): string
+    private function _getObjectFileNamePart(Submission|Issue|ReviewAssignment $object): string
     {
         if ($object instanceof Submission) {
             return 'articles-' . $object->getId();
+        }
+
+        if ($object instanceof ReviewAssignment) {
+            return 'peerReviews-' . $object->getId();
         }
         return 'issues-' . $object->getId();
     }

@@ -59,6 +59,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
      * @copydoc Plugin::register()
      *
      * @param null|mixed $mainContextId
+     * @throws Exception
      */
     public function register($category, $path, $mainContextId = null)
     {
@@ -349,6 +350,20 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         return ['temporaryFileId' => $temporaryFileId, 'xmlErrors' => $xmlErrors];
     }
 
+
+    /**
+     * @copydoc IDoiRegistrationAgency::exportPeerReviews()
+     */
+    public function exportPeerReviews(array $reviewAssignments, Context $context): array
+    {
+        $filterName = $this->_exportPlugin->getPeerReviewFilter();
+        $xmlErrors = [];
+
+        $temporaryFileId = $this->_exportPlugin->exportAsDownload($context, $reviewAssignments, $filterName, 'peerReviews', null, $xmlErrors);
+
+        return ['temporaryFileId' => $temporaryFileId, 'xmlErrors' => $xmlErrors];
+    }
+
     /**
      * @param Submission[] $submissions
      */
@@ -364,6 +379,20 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         ];
     }
 
+    /**
+     * @copydoc IDoiRegistrationAgency::depositPeerReviews()
+     */
+    public function depositPeerReviews(array $peerReviews, Context $context): array
+    {
+        $filterName = $this->_exportPlugin->getPeerReviewFilter();
+        $responseMessage = '';
+        $status = $this->_exportPlugin->exportAndDeposit($context, $peerReviews, $filterName, $responseMessage);
+
+        return [
+            'hasErrors' => !$status,
+            'responseMessage' => $responseMessage
+        ];
+    }
     /**
      * @param Issue[] $issues
      */
@@ -439,7 +468,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
      */
     public function getAllowedDoiTypes(): array
     {
-        return [Repo::doi()::TYPE_PUBLICATION, Repo::doi()::TYPE_ISSUE];
+        return [Repo::doi()::TYPE_PUBLICATION, Repo::doi()::TYPE_ISSUE, Repo::doi()::TYPE_PEER_REVIEW];
     }
 
     /**
