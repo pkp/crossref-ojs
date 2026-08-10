@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-19T11:05:36+00:00\n"
-"PO-Revision-Date: 2026-05-25 12:35+0000\n"
+"PO-Revision-Date: 2026-08-10 15:11+0000\n"
 "Last-Translator: lena bojcic <lenabojcicck@gmail.com>\n"
 "Language-Team: Serbian (latin) <http://translate.pkp.sfu.ca/projects/plugins/"
 "crossref/sr_Latn/>\n"
@@ -20,7 +20,6 @@ msgstr ""
 msgid "plugins.importexport.crossref.displayName"
 msgstr "Crossref XML dodatak za izvoz"
 
-#,fuzzy
 msgid "plugins.importexport.crossref.description"
 msgstr "Izvezi metapodatke članaka u Crossref XML format."
 
