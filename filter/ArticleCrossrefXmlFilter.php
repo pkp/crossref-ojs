@@ -250,11 +250,11 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
         if ($context->getData(Context::SETTING_DOI_VERSIONING) || $plugin->getSetting($context->getId(), 'crossmark')) {
             // crossmark
-            $this->appendCrossmarkNode($doc, $journalArticleNode, $this->versionsDois, $publication);
+            $this->appendCrossmarkNode($doc, $journalArticleNode, $this->versionsDois, $publication, $submission);
         } else {
             // if no crossmark element is used, append program nodes here
             // fr:program (FundRef)
-            $this->appendFundrefNode($doc, $journalArticleNode, $publication);
+            $this->appendFundrefNode($doc, $journalArticleNode, $publication, $submission);
             // ai:program (AccessIndicators) element, that contains the license URL
             $this->appendProgramNode($doc, $journalArticleNode, $publication);
         }
@@ -514,12 +514,12 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Append fr:program (FundRef) node with funding information
      */
-    public function appendFundrefNode(DOMDocument $doc, DOMElement $parentNode, Publication $publication): void
+    public function appendFundrefNode(DOMDocument $doc, DOMElement $parentNode, Publication $publication, Submission $submission): void
     {
         /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
 
-        $funders = $publication->getData('funders');
+        $funders = $submission->getData('funders')->toArray();
 
         if (empty($funders)) {
             return;
@@ -836,7 +836,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Create crossmark update field, used to register the update of the previous version
      */
-    public function appendCrossmarkNode(DOMDocument $doc, DOMElement $parentNode, array $versionsDois, Publication $publication): void
+    public function appendCrossmarkNode(DOMDocument $doc, DOMElement $parentNode, array $versionsDois, Publication $publication, Submission $submission): void
     {
         /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
@@ -896,7 +896,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         }
 
         // fr:program (FundRef)
-        $this->appendFundrefNode($doc, $customMetadataNode, $publication);
+        $this->appendFundrefNode($doc, $customMetadataNode, $publication, $submission);
 
         // ai:program (AccessIndicators) element, that contains the license URL
         $this->appendProgramNode($doc, $customMetadataNode, $publication);
