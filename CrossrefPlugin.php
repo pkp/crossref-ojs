@@ -31,12 +31,15 @@ use PKP\context\Context;
 use PKP\doi\RegistrationAgencySettings;
 use PKP\plugins\GenericPlugin;
 use PKP\plugins\Hook;
+use PKP\plugins\interfaces\HasMetadataBlocks;
 use PKP\plugins\interfaces\HasTaskScheduler;
 use PKP\plugins\PluginRegistry;
 use PKP\scheduledTask\PKPScheduler;
 use PKP\services\PKPSchemaService;
+use PKP\view\MetadataBlock;
+use PKP\view\MetadataBlocksRegistry;
 
-class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, HasTaskScheduler
+class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, HasTaskScheduler, HasMetadataBlocks
 {
     public const CROSSREF_API_REFS_URL = 'https://doi.crossref.org/getResolvedRefs';
     public const CROSSREF_API_REFS_URL_DEV = 'https://test.crossref.org/getResolvedRefs';
@@ -640,5 +643,29 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
             }
         }
         return $values;
+    }
+
+    /**
+     * Add a new metadata block to display the crossmark button
+     */
+    public function registerMetadataBlocks(MetadataBlocksRegistry $blocks): void
+    {
+        if (!$this->getSetting($this->getCurrentContextId(), 'crossmark')) {
+            return;
+        }
+        $blocks->register(
+            new MetadataBlock(
+                component: 'crossrefplugin::metadata-blocks.crossmark',
+                title: __('plugins.generic.crossref.settings.crossmark.label'),
+                loader: function () {
+                    $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
+                    $templateMgr->addJavaScript(
+                        'crossmarkWidget',
+                        'https://crossmark-cdn.crossref.org/widget/v2.0/widget.js',
+                        ['contexts' => ['frontend'], 'priority' => TemplateManager::STYLE_SEQUENCE_LAST]
+                    );
+                }
+            )
+        );
     }
 }
