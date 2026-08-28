@@ -59,6 +59,9 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                 'crossmark' => (object) [
                     'type' => 'boolean',
                 ],
+                'citedBy' => (object) [
+                    'type' => 'boolean',
+                ],
             ],
         ];
     }
@@ -89,6 +92,13 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                     ['value' => true, 'label' => __('plugins.generic.crossref.settings.crossmark.description')]
                 ],
                 'value' => (bool) $this->agencyPlugin->getSetting($context->getId(), 'crossmark'),
+            ]),
+            new FieldOptions('citedBy', [
+                'label' => __('plugins.generic.crossref.settings.form.enabledCitedBy'),
+                'options' => [
+                    ['value' => true, 'label' => __('plugins.generic.crossref.settings.form.enabledCitedBy.description')]
+                ],
+                'value' => (bool) $this->agencyPlugin->getSetting($context->getId(), 'citedBy'),
             ]),
         ];
 

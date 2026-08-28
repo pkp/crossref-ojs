@@ -202,3 +202,24 @@ msgstr "Journal publisher must be provided before submissions can be deposited w
 
 msgid "plugins.importexport.crossref.reviewTitle"
 msgstr "Review: {$publicationTitle} (Round{$revisionNumber}/Review{$reviewNumber})"
+
+msgid "plugins.generic.crossref.settings.form.enabledCitedBy"
+msgstr "Enable Cited-by"
+
+msgid "plugins.generic.crossref.settings.form.enabledCitedBy.description"
+msgstr "Enable Crossref Cited-by to retrieve citations found in Crossref for an article."
+
+msgid "plugins.generic.crossref.api.citedByNotEnabled"
+msgstr "Crossref Cited-by API is not enabled within this context."
+
+msgid "plugins.generic.crossref.api.citedByError"
+msgstr "An error occurred while retrieving Crossref citations for this article."
+
+msgid "plugins.generic.crossref.citedBy.title"
+msgstr "Articles that cite this article (Crossref)"
+
+msgid "plugins.generic.crossref.citedBy.citationCount"
+msgstr "{$count} citations"
+
+msgid "plugins.generic.crossref.citedBy.copyCitationDetails"
+msgstr "Copy Citation Details"
