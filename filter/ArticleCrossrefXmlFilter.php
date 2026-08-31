@@ -254,7 +254,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         } else {
             // if no crossmark element is used, append program nodes here
             // fr:program (FundRef)
-            $this->appendFundrefNode($doc, $journalArticleNode, $publication, $submission);
+            $this->appendFundrefNode($doc, $journalArticleNode, $submission);
             // ai:program (AccessIndicators) element, that contains the license URL
             $this->appendProgramNode($doc, $journalArticleNode, $publication);
         }
@@ -514,7 +514,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
     /**
      * Append fr:program (FundRef) node with funding information
      */
-    public function appendFundrefNode(DOMDocument $doc, DOMElement $parentNode, Publication $publication, Submission $submission): void
+    public function appendFundrefNode(DOMDocument $doc, DOMElement $parentNode, Submission $submission): void
     {
         /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
@@ -525,13 +525,12 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             return;
         }
 
-        $locale = $publication->getData('locale');
+        $locale = $submission->getData('locale');
 
         $programNode = $doc->createElementNS($deployment->getFundrefNamespace(), 'fr:program');
         $programNode->setAttribute('name', 'fundref');
 
         foreach ($funders as $funder) {
-
             $groupNode = $doc->createElementNS($deployment->getFundrefNamespace(), 'fr:assertion');
             $groupNode->setAttribute('name', 'fundgroup');
 
@@ -556,7 +555,6 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
             if (!empty($funder->grants)) {
                 foreach ($funder->grants as $grant) {
-
                     $awardNode = null;
                     if (!empty($grant['grantNumber'])) {
                         $awardNode = $doc->createElementNS($deployment->getFundrefNamespace(), 'fr:assertion', htmlspecialchars($grant['grantNumber'], ENT_COMPAT, 'UTF-8'));
@@ -896,7 +894,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         }
 
         // fr:program (FundRef)
-        $this->appendFundrefNode($doc, $customMetadataNode, $publication, $submission);
+        $this->appendFundrefNode($doc, $customMetadataNode, $submission);
 
         // ai:program (AccessIndicators) element, that contains the license URL
         $this->appendProgramNode($doc, $customMetadataNode, $publication);
