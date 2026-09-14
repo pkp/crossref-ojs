@@ -654,7 +654,8 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         $templateMgr = &$params[1];
         $output = &$params[2];
 
-        if (!$templateMgr->getTemplateVars('isCrossmarkEnabled')) {
+        $request = Application::get()->getRequest();
+        if (!$this->isCrossmarkEnabled($request, $templateMgr->getTemplateVars('publication'))) {
             return Hook::CONTINUE;
         }
 
