@@ -130,7 +130,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         Hook::add('Doi::markRegistered', $this->editMarkRegisteredParams(...));
         Hook::add('DoiListPanel::setConfig', $this->addRegistrationAgencyName(...));
         Hook::add('Publication::validatePublishWarnings', $this->validate(...));
-        Hook::add('ArticleHandler::view', $this->addCrossmarkDoiMeta(...));
+        Hook::add('ArticleHandler::view', $this->setupCrossmark(...));
         Hook::add('Templates::Article::Details', $this->displayCrossmarkButton(...));
     }
 
@@ -555,15 +555,20 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
     }
 
     /**
-     * Inject the DC.Identifier.DOI meta tag into the article page head for the Crossmark widget.
+     * Set up the Crossmark button on the article landing page: the DC.Identifier.DOI meta tag
+     * the widget reads, the widget and button component scripts, and the isCrossmarkEnabled
+     * template variable themes use to decide whether to render the button.
      *
      * @param string $hookName ArticleHandler::view
      */
-    public function addCrossmarkDoiMeta(string $hookName, array $args): bool
+    public function setupCrossmark(string $hookName, array $args): bool
     {
         $request = $args[0];
         /** @var Submission $article */
         $article = $args[2];
+
+        $templateMgr = TemplateManager::getManager($request);
+        $templateMgr->assign('isCrossmarkEnabled', false);
 
         if (!$this->getSetting($request->getContext()->getId(), 'crossmark')) {
             return Hook::CONTINUE;
@@ -586,17 +591,30 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         // document.querySelector() which reads the first match, so both coexist without issue.
         // We add it unconditionally to ensure it is present on older version pages, which the
         // Dublin Core Meta plugin intentionally skips.
-        $templateMgr = TemplateManager::getManager($request);
         $templateMgr->addHeader(
             'crossmarkDoi',
             '<meta name="DC.Identifier.DOI" content="' . htmlspecialchars($publication->getDoi(), ENT_QUOTES, 'UTF-8') . '" />'
         );
 
+        $templateMgr->requiresVueRuntime();
+        $scriptArgs = ['contexts' => ['frontend'], 'priority' => TemplateManager::STYLE_SEQUENCE_LAST];
+        $templateMgr->addJavaScript(
+            'crossmarkWidget',
+            'https://crossmark-cdn.crossref.org/widget/v2.0/widget.js',
+            $scriptArgs
+        );
+        $templateMgr->addJavaScript(
+            'crossrefCrossmarkButton',
+            "{$request->getBaseUrl()}/{$this->getPluginPath()}/public/build/crossref.js",
+            $scriptArgs
+        );
+        $templateMgr->assign('isCrossmarkEnabled', true);
+
         return Hook::CONTINUE;
     }
 
     /**
-     * Inject the Crossmark button and widget script into the article landing page.
+     * Inject the Crossmark button into the article landing page of themes that call this hook.
      *
      * @param string $hookName Templates::Article::Details
      */
@@ -606,23 +624,11 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         $templateMgr = &$params[1];
         $output = &$params[2];
 
-        if (!$this->getSetting($this->getCurrentContextId(), 'crossmark')) {
+        if (!$templateMgr->getTemplateVars('isCrossmarkEnabled')) {
             return Hook::CONTINUE;
         }
 
-        /** @var Publication $publication */
-        $publication = $templateMgr->getTemplateVars('publication');
-        if (!$publication?->getDoi()) {
-            return Hook::CONTINUE;
-        }
-
-        $templateMgr->addJavaScript(
-            'crossmarkWidget',
-            'https://crossmark-cdn.crossref.org/widget/v2.0/widget.js',
-            ['contexts' => ['frontend'], 'priority' => TemplateManager::STYLE_SEQUENCE_LAST]
-        );
-
-        $output .= $templateMgr->fetch($this->getTemplateResource('crossmarkButton.tpl'));
+        $output .= $templateMgr->fetch($this->getTemplateResource('crossmarkButton'));
         return Hook::CONTINUE;
     }
 
