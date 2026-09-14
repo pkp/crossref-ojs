@@ -557,26 +557,25 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
     }
 
     /**
-     * Resolve the publication the Crossmark button and DOI meta tag refer to on an article page.
-     *
-     * Returns null when the Crossmark setting is off for the context or the requested
-     * publication (a specific version via /version/{id}, otherwise the current one) has no DOI.
+     * Get the publication an article page shows: a specific version when requested via
+     * /version/{id}, otherwise the current publication.
      */
-    private function getCrossmarkPublication(Request $request, Submission $article): ?Publication
+    private function getRequestedPublication(Request $request, Submission $article): ?Publication
     {
-        if (!$this->getSetting($request->getContext()->getId(), 'crossmark')) {
-            return null;
-        }
-
         $requestArgs = $request->getRequestedArgs();
         if (count($requestArgs) > 1 && $requestArgs[1] === 'version') {
             $publicationId = (int) ($requestArgs[2] ?? 0);
-            $publication = $article->getData('publications')->first(fn($p) => $p->getId() === $publicationId);
-        } else {
-            $publication = $article->getCurrentPublication();
+            return $article->getData('publications')->first(fn($p) => $p->getId() === $publicationId);
         }
+        return $article->getCurrentPublication();
+    }
 
-        return $publication?->getDoi() ? $publication : null;
+    /**
+     * Whether the Crossmark button applies: the setting is on for the context and the publication has a DOI.
+     */
+    private function isCrossmarkEnabled(Request $request, ?Publication $publication): bool
+    {
+        return $this->getSetting($request->getContext()->getId(), 'crossmark') && $publication?->getDoi();
     }
 
     /**
@@ -590,8 +589,8 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         /** @var Submission $article */
         $article = $args[2];
 
-        $publication = $this->getCrossmarkPublication($request, $article);
-        if (!$publication) {
+        $publication = $this->getRequestedPublication($request, $article);
+        if (!$this->isCrossmarkEnabled($request, $publication)) {
             return Hook::CONTINUE;
         }
 
@@ -622,7 +621,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         $article = $args[2];
 
         $templateMgr = TemplateManager::getManager($request);
-        $isEnabled = (bool) $this->getCrossmarkPublication($request, $article);
+        $isEnabled = $this->isCrossmarkEnabled($request, $this->getRequestedPublication($request, $article));
         $templateMgr->assign('isCrossmarkEnabled', $isEnabled);
         if (!$isEnabled) {
             return Hook::CONTINUE;
