@@ -16,6 +16,7 @@
 namespace APP\plugins\generic\crossref;
 
 use APP\core\Application;
+use APP\core\Request;
 use APP\facades\Repo;
 use APP\issue\Issue;
 use APP\plugins\generic\crossref\classes\CrossrefSettings;
@@ -130,7 +131,8 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         Hook::add('Doi::markRegistered', $this->editMarkRegisteredParams(...));
         Hook::add('DoiListPanel::setConfig', $this->addRegistrationAgencyName(...));
         Hook::add('Publication::validatePublishWarnings', $this->validate(...));
-        Hook::add('ArticleHandler::view', $this->setupCrossmark(...));
+        Hook::add('ArticleHandler::view', $this->addCrossmarkDoiMeta(...));
+        Hook::add('ArticleHandler::view', $this->setupCrossmarkButton(...));
         Hook::add('Templates::Article::Details', $this->displayCrossmarkButton(...));
     }
 
@@ -555,23 +557,15 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
     }
 
     /**
-     * Set up the Crossmark button on the article landing page: the DC.Identifier.DOI meta tag
-     * the widget reads, the widget and button component scripts, and the isCrossmarkEnabled
-     * template variable themes use to decide whether to render the button.
+     * Resolve the publication the Crossmark button and DOI meta tag refer to on an article page.
      *
-     * @param string $hookName ArticleHandler::view
+     * Returns null when the Crossmark setting is off for the context or the requested
+     * publication (a specific version via /version/{id}, otherwise the current one) has no DOI.
      */
-    public function setupCrossmark(string $hookName, array $args): bool
+    private function getCrossmarkPublication(Request $request, Submission $article): ?Publication
     {
-        $request = $args[0];
-        /** @var Submission $article */
-        $article = $args[2];
-
-        $templateMgr = TemplateManager::getManager($request);
-        $templateMgr->assign('isCrossmarkEnabled', false);
-
         if (!$this->getSetting($request->getContext()->getId(), 'crossmark')) {
-            return Hook::CONTINUE;
+            return null;
         }
 
         $requestArgs = $request->getRequestedArgs();
@@ -582,7 +576,22 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
             $publication = $article->getCurrentPublication();
         }
 
-        if (!$publication?->getDoi()) {
+        return $publication?->getDoi() ? $publication : null;
+    }
+
+    /**
+     * Inject the DC.Identifier.DOI meta tag into the article page head for the Crossmark widget.
+     *
+     * @param string $hookName ArticleHandler::view
+     */
+    public function addCrossmarkDoiMeta(string $hookName, array $args): bool
+    {
+        $request = $args[0];
+        /** @var Submission $article */
+        $article = $args[2];
+
+        $publication = $this->getCrossmarkPublication($request, $article);
+        if (!$publication) {
             return Hook::CONTINUE;
         }
 
@@ -591,10 +600,33 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         // document.querySelector() which reads the first match, so both coexist without issue.
         // We add it unconditionally to ensure it is present on older version pages, which the
         // Dublin Core Meta plugin intentionally skips.
+        $templateMgr = TemplateManager::getManager($request);
         $templateMgr->addHeader(
             'crossmarkDoi',
             '<meta name="DC.Identifier.DOI" content="' . htmlspecialchars($publication->getDoi(), ENT_QUOTES, 'UTF-8') . '" />'
         );
+
+        return Hook::CONTINUE;
+    }
+
+    /**
+     * Load the Crossmark widget and button component scripts on the article page and expose
+     * the isCrossmarkEnabled template variable themes use to decide whether to render the button.
+     *
+     * @param string $hookName ArticleHandler::view
+     */
+    public function setupCrossmarkButton(string $hookName, array $args): bool
+    {
+        $request = $args[0];
+        /** @var Submission $article */
+        $article = $args[2];
+
+        $templateMgr = TemplateManager::getManager($request);
+        $isEnabled = (bool) $this->getCrossmarkPublication($request, $article);
+        $templateMgr->assign('isCrossmarkEnabled', $isEnabled);
+        if (!$isEnabled) {
+            return Hook::CONTINUE;
+        }
 
         $templateMgr->requiresVueRuntime();
         $scriptArgs = ['contexts' => ['frontend'], 'priority' => TemplateManager::STYLE_SEQUENCE_LAST];
@@ -608,7 +640,6 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
             "{$request->getBaseUrl()}/{$this->getPluginPath()}/public/build/crossref.js",
             $scriptArgs
         );
-        $templateMgr->assign('isCrossmarkEnabled', true);
 
         return Hook::CONTINUE;
     }
