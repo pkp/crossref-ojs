@@ -223,3 +223,9 @@ msgstr "{$count} citations"
 
 msgid "plugins.generic.crossref.citedBy.copyCitationDetails"
 msgstr "Copy Citation Details"
+
+msgid "plugins.generic.crossref.settings.form.username.required_if_cited_by"
+msgstr "A username is required when the \"Enable Cited-by\" option is selected."
+
+msgid "plugins.generic.crossref.settings.form.password.required_if_cited_by"
+msgstr "A password is required when the \"Enable Cited-by\" option is selected."

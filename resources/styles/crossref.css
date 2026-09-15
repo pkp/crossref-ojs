@@ -1,0 +1,29 @@
+/**
+ * @file plugins/generic/crossref/resources/styles/crossref.css
+ *
+ * Copyright (c) 2026 Simon Fraser University
+ * Copyright (c) 2026 John Willinsky
+ * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
+ *
+ * @brief Custom styles for front-office components in the Crossref plugin.
+ */
+
+/* =========== Basic Layout styles for cited-by components ============= */
+.CrossrefCitedBy__openIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: grey;
+}
+
+.crossref-cited-by-container {
+    width: 9.375rem;
+    height: 10.375rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 0.25rem;
+    position: relative;
+}

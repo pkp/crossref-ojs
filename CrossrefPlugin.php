@@ -91,6 +91,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
 
         return $success;
     }
+
     /**
      * Remove plugin as configured registration agency if set at the time plugin is disabled.
      *
@@ -135,6 +136,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         Hook::add('Publication::validatePublishWarnings', $this->validate(...));
         Hook::add('ArticleHandler::view', $this->addCrossmarkDoiMeta(...));
         Hook::add('ArticleHandler::view', $this->setupCrossmarkButton(...));
+        Hook::add('ArticleHandler::view', $this->getCitedBy()->setupCitedByComponents(...));
         Hook::add('Templates::Article::Details', $this->displayCrossmarkButton(...));
     }
 
@@ -213,7 +215,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
     /**
      * Get the CrossrefCitedBy instance.
      */
-    public function getCitedBy():CrossrefCitedBy
+    public function getCitedBy(): CrossrefCitedBy
     {
         return $this->_citedBy ??= new CrossrefCitedBy($this);
     }
@@ -505,7 +507,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
             !in_array(Repo::doi()::TYPE_PUBLICATION, $enabledDoiTypes) ||
             $doiCreationTime === Repo::doi()::CREATION_TIME_PUBLICATION) {
 
-                return Hook::CONTINUE;
+            return Hook::CONTINUE;
         }
 
         $rules = [

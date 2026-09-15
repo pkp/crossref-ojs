@@ -47,8 +47,7 @@ class CrossrefCitedBy
      */
     public function registerEnabledHooks(): void
     {
-        Hook::add('Templates::Article::Details::Metrics::CitedBy', $this->displayCitedByComponent(...));
-        Hook::add('Templates::Article::Metrics::CitedByCount', $this->displayCitedByCountComponent(...));
+        Hook::add('Templates::Article::Footer::PageFooter', $this->displayCitedByComponent(...));
     }
 
     /**
@@ -65,7 +64,10 @@ class CrossrefCitedBy
         $templateMgr = &$params[1];
         $output = &$params[2];
 
-        if (!$this->plugin->getSetting($this->plugin->getCurrentContextId(), 'citedBy')) {
+        if (
+            !$this->plugin->getSetting($this->plugin->getCurrentContextId(), 'citedBy') ||
+            !$this->plugin->hasCrossrefCredentials($this->plugin->getCurrentContextId())
+        ) {
             return Hook::CONTINUE;
         }
 
@@ -79,39 +81,63 @@ class CrossrefCitedBy
             'citedByConfig' => ['submissionId' => $article->getId()],
         ]);
 
-        $output .= $templateMgr->fetch($this->plugin->getTemplateResource('citedBy.tpl'));
+        $output .= $templateMgr->fetch($this->plugin->getTemplateResource('citedBy'));
         return Hook::CONTINUE;
     }
 
+
     /**
-     * Hook to add Crossref Cited-by count to the article page.
-     * @param array $params [
-     * @option article,
-     * @option TemplateManager,
-     * @option string Rendered smarty template
-     *  ]
+     * Hook to add Crossref Cited-by template configurations.
+     * Load the CitedBy component scripts and styles on the article page and expose
+     * the isCitedByEnabled template variable themes use to decide whether to render the components.
      */
-    public function displayCitedByCountComponent(string $hookName, array $params): bool
+    public function setupCitedByComponents(string $hookName, array $params): bool
     {
-        /** @var TemplateManager $templateMgr */
-        $templateMgr = &$params[1];
-        $output = &$params[2];
+        $request = $params[0];
+        $isCitedByEnabled = (bool)$this->plugin->getSetting($this->plugin->getCurrentContextId(), 'citedBy');
 
-        if (!$this->plugin->getSetting($this->plugin->getCurrentContextId(), 'citedBy')) {
-            return Hook::CONTINUE;
+        $templateMgr = TemplateManager::getManager($request);
+
+        if ($isCitedByEnabled) {
+            $templateMgr->setLocaleKeys($this->getLocaleKeys());
+
+            $scriptArgs = [
+                'contexts' => ['frontend'],
+                'priority' => TemplateManager::STYLE_SEQUENCE_LAST
+            ];
+
+            $templateMgr->addJavaScript(
+                'CrossrefCitedBy',
+                "{$request->getBaseUrl()}/{$this->plugin->getPluginPath()}/public/build/crossref.js",
+                $scriptArgs
+            );
+
+            $templateMgr->addJavaScript(
+                'CrossrefCitedByBody',
+                "{$request->getBaseUrl()}/{$this-> plugin->getPluginPath()}/public/build/crossref.js",
+                $scriptArgs
+            );
+
+            $templateMgr->addJavaScript(
+                'CrossrefCitedByCount',
+                "{$request->getBaseUrl()}/{$this-> plugin->getPluginPath()}/public/build/crossref.js",
+                $scriptArgs
+            );
+
+            $templateMgr->addJavaScript(
+                'CrossrefCitedByBody',
+                "{$request->getBaseUrl()}/{$this-> plugin->getPluginPath()}/public/build/crossref.js",
+                $scriptArgs
+            );
+
+            $templateMgr->addStyleSheet(
+                'crossref.css',
+                "{$request->getBaseUrl()}/{$this-> plugin->getPluginPath()}/public/build/crossref.css",
+                $scriptArgs
+            );
         }
 
-        /** @var Submission $article */
-        $article = &$params[0];
-        if (!$article) {
-            return Hook::CONTINUE;
-        }
-
-        $templateMgr->assign([
-            'citedByConfig' => ['submissionId' => $article->getId()],
-        ]);
-
-        $output .= $templateMgr->fetch($this->plugin->getTemplateResource('citedByCount.tpl'));
+        $templateMgr->assign('isCitedByEnabled', $isCitedByEnabled);
         return Hook::CONTINUE;
     }
 
@@ -129,6 +155,21 @@ class CrossrefCitedBy
             'msg',
             'report_cite',
             'standard_cite'
+        ];
+    }
+
+    /**
+     * Get the locale keys to expose for the CitedBy components.
+     */
+    public function getLocaleKeys(): array
+    {
+        return [
+            'plugins.generic.crossref.citedBy.copyCitationDetails',
+            'common.close',
+            'common.copied',
+            'plugins.generic.crossref.citedBy.title',
+            'plugins.generic.crossref.registrationAgency.name',
+            'plugins.generic.crossref.citedBy.citationCount',
         ];
     }
 }

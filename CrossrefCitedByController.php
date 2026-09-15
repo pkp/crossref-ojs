@@ -100,7 +100,6 @@ class CrossrefCitedByController extends PKPBaseController
             ], Response::HTTP_FORBIDDEN);
         }
 
-
         try {
             $results = Cache::remember(
                 "crossref-citedBy-{$submissionId}",
@@ -109,12 +108,11 @@ class CrossrefCitedByController extends PKPBaseController
             );
         } catch (Exception $e) {
             // When there is an error, Crossref includes the full URL which has the credentials in the error message.
-            // We log the error message for debugging purposes by Admins, but return a generic error message to the user to prevent leaking sensitive information.
-            error_log('CrossrefPlugin::CrossrefCitedByController: ' . $e->getMessage());
-
+            // We log the error message, with sensitive values redacted, for debugging purposes by Admins, but return a generic error message to the user to prevent leaking sensitive information.
+            error_log('CrossrefPlugin::CrossrefCitedByController: ' . preg_replace('/([?&](?:usr|pwd)=)[^&]*/', '$1*****', $e->getMessage()));
             return response()->json([
                 'error' => __('plugins.generic.crossref.api.citedByError')
-            ], $e->getCode());
+            ], Response::HTTP_BAD_GATEWAY);
         }
 
         return response()->json([
@@ -155,7 +153,6 @@ class CrossrefCitedByController extends PKPBaseController
         $httpClient = Application::get()->getHttpClient();
 
         $results = [];
-
         foreach ($dois as $doi) {
             try {
                 $response = $httpClient->request(
@@ -172,7 +169,15 @@ class CrossrefCitedByController extends PKPBaseController
 
                 if ($data != null && str_contains($data, "<crossref_result")) {
                     $xml = simplexml_load_string($data);
-                    $elementList = $xml->query_result->body->forward_link;
+
+                    if (!$xml) {
+                        $xmlErrors = implode('; ', array_map(fn($error) => trim($error->message), libxml_get_errors()));
+                        libxml_clear_errors();
+                        error_log("CrossrefPlugin::CrossrefCitedByController: Failed to parse Crossref Cited-by response for DOI {$doi}: {$xmlErrors}");
+                        continue;
+                    }
+
+                    $elementList = $xml->query_result->body->forward_link ?: null;
 
                     if (!empty($elementList) && is_iterable($elementList)) {
                         $results = array_merge($results, $this->extractCitationsFromXMLList($elementList));
@@ -230,11 +235,11 @@ class CrossrefCitedByController extends PKPBaseController
             $this->getTitles($item, $type),
             [
                 'authors' => $this->extractAuthorList($item, $type),
-                'doi' => (string)$item->{$type}->doi ?? null,
-                'year' => (int)$item->{$type}->year ?? null,
-                'volume' => (int)$item->{$type}->volume ?? null,
-                'issue' => (string)$item->{$type}->issue ?? null,
-                'firstPage' => (int)$item->{$type}->first_page ?? null,
+                'doi' => $item->{$type}->doi ? (string)$item->{$type}->doi : null,
+                'year' => $item->{$type}->year ? (int)$item->{$type}->year : null,
+                'volume' => $item->{$type}->volume ? (int)$item->{$type}->volume : null,
+                'issue' => $item->{$type}->issue ? (string)$item->{$type}->issue : null,
+                'firstPage' => $item->{$type}->first_page ? (int)$item->{$type}->first_page : null,
                 'citationType' => $type
             ]
         );
@@ -253,24 +258,24 @@ class CrossrefCitedByController extends PKPBaseController
         switch ($type) {
             case 'book_cite':
             case 'conf_cite':
-                $result['title'] = (string)$item->{$type}->volume_title ?? null;
-                $result['journal'] = (string)$item->{$type}->series_title ?? null;
-                $result['componentNumber'] = (int)$item->{$type}->component_number ?? null;
+                $result['title'] = $item->{$type}->volume_title ? (string)$item->{$type}->volume_title : null;
+                $result['journal'] = $item->{$type}->series_title ? (string)$item->{$type}->series_title : null;
+                $result['componentNumber'] = $item->{$type}->component_number ? (int)$item->{$type}->component_number : null;
                 break;
             case 'journal_cite':
-                $result['title'] = (string)$item->{$type}->article_title ?? null;
-                $result['journal'] = (string)$item->{$type}->journal_title ?? null;
+                $result['title'] = $item->{$type}->article_title ? (string)$item->{$type}->article_title : null;
+                $result['journal'] = $item->{$type}->journal_title ? (string)$item->{$type}->journal_title : null;
                 break;
             case 'database_cite':
             case 'dissertation_cite':
-                $result['title'] = (string)$item->{$type}->title ?? null;
-                $result['institutionName'] = (string)$item->{$type}->institution_name ?? null;
+                $result['title'] = $item->{$type}->title ? (string)$item->{$type}->title : null;
+                $result['institutionName'] = $item->{$type}->institution_name ? (string)$item->{$type}->institution_name : null;
                 break;
             case 'standard_cite':
             case 'report_cite':
-                $result['title'] = (string)$item->{$type}->volume_title ?? null;
-                $result['journal'] = (string)$item->{$type}->series_title ?? null;
-                $result['institutionName'] = (string)$item->{$type}->institution_name ?? null;
+                $result['title'] = $item->{$type}->volume_title ? (string)$item->{$type}->volume_title : null;
+                $result['journal'] = $item->{$type}->series_title ? (string)$item->{$type}->series_title : null;
+                $result['institutionName'] = $item->{$type}->institution_name ? (string)$item->{$type}->institution_name : null;
                 break;
             default:
                 $result['title'] = null;
