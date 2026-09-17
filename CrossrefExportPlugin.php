@@ -248,7 +248,8 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
             if (!$result) {
                 $errorsOccurred = true;
             }
-            if (is_array($result)) {
+            // Warnings are returned as an array too, but the DOI is registered
+            if (is_array($result) && !$this->isWarningResult($result)) {
                 $resultErrors[] = $result;
             }
             // Remove all temporary files.
@@ -394,6 +395,8 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
             $warningCount = (int) $warningCountNode->nodeValue;
             if ($warningCount > 0) {
                 $result = [['plugins.importexport.crossref.register.success.warning', htmlspecialchars($response->getBody())]];
+                // Deposits run in jobs, so persist that there were warnings
+                $successMessage .= PHP_EOL . __('plugins.importexport.crossref.register.success.warnings');
             }
 
             // A possibility for other plugins to work with the response
@@ -442,6 +445,14 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
 
             Repo::doi()->edit($doi, $editParams);
         }
+    }
+
+    /**
+     * Check if the depositXML() result only contains the success-with-warning message
+     */
+    private function isWarningResult(array $result): bool
+    {
+        return count($result) === 1 && ($result[0][0] ?? null) === 'plugins.importexport.crossref.register.success.warning';
     }
 
     /**
