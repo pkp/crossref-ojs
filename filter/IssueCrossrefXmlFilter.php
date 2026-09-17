@@ -19,6 +19,7 @@ use APP\core\Request;
 use APP\issue\Issue;
 use APP\plugins\generic\crossref\CrossrefExportDeployment;
 use APP\plugins\generic\crossref\filter\trait\CrossrefFilterBuilder;
+use APP\publication\Publication;
 use DOMDocument;
 use DOMElement;
 use PKP\core\Dispatcher;
@@ -86,7 +87,7 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
     {
         $deployment = $this->getDeployment();
         $journalNode = $doc->createElementNS($deployment->getNamespace(), 'journal');
-        $journalNode->appendChild($this->createJournalMetadataNode($doc));
+        $journalNode->appendChild($this->createJournalMetadataNode($doc, $pubObject));
         $journalNode->appendChild($this->createJournalIssueNode($doc, $pubObject));
         return $journalNode;
     }
@@ -94,32 +95,26 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
     /**
      * Create and return the journal metadata node 'journal_metadata'.
      */
-    public function createJournalMetadataNode(DOMDocument $doc): DOMElement
+    public function createJournalMetadataNode(DOMDocument $doc, Issue|Publication $pubObject): DOMElement
     {
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
 
         $journalMetadataNode = $doc->createElementNS($deployment->getNamespace(), 'journal_metadata');
         // Full title
-        $journalTitle = $context->getName($context->getPrimaryLocale());
-        // Fall back to the journal abbreviation if the full title is not set in the primary locale.
-        if ($journalTitle == '') {
-            $journalTitle = $context->getData('abbreviation', $context->getPrimaryLocale());
-        }
+        $journalTitle = $pubObject->getPrimaryContextName($context);
         $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'full_title', htmlspecialchars($journalTitle, ENT_COMPAT, 'UTF-8')));
         // Abbreviated title — falling back to the journal acronym if no abbreviation is set.
-        $journalAbbrev = $context->getData('abbreviation', $context->getPrimaryLocale());
-        if ($journalAbbrev == '') {
-            $journalAbbrev = $context->getData('acronym', $context->getPrimaryLocale());
+        if ($journalAbbrev = $pubObject->getPrimaryContextAbbreviation($context)) {
+            $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'abbrev_title', htmlspecialchars($journalAbbrev, ENT_COMPAT, 'UTF-8')));
         }
-        $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'abbrev_title', htmlspecialchars($journalAbbrev, ENT_COMPAT, 'UTF-8')));
         // Both online and print ISSNs are permitted by Crossref — send whichever are available.
-        if ($ISSN = $context->getData('onlineIssn')) {
-            $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'issn', $ISSN));
+        if ($issn = $pubObject->getOnlineIssn($context)) {
+            $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'issn', $issn));
             $node->setAttribute('media_type', 'electronic');
         }
-        if ($ISSN = $context->getData('printIssn')) {
-            $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'issn', $ISSN));
+        if ($issn = $pubObject->getPrintIssn($context)) {
+            $journalMetadataNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'issn', $issn));
             $node->setAttribute('media_type', 'print');
         }
         return $journalMetadataNode;
