@@ -185,8 +185,8 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
     protected function addValidationChecks(Validator &$validator, array $props): void
     {
         $validator->setCustomMessages([
-            'username.required_if' => __('plugins.generic.crossref.settings.form.username.required_if_cited_by'),
-            'password.required_if' => __('plugins.generic.crossref.settings.form.password.required_if_cited_by'),
+            'username.required_if' => __('plugins.generic.crossref.settings.form.username.requiredIfCitedByEnabled'),
+            'password.required_if' => __('plugins.generic.crossref.settings.form.password.requiredIfCitedByEnabled'),
         ]);
     }
 }

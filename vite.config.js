@@ -24,7 +24,7 @@ export default defineConfig({
       output: {
         globals: {
           vue: "pkp.modules.vue",
-		      pinia: "pkp.modules.pinia",
+					pinia: "pkp.modules.pinia",
         },
         entryFileNames: "crossref.js",
         assetFileNames: "crossref.[ext]",

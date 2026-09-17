@@ -215,6 +215,9 @@ msgstr "Crossref Cited-by API is not enabled within this context."
 msgid "plugins.generic.crossref.api.citedByError"
 msgstr "An error occurred while retrieving Crossref citations for this article."
 
+msgid "plugins.generic.crossref.citedBy.citeBy"
+msgstr "Cited By"
+
 msgid "plugins.generic.crossref.citedBy.title"
 msgstr "Articles that cite this article (Crossref)"
 
@@ -224,8 +227,29 @@ msgstr "{$count} citations"
 msgid "plugins.generic.crossref.citedBy.copyCitationDetails"
 msgstr "Copy Citation Details"
 
-msgid "plugins.generic.crossref.settings.form.username.required_if_cited_by"
+msgid "plugins.generic.crossref.settings.form.username.requiredIfCitedByEnabled"
 msgstr "A username is required when the \"Enable Cited-by\" option is selected."
 
-msgid "plugins.generic.crossref.settings.form.password.required_if_cited_by"
+msgid "plugins.generic.crossref.settings.form.password.requiredIfCitedByEnabled"
 msgstr "A password is required when the \"Enable Cited-by\" option is selected."
+
+msgid "plugins.generic.crossref.citedBy.citationSource.issueWithoutVolume"
+msgstr "no {$issue}"
+
+msgid "plugins.generic.crossref.citedBy.citationSource.volumeWithIssue"
+msgstr "vol {$volume}({$issue})"
+
+msgid "plugins.generic.crossref.citedBy.citationSource.volume"
+msgstr "vol {$volume}"
+
+msgid "plugins.generic.crossref.citedBy.citationSource.firstPage"
+msgstr "p{$page}"
+
+msgid "plugins.generic.crossref.citedBy.viaCrossref"
+msgstr "via Crossref"
+
+msgid "plugins.generic.crossref.citedBy.viewCitingArticles"
+msgstr "View citing articles"
+
+msgid "plugins.generic.crossref.citedBy.thisArticleHasBeenCited"
+msgstr "This article has been cited <strong>{$count} times</strong> according to Crossref"

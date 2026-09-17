@@ -19,11 +19,14 @@ use APP\submission\Submission;
 use APP\template\TemplateManager;
 use PKP\core\APIRouter;
 use PKP\plugins\Hook;
+use PKP\context\Context;
+
 
 class CrossrefCitedBy
 {
     public function __construct(
-        protected CrossrefPlugin $plugin
+        protected CrossrefPlugin $plugin,
+        protected Context $context
     )
     {
     }
@@ -47,16 +50,11 @@ class CrossrefCitedBy
      */
     public function registerEnabledHooks(): void
     {
-        Hook::add('Templates::Article::Footer::PageFooter', $this->displayCitedByComponent(...));
+        Hook::add('Templates::Article::Details', $this->displayCitedByComponent(...));
     }
 
     /**
      * Hook to add Crossref Cited-by to the article page.
-     * @param array $params [
-     * @option article,
-     * @option TemplateManager,
-     * @option string Rendered smarty template
-     * ]
      */
     public function displayCitedByComponent(string $hookName, array $params): bool
     {
@@ -64,15 +62,12 @@ class CrossrefCitedBy
         $templateMgr = &$params[1];
         $output = &$params[2];
 
-        if (
-            !$this->plugin->getSetting($this->plugin->getCurrentContextId(), 'citedBy') ||
-            !$this->plugin->hasCrossrefCredentials($this->plugin->getCurrentContextId())
-        ) {
+        if (!self::isCitedByEnabled($this->context)) {
             return Hook::CONTINUE;
         }
 
         /** @var Submission $article */
-        $article = &$params[0];
+        $article = $templateMgr->getTemplateVars('article');
         if (!$article) {
             return Hook::CONTINUE;
         }
@@ -94,68 +89,19 @@ class CrossrefCitedBy
     public function setupCitedByComponents(string $hookName, array $params): bool
     {
         $request = $params[0];
-        $isCitedByEnabled = (bool)$this->plugin->getSetting($this->plugin->getCurrentContextId(), 'citedBy');
-
+        $isCitedByEnabled = self::isCitedByEnabled($this->context);
         $templateMgr = TemplateManager::getManager($request);
 
         if ($isCitedByEnabled) {
+            $templateMgr->requiresVueRuntime();
             $templateMgr->setLocaleKeys($this->getLocaleKeys());
 
-            $scriptArgs = [
-                'contexts' => ['frontend'],
-                'priority' => TemplateManager::STYLE_SEQUENCE_LAST
-            ];
-
-            $templateMgr->addJavaScript(
-                'CrossrefCitedBy',
-                "{$request->getBaseUrl()}/{$this->plugin->getPluginPath()}/public/build/crossref.js",
-                $scriptArgs
-            );
-
-            $templateMgr->addJavaScript(
-                'CrossrefCitedByBody',
-                "{$request->getBaseUrl()}/{$this-> plugin->getPluginPath()}/public/build/crossref.js",
-                $scriptArgs
-            );
-
-            $templateMgr->addJavaScript(
-                'CrossrefCitedByCount',
-                "{$request->getBaseUrl()}/{$this-> plugin->getPluginPath()}/public/build/crossref.js",
-                $scriptArgs
-            );
-
-            $templateMgr->addJavaScript(
-                'CrossrefCitedByBody',
-                "{$request->getBaseUrl()}/{$this-> plugin->getPluginPath()}/public/build/crossref.js",
-                $scriptArgs
-            );
-
-            $templateMgr->addStyleSheet(
-                'crossref.css',
-                "{$request->getBaseUrl()}/{$this-> plugin->getPluginPath()}/public/build/crossref.css",
-                $scriptArgs
-            );
+            $this->plugin->loadCommonRuntimeScripts();
+            $this->plugin->loadCommonCrossrefStyles();
         }
 
         $templateMgr->assign('isCitedByEnabled', $isCitedByEnabled);
         return Hook::CONTINUE;
-    }
-
-    /**
-     * Get crossref Cited-by citation types
-     */
-    public static function citationTypes(): array
-    {
-        return [
-            'book_cite',
-            'conf_cite',
-            'database_cite',
-            'dissertation_cite',
-            'journal_cite',
-            'msg',
-            'report_cite',
-            'standard_cite'
-        ];
     }
 
     /**
@@ -173,10 +119,23 @@ class CrossrefCitedBy
             'plugins.generic.crossref.citedBy.citationSource.issueWithoutVolume',
             'plugins.generic.crossref.citedBy.citationSource.volumeWithIssue',
             'plugins.generic.crossref.citedBy.citationSource.volume',
-            'plugins.generic.crossref.citedBy.citationSource.separator',
             'plugins.generic.crossref.citedBy.viaCrossref',
             'plugins.generic.crossref.citedBy.viewCitingArticles',
             'plugins.generic.crossref.citedBy.thisArticleHasBeenCited',
+            'plugins.generic.crossref.citedBy.citeBy',
+            'plugins.generic.crossref.citedBy.citationSource.firstPage',
         ];
+    }
+
+    /**
+     * Check if Crossref Cited-by is enabled for the given context.
+     */
+    public static function isCitedByEnabled(Context $context): bool
+    {
+        $enabledRegistrationAgency = $context->getConfiguredDoiAgency();
+
+        return $enabledRegistrationAgency instanceof CrossrefPlugin &&
+            $enabledRegistrationAgency->getSetting($context->getId(), 'citedBy') &&
+            $enabledRegistrationAgency->hasCrossrefCredentials($context->getId());
     }
 }

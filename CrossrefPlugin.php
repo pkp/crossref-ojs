@@ -217,7 +217,11 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
      */
     public function getCitedBy(): CrossrefCitedBy
     {
-        return $this->_citedBy ??= new CrossrefCitedBy($this);
+        $contextId = $this->getCurrentContextId();
+        $contextDao = Application::getContextDAO();
+        $context = $contextDao->getById($contextId);
+
+        return $this->_citedBy ??= new CrossrefCitedBy($this, $context);
     }
 
     /**
@@ -646,11 +650,8 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
             'https://crossmark-cdn.crossref.org/widget/v2.0/widget.js',
             $scriptArgs
         );
-        $templateMgr->addJavaScript(
-            'crossrefCrossmarkButton',
-            "{$request->getBaseUrl()}/{$this->getPluginPath()}/public/build/crossref.js",
-            $scriptArgs
-        );
+
+        $this->loadCommonRuntimeScripts();
 
         return Hook::CONTINUE;
     }
@@ -689,5 +690,37 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
             }
         }
         return $values;
+    }
+
+    /**
+     * Loads the crossref.js script needed for frontend components
+     */
+    public function loadCommonRuntimeScripts(): void
+    {
+        $request = Application::get()->getRequest();
+        $templateMgr = TemplateManager::getManager($request);
+        $scriptArgs = ['contexts' => ['frontend'], 'priority' => TemplateManager::STYLE_SEQUENCE_LAST];
+
+        $templateMgr->addJavaScript(
+            'crossref',
+            "{$request->getBaseUrl()}/{$this->getPluginPath()}/public/build/crossref.js",
+            $scriptArgs
+        );
+    }
+
+    /**
+     * Loads the crossref.css stylesheet needed for frontend components
+     */
+    public function loadCommonCrossrefStyles(): void
+    {
+        $request = Application::get()->getRequest();
+        $templateMgr = TemplateManager::getManager($request);
+        $scriptArgs = ['contexts' => ['frontend'], 'priority' => TemplateManager::STYLE_SEQUENCE_LAST];
+
+        $templateMgr->addStyleSheet(
+            'crossref',
+            "{$request->getBaseUrl()}/{$this->getPluginPath()}/public/build/crossref.css",
+            $scriptArgs
+        );
     }
 }

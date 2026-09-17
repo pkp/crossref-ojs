@@ -27,41 +27,43 @@ export const useCrossrefCitedByStore = defineStore('crossrefCitedBy', () => {
 	const isLoading = ref(false);
 	const initialized = ref(false);
 	const copiedToClipboard = ref(false);
-	const styles = ref([]);
+	const styles = ref({});
 	const nestedStyles = ref({});
 
-	async function initialize(config, _nestedStyles) {
+	async function initialize(config, _nestedStyles = {}) {
 		if (!config) {
 			return;
 		}
-		// This store is shared by multiple components which are mounted independent of each other.
-		// To prevent one overriding the other's styles, we merge them here.
-		// Top level styles are used for PkpCitedBy component, while styles for any other citedBy** related component must be passed via nested styles
+
+		// Store is used by multiple components, so allow component to still be able to set styles even if the store was initialized by another component
 		styles.value = {
 			...styles.value,
 			...(config.styles || {}),
 		};
+
 		nestedStyles.value = {
 			...nestedStyles.value,
 			..._nestedStyles,
-		};
+		}
 
 		if (initialized.value || isLoading.value) {
 			return;
 		}
+
 		const submissionId = config.submissionId;
 
 		const {apiUrl} = useUrl(`crossref/citedBy/${submissionId}`);
 
-		initialized.value = true;
 		isLoading.value = true;
 
 		const {data, fetch} = usePkpFetch(apiUrl, {method: 'GET'});
-
 		await fetch();
+
 		citations.value = data.value.items;
 		total.value = data.value.itemsMax;
+
 		isLoading.value = false;
+		initialized.value = true;
 	}
 
 	/**
@@ -71,15 +73,14 @@ export const useCrossrefCitedByStore = defineStore('crossrefCitedBy', () => {
 	function formatCitationForClipboard(citation, i) {
 		const parts = [
 			i + 1,
-			citation.doi,
-			getDoiExternalLink(citation.doi),
+			getDoiExternalLink(citation?.doi),
 			citation.issue,
 			citation.title,
-			citation.journal,
+			citation?.journal,
 			citation.year,
 			citation.volume,
 			citation.authors,
-			citation.pages,
+			citation.firstPage,
 		].filter(Boolean);
 		const text = parts.join(' ');
 		return text;
@@ -106,6 +107,10 @@ export const useCrossrefCitedByStore = defineStore('crossrefCitedBy', () => {
 	 * Open the cited-by modal, listing every citation.
 	 */
 	function openCitedByModal() {
+		if (!total.value) {
+			return;
+		}
+
 		const {openDialog, closeTopDialog} = usePkpModal();
 
 		openDialog({

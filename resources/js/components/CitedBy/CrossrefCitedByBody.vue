@@ -1,28 +1,26 @@
 <template>
 	<div :class="cn('root')">
-		<div>
-			<h5 :class="cn('bodyCitationsCount')">
-				{{
-					t('plugins.generic.crossref.citedBy.citationCount', {
-						count: store.total,
-					})
-				}}
-			</h5>
-		</div>
+		<h5 :class="cn('count')">
+			{{
+				t('plugins.generic.crossref.citedBy.citationCount', {
+					count: store.total,
+				})
+			}}
+		</h5>
 
 		<div :class="cn('citationsWrapper')">
 			<ul :class="cn('citationsList')">
 				<li
-					v-for="citation in store.citations"
-					:key="citation.doi"
+					v-for="(citation, index) in store.citations"
+					:key="index"
 					:class="cn('citationsListItem')"
 				>
 					<div :class="cn('citationsListItemContent')">
-						<h5 :class="cn('title')">
+						<h5 :class="cn('citationTitle')">
 							{{ citation.title }}
 						</h5>
 
-						<p :class="cn('authors')">
+						<p :class="cn('citationAuthors')">
 							{{ citation.authors }}
 						</p>
 
@@ -34,14 +32,10 @@
 								>
 									<span>{{ source }}</span>
 									<span
-										:class="cn('sourceDelimiter')"
+										:class="cn('citationSourceDelimiter')"
 										v-if="index < getSourceLine(citation).length - 1"
 									>
-										{{
-											t(
-												'plugins.generic.crossref.citedBy.citationSource.separator',
-											)
-										}}
+										.
 									</span>
 								</template>
 							</span>
@@ -51,7 +45,8 @@
 							v-if="citation.doi"
 							:href="store.getDoiExternalLink(citation.doi)"
 							target="_blank"
-							:class="cn('doi')"
+							rel="noopener noreferrer"
+							:class="cn('citationDoi')"
 						>
 							{{ `doi.org/${citation.doi}` }}
 							<OpenNewTab icon="OpenNewTab" :class="cn('openIcon')" />
@@ -63,6 +58,7 @@
 
 		<div :class="cn('actions')">
 			<PkpButton
+				:class="cn('actionsCopyBtn')"
 				:is-disabled="store.isLoading || store.total < 1"
 				@click="store.copyAllToClipboard()"
 			>
@@ -96,12 +92,11 @@ const props = defineProps({
 const {cn} = usePkpStyles('CrossrefCitedByBody', props.styles);
 const store = useCrossrefCitedByStore();
 
-
 function getSourceLine(citation) {
 	const source = [
 		citation?.journal,
 		citation?.institutionName,
-		citation?.year,
+		citation.year,
 		getSourceLocator(citation),
 	];
 
@@ -131,7 +126,11 @@ function getSourceLocator(citation) {
 	}
 
 	if (citation.firstPage) {
-		parts.push('p' + citation.firstPage);
+		parts.push(
+			t('plugins.generic.crossref.citedBy.citationSource.firstPage', {
+				page: citation.firstPage,
+			}),
+		);
 	}
 
 	return parts.join(', ');

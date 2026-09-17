@@ -1,27 +1,35 @@
 <template>
 	<div :class="cn('root')">
-		<template v-if="isCompactDisplay">
-			<h2 :class="cn('count')">
-				{{ store.total }}
-			</h2>
+		<div :class="cn(isCompactDisplay ? 'compact' : 'detailed')">
+			<template v-if="isCompactDisplay">
+				<h2 :class="cn('count')">
+					{{ store.total }}
+				</h2>
 
-			<div :class="cn('label')">
-				{{ t('plugins.generic.crossref.citedBy.viaCrossref') }}
-			</div>
-		</template>
-		<template v-else>
-			<span
+				<div :class="cn('label')">
+					{{ t('plugins.generic.crossref.citedBy.viaCrossref') }}
+				</div>
+			</template>
+
+			<div
+				v-else
 				:class="cn('label')"
 				v-html="
 					t('plugins.generic.crossref.citedBy.thisArticleHasBeenCited', {
 						count: store.total,
 					})
 				"
-			></span>
-		</template>
-		<a @click="store.openCitedByModal" :class="cn('viewCitations')">
-			{{ t('plugins.generic.crossref.citedBy.viewCitingArticles') }}
-		</a>
+			></div>
+
+			<button
+				@click="store.openCitedByModal"
+				:class="cn('viewCitations')"
+				v-if="store.total"
+				type="button"
+			>
+				{{ t('plugins.generic.crossref.citedBy.viewCitingArticles') }}
+			</button>
+		</div>
 	</div>
 </template>
 

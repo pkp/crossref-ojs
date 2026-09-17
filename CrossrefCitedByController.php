@@ -1,12 +1,11 @@
 <?php
 
-
 /**
  * @file plugins/generic/crossref/CrossrefCitedByController.php
  *
  * Copyright (c) 2026 Simon Fraser University
  * Copyright (c) 2026 John Willinsky
- * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
+ * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefCitedByController
  *
@@ -31,10 +30,13 @@ use Illuminate\Support\Facades\Route;
 use PKP\security\authorization\PublicAccessPolicy;
 use PKP\core\PKPRequest;
 use SimpleXMLElement;
+use Illuminate\Support\Str;
 
 class CrossrefCitedByController extends PKPBaseController
 {
     private const CROSSREF_API_URL = 'https://doi.crossref.org/servlet/getForwardLinks?usr=%s&pwd=%s&doi=%s';
+    private const CONNECTION_TIMEOUT = 5;
+    private const TIMEOUT = 15;
 
     /**
      * @copydoc \PKP\core\PKPBaseController::getHandlerPath()
@@ -90,11 +92,7 @@ class CrossrefCitedByController extends PKPBaseController
 
         $enabledRegistrationAgency = $context->getConfiguredDoiAgency();
 
-        if (
-            !$enabledRegistrationAgency instanceof CrossrefPlugin ||
-            !$enabledRegistrationAgency->getSetting($context->getId(), 'citedBy') ||
-            !$enabledRegistrationAgency->hasCrossrefCredentials($context->getId())
-        ) {
+        if (!CrossrefCitedBy::isCitedByEnabled($context)) {
             return response()->json([
                 'error' => __('plugins.generic.crossref.api.citedByNotEnabled')
             ], Response::HTTP_FORBIDDEN);
@@ -126,27 +124,11 @@ class CrossrefCitedByController extends PKPBaseController
      */
     protected function getCitedByCacheMiss(Submission $submission, IDoiRegistrationAgency $plugin, Context $context): array
     {
-        $dois = [];
-
-        if ($context->getData(Context::SETTING_DOI_VERSIONING)) {
-            /** @var Publication[] $publishedPublications */
-            $publishedPublications = $submission->getPublishedPublications();
-
-            foreach ($publishedPublications as $publication) {
-                if ($publication->getDoi()) {
-                    $dois[] = $publication->getDoi();
-                }
-            }
-        } else {
-            /** @var Publication $publication */
-            $publication = $submission->getCurrentPublication();
-
-            if ($publication->getData('status') === Publication::STATUS_PUBLISHED) {
-                if ($publication->getDoi()) {
-                    $dois[] = $publication->getDoi();
-                }
-            }
-        }
+        $dois = collect($submission->getPublishedPublications())
+            ->map(fn(Publication $publication) => $publication->getDoi())
+            ->filter()
+            ->unique(fn(string $doi) => strtolower($doi))
+            ->all();
 
         $cPwd = $plugin->getSetting($context->getId(), 'password');
         $cUser = $plugin->getSetting($context->getId(), 'username');
@@ -162,6 +144,8 @@ class CrossrefCitedByController extends PKPBaseController
                         'headers' => [
                             'Accept' => "application/xml",
                         ],
+                        'connect_timeout' => self::CONNECTION_TIMEOUT,
+                        'timeout' => self::TIMEOUT,
                     ]
                 );
 
@@ -180,7 +164,14 @@ class CrossrefCitedByController extends PKPBaseController
                     $elementList = $xml->query_result->body->forward_link ?: null;
 
                     if (!empty($elementList) && is_iterable($elementList)) {
-                        $results = array_merge($results, $this->extractCitationsFromXMLList($elementList));
+                        $citations = $this->extractCitationsFromXMLList($elementList);
+
+                        foreach ($citations as $citation) {
+                            $key = $citation['doi']
+                                ? 'doi:' . strtolower($citation['doi'])
+                                : 'meta:' . md5(mb_strtolower(implode('|', [$citation['title'], $citation['year'], $citation['authors']])));
+                            $results[$key] ??= $citation;
+                        }
                     }
                 }
             } catch (Exception $e) {
@@ -192,7 +183,7 @@ class CrossrefCitedByController extends PKPBaseController
             }
         }
 
-        return $results;
+        return array_values($results);
     }
 
     /**
@@ -205,17 +196,10 @@ class CrossrefCitedByController extends PKPBaseController
         $results = [];
 
         foreach ($elementList as $item) {
-            foreach (CrossrefCitedBy::citationTypes() as $citeType) {
-                if ($item->{$citeType}) {
-                    if ($citeType === 'msg') {
-                        // The msg cite type contains a forward link to other cite types.
-                        // So we recursively get those citations as well.
-                        // See https://data.crossref.org/reports/help/schema_doc/crossref_query_output2.0/2_0.html#msg
-                        $results = [...$results, ...$this->extractCitationsFromXMLList($item->{$citeType}->forward_link)];
-                    } else {
-                        $results[] = $this->getCitationData($item, $citeType);
-                    }
-                    break;
+            foreach ($item as $citation) {
+                $citeType = $citation->getName();
+                if (Str::endsWith($citeType, '_cite')) {
+                    $results[] = $this->getCitationData($item, $citeType);
                 }
             }
         }
@@ -237,9 +221,9 @@ class CrossrefCitedByController extends PKPBaseController
                 'authors' => $this->extractAuthorList($item, $type),
                 'doi' => $item->{$type}->doi ? (string)$item->{$type}->doi : null,
                 'year' => $item->{$type}->year ? (int)$item->{$type}->year : null,
-                'volume' => $item->{$type}->volume ? (int)$item->{$type}->volume : null,
+                'volume' => $item->{$type}->volume ? (string)$item->{$type}->volume : null,
                 'issue' => $item->{$type}->issue ? (string)$item->{$type}->issue : null,
-                'firstPage' => $item->{$type}->first_page ? (int)$item->{$type}->first_page : null,
+                'firstPage' => $item->{$type}->first_page ? (string)$item->{$type}->first_page : null,
                 'citationType' => $type
             ]
         );
@@ -260,7 +244,6 @@ class CrossrefCitedByController extends PKPBaseController
             case 'conf_cite':
                 $result['title'] = $item->{$type}->volume_title ? (string)$item->{$type}->volume_title : null;
                 $result['journal'] = $item->{$type}->series_title ? (string)$item->{$type}->series_title : null;
-                $result['componentNumber'] = $item->{$type}->component_number ? (int)$item->{$type}->component_number : null;
                 break;
             case 'journal_cite':
                 $result['title'] = $item->{$type}->article_title ? (string)$item->{$type}->article_title : null;

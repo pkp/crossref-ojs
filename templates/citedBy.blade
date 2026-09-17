@@ -7,6 +7,7 @@
 
  Cited-by on the article details page.
 --}}
-<section class="item cited-by" data-vue-root>
-    <pkp-cited-by v-bind='{$citedByConfig|json_encode}'></pkp-cited-by>
+<section class="item crossref-cited-by" data-vue-root>
+    <h2 class="label">{{ __('plugins.generic.crossref.citedBy.citeBy') }}</h2>
+    <crossref-cited-by v-bind='@json($citedByConfig)'></crossref-cited-by>
 </section>
