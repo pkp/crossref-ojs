@@ -170,6 +170,13 @@ class CrossrefCitedBy
             'plugins.generic.crossref.citedBy.title',
             'plugins.generic.crossref.registrationAgency.name',
             'plugins.generic.crossref.citedBy.citationCount',
+            'plugins.generic.crossref.citedBy.citationSource.issueWithoutVolume',
+            'plugins.generic.crossref.citedBy.citationSource.volumeWithIssue',
+            'plugins.generic.crossref.citedBy.citationSource.volume',
+            'plugins.generic.crossref.citedBy.citationSource.separator',
+            'plugins.generic.crossref.citedBy.viaCrossref',
+            'plugins.generic.crossref.citedBy.viewCitingArticles',
+            'plugins.generic.crossref.citedBy.thisArticleHasBeenCited',
         ];
     }
 }

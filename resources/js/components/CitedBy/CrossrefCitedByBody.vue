@@ -13,59 +13,49 @@
 		<div :class="cn('citationsWrapper')">
 			<ul :class="cn('citationsList')">
 				<li
-					v-for="(citation, index) in store.citations"
+					v-for="citation in store.citations"
 					:key="citation.doi"
 					:class="cn('citationsListItem')"
 				>
-					<span :class="cn('citationsListItemIndex')">{{ index + 1 }}.</span>
 					<div :class="cn('citationsListItemContent')">
-						<span>
-							<span v-if="citation?.authors" :class="cn('authors')">
-								{{ citation?.authors }}
-							</span>
+						<h5 :class="cn('title')">
+							{{ citation.title }}
+						</h5>
 
-							<span v-if="citation?.title" :class="cn('title')">
-								{{ citation?.title }}
-							</span>
-
-							<span v-if="citation?.journal" :class="cn('journal')">
-								{{ citation?.journal }}
-							</span>
-
-							<span
-								v-if="citation?.institutionName"
-								:class="cn('institutionName')"
-							>
-								{{ citation?.institutionName }}
-							</span>
-
-							<span v-if="citation?.doi" :class="cn('doi')">
-								{{ citation.doi }}
-							</span>
-
-							<span v-if="citation?.year" :class="cn('year')">
-								{{ citation.year }}
-							</span>
-
-							<span v-if="citation?.volume" :class="cn('volume')">
-								<strong>{{ citation.volume }}</strong>
-							</span>
-
-							<span v-if="citation?.firstPage" :class="cn('firstPage')">
-								{{ citation.firstPage }}
-							</span>
-						</span>
-						<p>
-							<a
-								v-if="citation.doi"
-								:href="store.getDoiExternalLink(citation.doi)"
-								target="_blank"
-								:class="cn('doiExternal')"
-							>
-								{{ store.getDoiExternalLink(citation.doi) }}
-								<PkpIcon icon="OpenNewTab" :size="14" />
-							</a>
+						<p :class="cn('authors')">
+							{{ citation.authors }}
 						</p>
+
+						<p :class="cn('citationSource')">
+							<span>
+								<template
+									v-for="(source, index) in getSourceLine(citation)"
+									:key="index"
+								>
+									<span>{{ source }}</span>
+									<span
+										:class="cn('sourceDelimiter')"
+										v-if="index < getSourceLine(citation).length - 1"
+									>
+										{{
+											t(
+												'plugins.generic.crossref.citedBy.citationSource.separator',
+											)
+										}}
+									</span>
+								</template>
+							</span>
+						</p>
+
+						<a
+							v-if="citation.doi"
+							:href="store.getDoiExternalLink(citation.doi)"
+							target="_blank"
+							:class="cn('doi')"
+						>
+							{{ `doi.org/${citation.doi}` }}
+							<OpenNewTab icon="OpenNewTab" :class="cn('openIcon')" />
+						</a>
 					</div>
 				</li>
 			</ul>
@@ -92,6 +82,7 @@
 
 <script setup>
 import {useCrossrefCitedByStore} from './useCrossrefCitedByStore.js';
+import OpenNewTab from './icons/OpenNewTab.vue';
 
 const {usePkpLocalize} = pkp.modules.usePkpLocalize;
 const {t} = usePkpLocalize();
@@ -104,4 +95,45 @@ const props = defineProps({
 
 const {cn} = usePkpStyles('CrossrefCitedByBody', props.styles);
 const store = useCrossrefCitedByStore();
+
+
+function getSourceLine(citation) {
+	const source = [
+		citation?.journal,
+		citation?.institutionName,
+		citation?.year,
+		getSourceLocator(citation),
+	];
+
+	return source.filter(Boolean);
+}
+
+function getSourceLocator(citation) {
+	const parts = [];
+
+	if (citation.volume) {
+		parts.push(
+			citation.issue
+				? t('plugins.generic.crossref.citedBy.citationSource.volumeWithIssue', {
+						volume: citation.volume,
+						issue: citation.issue,
+					})
+				: t('plugins.generic.crossref.citedBy.citationSource.volume', {
+						volume: citation.volume,
+					}),
+		);
+	} else if (citation.issue) {
+		parts.push(
+			t('plugins.generic.crossref.citedBy.citationSource.issueWithoutVolume', {
+				issue: citation.issue,
+			}),
+		);
+	}
+
+	if (citation.firstPage) {
+		parts.push('p' + citation.firstPage);
+	}
+
+	return parts.join(', ');
+}
 </script>

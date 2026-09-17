@@ -9,21 +9,39 @@
  */
 
 /* =========== Basic Layout styles for cited-by components ============= */
-.CrossrefCitedBy__openIcon {
-    width: 1.5rem;
-    height: 1.5rem;
-    color: grey;
+.CrossrefCitedBy__viewCitations {
+    cursor: pointer;
 }
 
 .crossref-cited-by-container {
-    width: 9.375rem;
-    height: 10.375rem;
-    cursor: pointer;
+    max-width: 20rem;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: start;
     flex-direction: column;
-    border: 1px solid black;
-    border-radius: 0.25rem;
+    border: 0.025rem solid black;
+    border-radius: 0.75rem;
     position: relative;
+    padding-left: 2rem;
+    padding-top: 1rem;
+}
+
+.CrossrefCitedByBody__citationsListItemContent {
+    margin-bottom: 2rem;
+}
+
+.CrossrefCitedByBody__citationsWrapper {
+    overflow-y: auto;
+}
+
+.CrossrefCitedByBody {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 80vh;
+}
+
+.CrossrefCitedByBody__openIcon {
+    width: 1rem;
+    height: 1rem;
+    margin-left: 2px;
 }

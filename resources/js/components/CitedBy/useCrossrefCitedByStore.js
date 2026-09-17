@@ -5,9 +5,23 @@ const {usePkpModal} = pkp.modules.usePkpModal;
 const {usePkpLocalize} = pkp.modules.usePkpLocalize;
 const {useUrl} = pkp.modules.usePkpUrl;
 const {t} = usePkpLocalize();
+import {defineStore} from 'pinia';
 
-const defineStore = pkp.modules.pinia.defineStore;
 export const useCrossrefCitedByStore = defineStore('crossrefCitedBy', () => {
+	/**
+	 * @type {Array<{
+	 *   title: string|null,
+	 *   authors: string,
+	 *   doi: string|null,
+	 *   year: number|null,
+	 *   volume: number|null,
+	 *   issue: string|null,
+	 *   firstPage: number|null,
+	 *   citationType: string,
+	 *   journal?: string|null,
+	 *   institutionName?: string|null
+	 * }>}
+	 */
 	const citations = ref([]);
 	const total = ref(0);
 	const isLoading = ref(false);

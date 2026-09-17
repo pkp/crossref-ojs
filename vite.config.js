@@ -20,7 +20,7 @@ export default defineConfig({
     outDir: resolve(import.meta.dirname, "public/build"),
     rolldownOptions: {
       // Vue is provided by the core frontend bundle
-      external: ["vue"],
+      external: ["vue", "pinia"],
       output: {
         globals: {
           vue: "pkp.modules.vue",

@@ -306,6 +306,12 @@ class CrossrefCitedByController extends PKPBaseController
             }
         }
 
+        // Add any contributing organizations
+        $contributors = $item->{$type}->contributors->organization ?? [];
+        foreach ($contributors as $contributor) {
+            $authors[] = (string)$contributor;
+        }
+
         return implode(', ', $authors);
     }
 }
