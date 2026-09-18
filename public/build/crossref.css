@@ -1,0 +1,59 @@
+/**
+ * @file plugins/generic/crossref/resources/styles/crossref.css
+ *
+ * Copyright (c) 2026 Simon Fraser University
+ * Copyright (c) 2026 John Willinsky
+ * Distributed under The MIT License. For full terms see the file LICENSE.
+ *
+ * @brief Custom styles for front-office components in the Crossref plugin.
+ */
+
+/* =========== Basic Layout styles for cited-by components ============= */
+.CrossrefCitedBy__viewCitations {
+    cursor: pointer;
+}
+
+.CrossrefCitedBy__compact {
+    max-width: 20rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border: 0.025rem solid black;
+    border-radius: 0.75rem;
+    position: relative;
+    padding-bottom: 2rem;
+}
+
+.CrossrefCitedBy__detailed{
+    max-width: 20rem;
+}
+
+.CrossrefCitedByBody__citationsListItemContent {
+    margin-bottom: 2rem;
+}
+
+.CrossrefCitedByBody__citationsWrapper {
+    overflow-y: auto;
+}
+
+.CrossrefCitedByBody {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 80vh;
+}
+
+.CrossrefCitedByBody__openIcon {
+    width: 1rem;
+    height: 1rem;
+    margin-left: 2px;
+}
+
+.CrossrefCitedBy__viewCitations {
+    appearance: none;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+/*$vite$:1*/

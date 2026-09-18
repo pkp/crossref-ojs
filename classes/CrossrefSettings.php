@@ -17,6 +17,7 @@
 namespace APP\plugins\generic\crossref\classes;
 
 use APP\core\Application;
+use Illuminate\Validation\Validator;
 use PKP\components\forms\FieldHTML;
 use PKP\components\forms\FieldOptions;
 use PKP\components\forms\FieldText;
@@ -43,11 +44,11 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                 ],
                 'username' => (object) [
                     'type' => 'string',
-                    'validation' => ['nullable', 'max:120'],
+                    'validation' => ['nullable', 'max:120', 'required_if:citedBy,true'],
                 ],
                 'password' => (object) [
                     'type' => 'string',
-                    'validation' => ['nullable', 'max:50'],
+                    'validation' => ['nullable', 'max:50', 'required_if:citedBy,true'],
                 ],
                 'testMode' => (object) [
                     'type' => 'boolean',
@@ -57,6 +58,9 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                     'validation' => ['nullable', "regex:/^\\d+(.\\d+)+\\//"],
                 ],
                 'crossmark' => (object) [
+                    'type' => 'boolean',
+                ],
+                'citedBy' => (object) [
                     'type' => 'boolean',
                 ],
             ],
@@ -89,6 +93,13 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
                     ['value' => true, 'label' => __('plugins.generic.crossref.settings.crossmark.description')]
                 ],
                 'value' => (bool) $this->agencyPlugin->getSetting($context->getId(), 'crossmark'),
+            ]),
+            new FieldOptions('citedBy', [
+                'label' => __('plugins.generic.crossref.settings.form.enabledCitedBy'),
+                'options' => [
+                    ['value' => true, 'label' => __('plugins.generic.crossref.settings.form.enabledCitedBy.description')]
+                ],
+                'value' => (bool) $this->agencyPlugin->getSetting($context->getId(), 'citedBy'),
             ]),
         ];
 
@@ -169,5 +180,13 @@ class CrossrefSettings extends \PKP\doi\RegistrationAgencySettings
         $text .= '<p>' . __('plugins.importexport.crossref.settings.depositorIntro') . '</p>';
 
         return $text;
+    }
+
+    protected function addValidationChecks(Validator &$validator, array $props): void
+    {
+        $validator->setCustomMessages([
+            'username.required_if' => __('plugins.generic.crossref.settings.form.username.requiredIfCitedByEnabled'),
+            'password.required_if' => __('plugins.generic.crossref.settings.form.password.requiredIfCitedByEnabled'),
+        ]);
     }
 }

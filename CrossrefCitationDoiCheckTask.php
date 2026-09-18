@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2013-2026 Simon Fraser University
  * Copyright (c) 2003-2026 John Willinsky
- * Distributed under the GNU GPL v3. For full terms see the file LICENSE.
+ * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefCitationDoiCheckTask
  * @brief Scheduled task to fetch and store matched citation DOIs from Crossref.

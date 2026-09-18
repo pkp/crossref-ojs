@@ -45,6 +45,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
     private CrossrefSettings $_settingsObject;
     private ?CrossrefExportPlugin $_exportPlugin = null;
     private ?CrossrefCitationDoiHandler $_citationDoiHandler = null;
+    private ?CrossrefCitedBy $_citedBy = null;
 
     public function getDisplayName(): string
     {
@@ -83,6 +84,8 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
             if ($this->getEnabled($mainContextId)) {
                 $this->_pluginInitialization();
                 $this->getCitationDoiHandler()->registerEnabledHooks();
+                $this->getCitedBy()->registerEnabledHooks();
+                $this->getCitedBy()->registerEndpoints();
             }
         }
 
@@ -133,6 +136,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
         Hook::add('Publication::validatePublishWarnings', $this->validate(...));
         Hook::add('ArticleHandler::view', $this->addCrossmarkDoiMeta(...));
         Hook::add('ArticleHandler::view', $this->setupCrossmarkButton(...));
+        Hook::add('ArticleHandler::view', $this->getCitedBy()->setupCitedByComponents(...));
         Hook::add('Templates::Article::Details', $this->displayCrossmarkButton(...));
     }
 
@@ -206,6 +210,18 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
     public function getCitationDoiHandler(): CrossrefCitationDoiHandler
     {
         return $this->_citationDoiHandler ??= new CrossrefCitationDoiHandler($this);
+    }
+
+    /**
+     * Get the CrossrefCitedBy instance.
+     */
+    public function getCitedBy(): CrossrefCitedBy
+    {
+        $contextId = $this->getCurrentContextId();
+        $contextDao = Application::getContextDAO();
+        $context = $contextDao->getById($contextId);
+
+        return $this->_citedBy ??= new CrossrefCitedBy($this, $context);
     }
 
     /**
@@ -495,7 +511,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
             !in_array(Repo::doi()::TYPE_PUBLICATION, $enabledDoiTypes) ||
             $doiCreationTime === Repo::doi()::CREATION_TIME_PUBLICATION) {
 
-                return Hook::CONTINUE;
+            return Hook::CONTINUE;
         }
 
         $rules = [
@@ -634,11 +650,8 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
             'https://crossmark-cdn.crossref.org/widget/v2.0/widget.js',
             $scriptArgs
         );
-        $templateMgr->addJavaScript(
-            'crossrefCrossmarkButton',
-            "{$request->getBaseUrl()}/{$this->getPluginPath()}/public/build/crossref.js",
-            $scriptArgs
-        );
+
+        $this->loadCommonRuntimeScripts();
 
         return Hook::CONTINUE;
     }
@@ -677,5 +690,37 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
             }
         }
         return $values;
+    }
+
+    /**
+     * Loads the crossref.js script needed for frontend components
+     */
+    public function loadCommonRuntimeScripts(): void
+    {
+        $request = Application::get()->getRequest();
+        $templateMgr = TemplateManager::getManager($request);
+        $scriptArgs = ['contexts' => ['frontend'], 'priority' => TemplateManager::STYLE_SEQUENCE_LAST];
+
+        $templateMgr->addJavaScript(
+            'crossref',
+            "{$request->getBaseUrl()}/{$this->getPluginPath()}/public/build/crossref.js",
+            $scriptArgs
+        );
+    }
+
+    /**
+     * Loads the crossref.css stylesheet needed for frontend components
+     */
+    public function loadCommonCrossrefStyles(): void
+    {
+        $request = Application::get()->getRequest();
+        $templateMgr = TemplateManager::getManager($request);
+        $scriptArgs = ['contexts' => ['frontend'], 'priority' => TemplateManager::STYLE_SEQUENCE_LAST];
+
+        $templateMgr->addStyleSheet(
+            'crossref',
+            "{$request->getBaseUrl()}/{$this->getPluginPath()}/public/build/crossref.css",
+            $scriptArgs
+        );
     }
 }
