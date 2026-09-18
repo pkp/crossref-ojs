@@ -1,0 +1,200 @@
+# Mahmut  VURAL <mahmut.vural@outlook.com>, 2026.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2026-07-12 11:38+0000\n"
+"Last-Translator: Mahmut  VURAL <mahmut.vural@outlook.com>\n"
+"Language-Team: Kyrgyz <http://translate.pkp.sfu.ca/projects/plugins/crossref/"
+"ky/>\n"
+"Language: ky\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18.2\n"
+
+msgid "plugins.importexport.crossref.displayName"
+msgstr "Crossref XML экспорттоо плагини"
+
+msgid "plugins.importexport.crossref.description"
+msgstr "Макаланын метаберилиштерин Crossref XML форматында экспорттоо."
+
+msgid "plugins.generic.crossref.description"
+msgstr "Crossref метаберилиштерин жайгаштырууну жана экспорттоону иштетет"
+
+msgid "plugins.importexport.crossref.requirements"
+msgstr "Талаптар"
+
+msgid "plugins.importexport.crossref.requirements.satisfied"
+msgstr "Плагиндин бардык талаптары аткарылды."
+
+msgid "plugins.importexport.crossref.error.issnNotConfigured"
+msgstr ""
+"Журналдын ISSN'и конфигурацияланган эмес! Сиз <a href=\"{$journalSettingsUrl}"
+"\" target=\"_blank\">Журнал жөндөөлөрү бетинде</a> ISSN кошушуңуз керек."
+
+msgid "plugins.importexport.crossref.settings"
+msgstr "Crossref жөндөөлөрү"
+
+msgid "plugins.importexport.crossref.settings.depositorIntro"
+msgstr ""
+"Ийгиликтүү Crossref жайгаштыруусу үчүн төмөнкү элементтер талап кылынат."
+
+msgid "plugins.importexport.crossref.settings.form.depositorName"
+msgstr "Жайгаштыруучунун аты"
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail.description"
+msgstr ""
+"Мазмунду Crossref менен каттоого жооптуу адамдын электрондук почта дареги. "
+"Ал жайгаштырылган метаберилиштерге кошулуп, жайгаштырууну ырастоо катын "
+"жөнөткөндө колдонулат."
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmail"
+msgstr "Жайгаштыруучунун электрондук почтасы"
+
+msgid "plugins.importexport.crossref.settings.form.depositorNameRequired"
+msgstr "Жайгаштыруучунун атын киргизиңиз."
+
+msgid "plugins.importexport.crossref.settings.form.depositorEmailRequired"
+msgstr "Жайгаштыруучунун электрондук почтасын киргизиңиз."
+
+msgid "plugins.importexport.crossref.settings.form.username"
+msgstr "Колдонуучунун аты"
+
+msgid "plugins.importexport.crossref.settings.form.username.description"
+msgstr ""
+"Жайгаштырууларыңызды аутентификациялоо үчүн колдонула турган Crossref "
+"колдонуучу аты. Эгер жеке эсеп колдонсоңуз, жогорудагы кеңешти караңыз."
+
+msgid "plugins.importexport.crossref.settings.form.usernameRequired"
+msgstr "Crossref'тен алган колдонуучу атыңызды киргизиңиз."
+
+msgid "plugins.importexport.crossref.settings.form.validation"
+msgstr ""
+"XML текшерүү. Бул параметрди кол менен DOI каттоо үчүн XML жүктөө учурунда "
+"колдонуңуз."
+
+msgid "plugins.importexport.crossref.settings.form.onlyValidateExport"
+msgstr "Экспортту гана текшерүү. Файлды жүктөбөө."
+
+msgid "plugins.importexport.crossref.issues.description"
+msgstr ""
+"Эскертүү: Бул жерде экспорттоо/каттоо үчүн чыгарылыштар гана эсептелет ("
+"алардын макалалары эмес)."
+
+msgid "plugins.importexport.crossref.status.failed"
+msgstr "Ишке ашкан жок"
+
+msgid "plugins.importexport.crossref.status.notDeposited"
+msgstr "Жайгаштырылган эмес"
+
+msgid "plugins.importexport.crossref.action.register"
+msgstr "Жайгаштыруу"
+
+msgid "plugins.importexport.crossref.action.export"
+msgstr "Экспорттоо"
+
+msgid "plugins.importexport.crossref.action.markRegistered"
+msgstr "Активдүү деп белгилөө"
+
+msgid "plugins.importexport.crossref.senderTask.name"
+msgstr "Crossref автоматтык каттоо тапшырмасы"
+
+msgid "plugins.importexport.crossref.cliUsage"
+msgstr ""
+"Колдонулушу:{$scriptName} {$pluginName} export [xmlFileName] [journal_path] "
+"articles objectId1 [objectId2] ...{$scriptName} {$pluginName} register "
+"[journal_path] articles objectId1 [objectId2] ...\n"
+
+msgid "plugins.importexport.crossref.register.error.mdsError"
+msgstr "Каттоо толук ийгиликтүү болгон жок! DOI каттоо сервери катаны кайтарды."
+
+msgid "plugins.importexport.crossref.register.success.warning"
+msgstr ""
+"Каттоо ийгиликтүү болду, бирок төмөнкү эскертүү пайда болду: '{$param}'."
+
+msgid "plugins.generic.crossref.registrationAgency.name"
+msgstr "Crossref"
+
+msgid "plugins.importexport.crossref.status.registered"
+msgstr "Активдүү"
+
+msgid "plugins.importexport.crossref.status.markedRegistered"
+msgstr "Активдүү деп белгиленди"
+
+msgid "plugins.importexport.crossref.export.error.issueNotFound"
+msgstr ""
+"Көрсөтүлгөн чыгарылыш ID'сине эч бир чыгарылыш дал келген жок \"{$issueId}\"."
+
+msgid "plugins.importexport.crossref.export.error.articleNotFound"
+msgstr ""
+"Көрсөтүлгөн макала ID'сине эч бир макала дал келген жок \"{$articleId}\"."
+
+msgid "plugins.generic.crossref.displayName"
+msgstr "Crossref башкаруу плагини"
+
+msgid "plugins.importexport.crossref.error.publisherNotConfigured"
+msgstr ""
+"Журнал басмачысы конфигурацияланган эмес! Сиз <a href=\"{$journalSettingsUrl}"
+"\" target=\"_blank\">Журнал жөндөөлөрү бетинде</a> басмачы мекемесин "
+"кошушуңуз керек."
+
+msgid "plugins.importexport.crossref.error.noDOIContentObjects"
+msgstr ""
+"Макалалар DOI ачык идентификатор плагининде DOI дайындоо үчүн тандалган "
+"эмес, ошондуктан бул плагинде жайгаштыруу же экспорттоо мүмкүнчүлүгү жок."
+
+msgid "plugins.importexport.crossref.settings.form.depositorName.description"
+msgstr ""
+"DOIлерди каттаган уюмдун аты. Ал жайгаштырылган метаберилиштерге кошулуп, "
+"жайгаштырууну ким жөнөткөнүн жазуу үчүн колдонулат."
+
+msgid "plugins.importexport.crossref.registrationIntro"
+msgstr ""
+"<p>Эгер бул плагинди санариптик объект идентификаторлорун (DOI) түздөн-түз "
+"<a href=\"http://www.crossref.org/\">Crossref</a> менен каттоо үчүн "
+"колдонгуңуз келсе, төмөнкү колдонуучу аты жана сырсөз талааларына <a href="
+"\"https://www.crossref.org/documentation/member-setup/account-credentials/\""
+">Crossref эсеп маалыматтарыңызды</a> кошушуңуз керек.</p><p>Crossref "
+"мүчөлүгүңүзгө жараша, колдонуучу атыңызды жана сырсөзүңүздү киргизүүнүн эки "
+"жолу бар:</p><ul><li>Эгер уюмдук эсепти колдонсоңуз, <a href=\"https://www."
+"crossref.org/documentation/member-setup/account-credentials/#00376\">жалпы "
+"колдонуучу аты жана сырсөзүңүздү</a> кошуңуз</li><li>Эгер <a href=\"https"
+"://www.crossref.org/documentation/member-setup/account-credentials/#00368\""
+">жеке эсепти</a> колдонсоңуз, колдонуучу аты талаасына электрондук почта "
+"дарегиңизди жана ролуңузду киргизиңиз. Колдонуучу аты мындай көрүнөт: "
+"email@example.com/role</li><li>Эгер Crossref эсеп маалыматтарыңызды "
+"билбесеңиз же аларга кире албасаңыз, жардам үчүн <a href=\"https://support."
+"crossref.org/\">Crossref колдоо кызматына</a> кайрылсаңыз болот. Эсеп "
+"маалыматтары жок болсо да, метаберилиштерди Crossref XML форматына "
+"экспорттой аласыз, бирок DOIлериңизди OJS'тен Crossref менен каттай "
+"албайсыз.</li></ul>"
+
+msgid "plugins.importexport.crossref.settings.form.automaticRegistration.description"
+msgstr ""
+"OJS дайындалган DOIлерди автоматтык түрдө Crossref'ке жайгаштырат. Бул "
+"жарыялангандан кийин иштетүүгө аз убакыт кетиши мүмкүн экенин эске алыңыз ("
+"мисалы, cronjob конфигурацияңызга жараша). Бардык катталбаган DOIлерди "
+"текшере аласыз."
+
+msgid "plugins.importexport.crossref.settings.form.testMode.description"
+msgstr ""
+"DOI жайгаштыруу үчүн Crossref сынак API'син (сыноо чөйрөсү) колдонуңуз. "
+"Продукцияда бул параметрди өчүрүүнү унутпаңыз."
+
+msgid "plugins.importexport.crossref.statusLegend"
+msgstr ""
+"\n"
+"\t\t<p>Жайгаштыруу статусу:</p>\t\t<p>\t\t- Жайгаштырылган эмес: бул DOI "
+"үчүн жайгаштыруу аракети жасалган эмес.<br />\t\t- Активдүү: DOI "
+"жайгаштырылды жана туура иштеп жатат.<br />\t\t- Ишке ашкан жок: DOI "
+"жайгаштыруу ишке ашкан жок.<br />\t\t- Активдүү деп белгиленди: DOI кол "
+"менен активдүү деп белгиленди.\t\t</p>\t\t<p>Акыркы жайгаштыруу аракетинин "
+"статусу гана көрсөтүлөт.</p>\t\t<p>Эгер жайгаштыруу ишке ашпаса, көйгөйдү "
+"чечип, DOI'ди кайра каттоого аракет кылыңыз.</p>"
+
+msgid "plugins.generic.crossref.successMessage"
+msgstr ""
+"Бул элементтин метаберилиштери Crossref'ке жайгаштырылды. Кошумча маалымат "
+"үчүн <a href=\"https://doi.crossref.org/servlet/"
+"submissionAdmin?sf=detail&submissionID={$submissionId}\">Crossref башкаруу "
+"панелиндеги</a> тапшырманы караңыз."
