@@ -64,6 +64,31 @@ trait CrossrefFilterBuilder
     }
 
     /**
+     * Create and return the 'ORCID' node, or null when the iD cannot be deposited.
+     *
+     * The `orcid_t` type of the Crossref schema only accepts
+     * `https?://orcid.org/NNNN-NNNN-NNNN-NNNX`. Any other value makes the deposit fail schema
+     * validation, and because the whole batch is one document, a single contributor takes every
+     * other submission in the export down with it. Values that cannot validate are therefore left
+     * out of the deposit instead.
+     *
+     * Two ways such a value reaches the field: an ORCID Sandbox iD, stored as
+     * `https://sandbox.orcid.org/...` when the ORCID integration runs against the sandbox API,
+     * and legacy or imported records holding a bare iD or a typo in the host.
+     */
+    public function createOrcidNode(DOMDocument $doc, ?string $orcid, bool $authenticated): ?DOMElement
+    {
+        $orcid = trim((string) $orcid);
+        if (!preg_match('#^https?://orcid\.org/\d{4}-\d{4}-\d{4}-\d{3}[\dX]$#', $orcid)) {
+            return null;
+        }
+        $deployment = $this->getDeployment();
+        $orcidNode = $doc->createElementNS($deployment->getNamespace(), 'ORCID', $orcid);
+        $orcidNode->setAttribute('authenticated', $authenticated ? 'true' : 'false');
+        return $orcidNode;
+    }
+
+    /**
      * Helper to ensure dispatcher is available even when called from CLI tools
      */
     protected function _getDispatcher(Request $request): Dispatcher
