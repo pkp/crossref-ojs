@@ -62,9 +62,13 @@ export const useCrossrefCitedByStore = defineStore('crossrefCitedBy', () => {
 
 		isLoading.value = true;
 
-		const {data, fetch, isSuccess} = usePkpFetch(apiUrl, {
+		const {data, isSuccess, fetch} = usePkpFetch(apiUrl, {
 			method: 'GET',
 			expectValidationError: true,
+			onError: () => {
+				hasError.value = true;
+				return true;
+			},
 		});
 
 		await fetch();
@@ -73,8 +77,6 @@ export const useCrossrefCitedByStore = defineStore('crossrefCitedBy', () => {
 			citations.value = data.value.items;
 			total.value = data.value.itemsMax;
 			hasError.value = false;
-		} else {
-			hasError.value = true;
 		}
 
 		isLoading.value = false;
@@ -92,7 +94,7 @@ export const useCrossrefCitedByStore = defineStore('crossrefCitedBy', () => {
 			citation.doi ? getDoiExternalLink(citation.doi) : '',
 		];
 
-		return parts.join(t('common.commaListSeparator'));
+		return parts.filter(Boolean).join(t('common.commaListSeparator'));
 	}
 
 	/**
@@ -190,6 +192,7 @@ export const useCrossrefCitedByStore = defineStore('crossrefCitedBy', () => {
 		copiedToClipboard,
 		totalDisplay,
 		total,
+		hasError,
 		ensureCitationsLoaded,
 		openCitedByModal,
 		copyAllToClipboard,

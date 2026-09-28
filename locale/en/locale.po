@@ -262,3 +262,6 @@ msgstr "Cannot retrieve citations for this article because it does not have a pu
 
 msgid "plugins.generic.crossref.citedBy"
 msgstr "Cited by"
+
+msgid "plugins.generic.crossref.citedBy.api.error"
+msgstr "An error occurred while retrieving Crossref citations for this article."

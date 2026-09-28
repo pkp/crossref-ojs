@@ -1,14 +1,17 @@
 <template>
 	<div :class="cn('root')">
-		<p :class="cn('count')">
+		<p :class="cn('count')" v-if="!store.hasError">
 			{{
 				t('plugins.generic.crossref.citedBy.citationCount', {
-					count: store.total,
+					count: store.totalDisplay,
 				})
 			}}
 		</p>
 
-		<div :class="cn('citationsWrapper')" v-if="store.total > 0">
+		<div
+			:class="cn('citationsWrapper')"
+			v-if="store.total > 0 && !store.hasError"
+		>
 			<ul :class="cn('citationsList')" role="list">
 				<li
 					v-for="(citation, index) in store.citations"
@@ -56,6 +59,13 @@
 			</ul>
 		</div>
 
+		<div :class="cn('citationsWrapper')" v-else-if="store.hasError">
+			<p>
+				{{
+					t('plugins.generic.crossref.citedBy.api.error')
+				}}
+			</p>
+		</div>
 		<div :class="cn('actions')">
 			<PkpButton
 				:class="cn('root')"

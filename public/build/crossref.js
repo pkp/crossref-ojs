@@ -67,16 +67,20 @@
 			if (!submissionId) return;
 			const { apiUrl } = useUrl(`crossref/citedBy/${submissionId}`);
 			isLoading.value = true;
-			const { data, fetch, isSuccess } = usePkpFetch(apiUrl, {
+			const { data, isSuccess, fetch } = usePkpFetch(apiUrl, {
 				method: "GET",
-				expectValidationError: true
+				expectValidationError: true,
+				onError: () => {
+					hasError.value = true;
+					return true;
+				}
 			});
 			await fetch();
 			if (isSuccess.value) {
 				citations.value = data.value.items;
 				total.value = data.value.itemsMax;
 				hasError.value = false;
-			} else hasError.value = true;
+			}
 			isLoading.value = false;
 		}
 		/**
@@ -89,7 +93,7 @@
 				citation.authors,
 				...getSourceLine(citation),
 				citation.doi ? getDoiExternalLink(citation.doi) : ""
-			].join(t("common.commaListSeparator"));
+			].filter(Boolean).join(t("common.commaListSeparator"));
 		}
 		/**
 		* Copy a plain-text summary of every fetched citation to the clipboard.
@@ -144,6 +148,7 @@
 			copiedToClipboard,
 			totalDisplay,
 			total,
+			hasError,
 			ensureCitationsLoaded,
 			openCitedByModal,
 			copyAllToClipboard,
@@ -169,9 +174,12 @@
 			return (_ctx, _cache) => {
 				const _component_PkpButton = (0, vue.resolveComponent)("PkpButton");
 				return (0, vue.openBlock)(), (0, vue.createElementBlock)("div", { class: (0, vue.normalizeClass)((0, vue.unref)(cn)("root")) }, [
-					(0, vue.createElementVNode)("p", { class: (0, vue.normalizeClass)((0, vue.unref)(cn)("count")) }, (0, vue.toDisplayString)((0, vue.unref)(t)("plugins.generic.crossref.citedBy.citationCount", { count: (0, vue.unref)(store).total })), 3),
-					(0, vue.unref)(store).total > 0 ? ((0, vue.openBlock)(), (0, vue.createElementBlock)("div", {
+					!(0, vue.unref)(store).hasError ? ((0, vue.openBlock)(), (0, vue.createElementBlock)("p", {
 						key: 0,
+						class: (0, vue.normalizeClass)((0, vue.unref)(cn)("count"))
+					}, (0, vue.toDisplayString)((0, vue.unref)(t)("plugins.generic.crossref.citedBy.citationCount", { count: (0, vue.unref)(store).totalDisplay })), 3)) : (0, vue.createCommentVNode)("", true),
+					(0, vue.unref)(store).total > 0 && !(0, vue.unref)(store).hasError ? ((0, vue.openBlock)(), (0, vue.createElementBlock)("div", {
+						key: 1,
 						class: (0, vue.normalizeClass)((0, vue.unref)(cn)("citationsWrapper"))
 					}, [(0, vue.createElementVNode)("ul", {
 						class: (0, vue.normalizeClass)((0, vue.unref)(cn)("citationsList")),
@@ -196,7 +204,10 @@
 								rel: "noopener noreferrer"
 							}, (0, vue.toDisplayString)(`doi.org/${citation.doi}`), 9, _hoisted_1)) : (0, vue.createCommentVNode)("", true)], 2)
 						], 2)], 2);
-					}), 128))], 2)], 2)) : (0, vue.createCommentVNode)("", true),
+					}), 128))], 2)], 2)) : (0, vue.unref)(store).hasError ? ((0, vue.openBlock)(), (0, vue.createElementBlock)("div", {
+						key: 2,
+						class: (0, vue.normalizeClass)((0, vue.unref)(cn)("citationsWrapper"))
+					}, [(0, vue.createElementVNode)("p", null, (0, vue.toDisplayString)((0, vue.unref)(t)("plugins.generic.crossref.citedBy.api.error")), 1)], 2)) : (0, vue.createCommentVNode)("", true),
 					(0, vue.createElementVNode)("div", { class: (0, vue.normalizeClass)((0, vue.unref)(cn)("actions")) }, [(0, vue.createVNode)(_component_PkpButton, {
 						class: (0, vue.normalizeClass)((0, vue.unref)(cn)("root")),
 						"is-disabled": (0, vue.unref)(store).isLoading || (0, vue.unref)(store).total < 1,

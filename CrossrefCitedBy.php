@@ -126,6 +126,7 @@ class CrossrefCitedBy
             'plugins.generic.crossref.citedBy.citationSource.volume',
             'plugins.generic.crossref.citedBy.citationSource.firstPage',
             'common.commaListSeparator',
+            'plugins.generic.crossref.citedBy.api.error',
         ];
     }
 
