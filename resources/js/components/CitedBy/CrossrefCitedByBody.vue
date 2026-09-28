@@ -8,8 +8,8 @@
 			}}
 		</p>
 
-		<div :class="cn('citationsWrapper')">
-			<ul :class="cn('citationsList')">
+		<div :class="cn('citationsWrapper')" v-if="store.total > 0">
+			<ul :class="cn('citationsList')" role="list">
 				<li
 					v-for="(citation, index) in store.citations"
 					:key="index"

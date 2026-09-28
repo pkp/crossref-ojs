@@ -118,10 +118,6 @@ export const useCrossrefCitedByStore = defineStore('crossrefCitedBy', () => {
 	async function openCitedByModal() {
 		await ensureCitationsLoaded();
 
-		if (!total.value) {
-			return;
-		}
-
 		const {openDialog, closeTopDialog} = usePkpModal();
 
 		openDialog({
@@ -193,6 +189,7 @@ export const useCrossrefCitedByStore = defineStore('crossrefCitedBy', () => {
 		isLoading,
 		copiedToClipboard,
 		totalDisplay,
+		total,
 		ensureCitationsLoaded,
 		openCitedByModal,
 		copyAllToClipboard,

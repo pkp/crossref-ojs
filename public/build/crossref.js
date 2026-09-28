@@ -109,7 +109,6 @@
 		*/
 		async function openCitedByModal() {
 			await ensureCitationsLoaded();
-			if (!total.value) return;
 			const { openDialog, closeTopDialog } = usePkpModal();
 			openDialog({
 				title: t("plugins.generic.crossref.citedBy.title"),
@@ -144,6 +143,7 @@
 			isLoading,
 			copiedToClipboard,
 			totalDisplay,
+			total,
 			ensureCitationsLoaded,
 			openCitedByModal,
 			copyAllToClipboard,
@@ -170,7 +170,13 @@
 				const _component_PkpButton = (0, vue.resolveComponent)("PkpButton");
 				return (0, vue.openBlock)(), (0, vue.createElementBlock)("div", { class: (0, vue.normalizeClass)((0, vue.unref)(cn)("root")) }, [
 					(0, vue.createElementVNode)("p", { class: (0, vue.normalizeClass)((0, vue.unref)(cn)("count")) }, (0, vue.toDisplayString)((0, vue.unref)(t)("plugins.generic.crossref.citedBy.citationCount", { count: (0, vue.unref)(store).total })), 3),
-					(0, vue.createElementVNode)("div", { class: (0, vue.normalizeClass)((0, vue.unref)(cn)("citationsWrapper")) }, [(0, vue.createElementVNode)("ul", { class: (0, vue.normalizeClass)((0, vue.unref)(cn)("citationsList")) }, [((0, vue.openBlock)(true), (0, vue.createElementBlock)(vue.Fragment, null, (0, vue.renderList)((0, vue.unref)(store).citations, (citation, index) => {
+					(0, vue.unref)(store).total > 0 ? ((0, vue.openBlock)(), (0, vue.createElementBlock)("div", {
+						key: 0,
+						class: (0, vue.normalizeClass)((0, vue.unref)(cn)("citationsWrapper"))
+					}, [(0, vue.createElementVNode)("ul", {
+						class: (0, vue.normalizeClass)((0, vue.unref)(cn)("citationsList")),
+						role: "list"
+					}, [((0, vue.openBlock)(true), (0, vue.createElementBlock)(vue.Fragment, null, (0, vue.renderList)((0, vue.unref)(store).citations, (citation, index) => {
 						return (0, vue.openBlock)(), (0, vue.createElementBlock)("li", {
 							key: index,
 							class: (0, vue.normalizeClass)((0, vue.unref)(cn)("citationsListItem"))
@@ -190,7 +196,7 @@
 								rel: "noopener noreferrer"
 							}, (0, vue.toDisplayString)(`doi.org/${citation.doi}`), 9, _hoisted_1)) : (0, vue.createCommentVNode)("", true)], 2)
 						], 2)], 2);
-					}), 128))], 2)], 2),
+					}), 128))], 2)], 2)) : (0, vue.createCommentVNode)("", true),
 					(0, vue.createElementVNode)("div", { class: (0, vue.normalizeClass)((0, vue.unref)(cn)("actions")) }, [(0, vue.createVNode)(_component_PkpButton, {
 						class: (0, vue.normalizeClass)((0, vue.unref)(cn)("root")),
 						"is-disabled": (0, vue.unref)(store).isLoading || (0, vue.unref)(store).total < 1,

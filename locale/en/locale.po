@@ -259,3 +259,6 @@ msgstr " <strong>times</strong> according to Crossref"
 
 msgid "plugins.generic.crossref.api.citedBy.noPublishedDois"
 msgstr "Cannot retrieve citations for this article because it does not have a published DOI."
+
+msgid "plugins.generic.crossref.citedBy"
+msgstr "Cited by"
