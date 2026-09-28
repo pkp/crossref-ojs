@@ -87,6 +87,6 @@ defineProps({
 	onClose: {type: Function, default: () => () => {}},
 });
 
-const {cn} = usePkpStyles('CrossrefCitedByBody');
+const {cn} = usePkpStyles('CrossrefCitedByModal');
 const store = useCrossrefCitedByStore();
 </script>

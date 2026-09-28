@@ -1,5 +1,5 @@
 import {ref, computed} from 'vue';
-import CrossrefCitedByBody from './CrossrefCitedByBody.vue';
+import CrossrefCitedByModal from './CrossrefCitedByModal.vue';
 import {defineStore} from 'pinia';
 
 const {usePkpFetch} = pkp.modules.usePkpFetch;
@@ -122,7 +122,7 @@ export const useCrossrefCitedByStore = defineStore('crossrefCitedBy', () => {
 
 		openDialog({
 			title: t('plugins.generic.crossref.citedBy.title'),
-			bodyComponent: CrossrefCitedByBody,
+			bodyComponent: CrossrefCitedByModal,
 			size: 'large',
 			bodyProps: {
 				onClose: () => closeTopDialog(),

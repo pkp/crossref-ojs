@@ -152,10 +152,10 @@
 		};
 	});
 	//#endregion
-	//#region resources/js/components/CitedBy/CrossrefCitedByBody.vue
+	//#region resources/js/components/CitedBy/CrossrefCitedByModal.vue
 	var _hoisted_1 = ["href"];
 	var _sfc_main$1 = {
-		__name: "CrossrefCitedByBody",
+		__name: "CrossrefCitedByModal",
 		props: { onClose: {
 			type: Function,
 			default: () => () => {}
@@ -164,7 +164,7 @@
 			const { usePkpLocalize } = pkp.modules.usePkpLocalize;
 			const { t } = usePkpLocalize();
 			const { usePkpStyles } = pkp.modules.usePkpStyles;
-			const { cn } = usePkpStyles("CrossrefCitedByBody");
+			const { cn } = usePkpStyles("CrossrefCitedByModal");
 			const store = useCrossrefCitedByStore();
 			return (_ctx, _cache) => {
 				const _component_PkpButton = (0, vue.resolveComponent)("PkpButton");
@@ -240,7 +240,7 @@
 	* @brief Registers the plugin's frontend Vue components with the core registry.
 	*/
 	pkp.registry.registerComponent("CrossrefCrossmarkButton", _sfc_main$2);
-	pkp.registry.registerComponent("CrossrefCitedByBody", _sfc_main$1);
+	pkp.registry.registerComponent("CrossrefCitedByModal", _sfc_main$1);
 	pkp.registry.registerComponent("CrossrefCitedByCount", _sfc_main);
 	pkp.registry.registerStore("crossrefCitedBy", useCrossrefCitedByStore);
 	//#endregion
