@@ -292,6 +292,53 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     }
 
     /**
+     * @copydoc PubObjectsExportPlugin::exportXML()
+     *
+     * Crossref schemas from 5.5.0 onwards are XSD 1.1, which libxml cannot parse.
+     * Use a custom entity loader to downgrade the schemas to XSD 1.0 during validation.
+     */
+    public function exportXML($objects, $filter, $context, $noValidation = null, &$outputErrors = null)
+    {
+        $previousLoader = libxml_get_external_entity_loader();
+        libxml_set_external_entity_loader($this->loadCrossrefSchema(...));
+        try {
+            return parent::exportXML($objects, $filter, $context, $noValidation, $outputErrors);
+        } finally {
+            libxml_set_external_entity_loader($previousLoader);
+        }
+    }
+
+    /**
+     * libxml external entity loader that rewrites Crossref XSD 1.1 schemas to XSD 1.0.
+     *
+     * The XSD 1.1 assertions are removed; these are not validated locally.
+     *
+     * @return resource|string|null
+     */
+    private function loadCrossrefSchema(?string $publicId, string $systemId, array $context): mixed
+    {
+        if (!preg_match('~^https://www\.crossref\.org/schemas/(crossref|common)[0-9.]+\.xsd$~', $systemId)) {
+            return $systemId;
+        }
+
+        $schema = file_get_contents($systemId);
+        if ($schema === false || !preg_match('~^<\?xml version="1\.1"~', $schema)) {
+            return $systemId;
+        }
+
+        $schema = preg_replace('~^<\?xml version="1\.1"~', '<?xml version="1.0"', $schema);
+        $schema = preg_replace('~<xsd:assert\b.*?/>~s', '', $schema);
+        // A returned stream has no base URI, so relative schema locations must be made absolute
+        $baseUrl = dirname($systemId) . '/';
+        $schema = preg_replace('~schemaLocation="(?!https?://)([^"]+)"~', 'schemaLocation="' . $baseUrl . '$1"', $schema);
+
+        $stream = fopen('php://temp', 'w+');
+        fwrite($stream, $schema);
+        rewind($stream);
+        return $stream;
+    }
+
+    /**
      * @param mixed $objects
      * @param Journal $context
      * @param string $filename Export XML filename
