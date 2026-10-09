@@ -420,7 +420,7 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     public function updateDepositStatus(Journal $context, Issue|Submission|ReviewAssignment $object, int $status, ?string $batchId = null, ?string $failedMsg = null, ?string $successMsg = null)
     {
         if ($object instanceof Submission) {
-            $doiIds = Repo::doi()->getDoisForSubmission($object->getId());
+            $doiIds = Repo::doi()->getPublishedDoisForSubmission($object->getId());
         } else if ($object instanceof Issue) {
             $doiIds = Repo::doi()->getDoisForIssue($object->getId(), true);
         } else {
