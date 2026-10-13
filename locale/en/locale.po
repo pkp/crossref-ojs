@@ -168,6 +168,9 @@ msgstr "Registration was not fully successful! The DOI registration server retur
 msgid "plugins.importexport.crossref.export.error.unauthorized"
 msgstr "Please check that your Crossref credentials are correct and try again."
 
+msgid "plugins.importexport.crossref.export.error.validation"
+msgstr "The XML is not valid against the Crossref schema and was not deposited. Validation errors:"
+
 msgid "plugins.importexport.crossref.register.success.warning"
 msgstr "Registration was successful but the following warning occurred: '{$param}'."
 
