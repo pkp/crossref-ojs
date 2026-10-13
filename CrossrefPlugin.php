@@ -544,7 +544,7 @@ class CrossrefPlugin extends GenericPlugin implements IDoiRegistrationAgency, Ha
             $this->getValidationMessages($publication)
         );
         if (!$validator->passes()) {
-            $errors = $this->formatErrors($validator->errors()->toArray());
+            $errors = array_merge($errors, $this->formatErrors($validator->errors()->toArray()));
         }
         return HOOK::CONTINUE;
     }
