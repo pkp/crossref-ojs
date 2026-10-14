@@ -123,7 +123,7 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
                 'article',
                 'view',
                 [
-                    $publication->getData('urlPath') ?? $this->getSubmission($publication->getData('submissionId'))->getId(),
+                    $this->getSubmission($publication->getData('submissionId'))->getBestId(), 'version', $publication->getId(),
                 ],
                 [
                     'tab' => 'peer-review-record',
@@ -251,16 +251,7 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
         /** Get Review Number (position of the review assignment within the round) */
         // 1 - Get all reviews in the round
         $allReviewsInRound = $this->allReviewsPerRound->get($reviewRound->getId()) ?? [];
-        $reviewIds = array_map(fn (ReviewAssignment $ra) => $ra->getId(), $allReviewsInRound);
-
-        // 2 - Find index of current review assignment within the sorted reviews for the round
-        $reviewNumber = array_search($reviewAssignment->getId(), $reviewIds) + 1;
-
-        $titleText = __('plugins.importexport.crossref.reviewTitle', [
-            'publicationTitle' => $publicationTitle,
-            'revisionNumber' => $revisionNumber,
-            'reviewNumber' => $reviewNumber,
-        ], $locale);
+        $titleText = Repo::reviewAssignment()->getReviewTitle($reviewAssignment, $reviewRound, $allReviewsInRound, $publication, $locale);
 
         $titleNode = $doc->createElementNS(
             $deployment->getNamespace(),
