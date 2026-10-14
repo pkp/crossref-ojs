@@ -238,6 +238,15 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
             // Supply an exportErrors array because otherwise exportXML() will echo out export errors
             $exportErrors = [];
             $exportXml = $this->exportXML([$object], $filter, $context, $noValidation, $exportErrors);
+            // Only schema validity errors (libxml XML_SCHEMAV_* codes) mean invalid XML; if the schema could not be loaded, let Crossref validate it
+            $validityErrors = array_filter($exportErrors, fn (\LibXMLError $error) => $error->code >= 1800 && $error->code < 1900);
+            if (!empty($validityErrors)) {
+                $messages = array_unique(array_map(fn (\LibXMLError $error) => trim($error->message), $validityErrors));
+                $failedMsg = __('plugins.importexport.crossref.export.error.validation') . PHP_EOL . implode(PHP_EOL, $messages);
+                $this->updateDepositStatus($context, $object, Doi::STATUS_ERROR, null, $failedMsg);
+                $resultErrors[] = [['plugins.importexport.crossref.export.error.validation']];
+                continue;
+            }
             // Write the XML to a file.
             // export file name example: crossref-20160723-160036-articles-1-1.xml
             $objectFileNamePart = $this->_getObjectFileNamePart($object);
@@ -385,6 +394,8 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
         if ($failureCount > 0) {
             $status = Doi::STATUS_ERROR;
             $result = false;
+            $msgs = array_map(fn (\DOMElement $msg) => trim($msg->nodeValue), iterator_to_array($xmlDoc->getElementsByTagName('msg')));
+            $msgSave = trim(implode(PHP_EOL, array_unique(array_filter($msgs))) . PHP_EOL . $response->getBody());
         } else {
             // Deposit was received
             $status = Doi::STATUS_REGISTERED;
