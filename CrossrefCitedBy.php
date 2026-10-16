@@ -25,6 +25,8 @@ use PKP\context\Context;
 
 class CrossrefCitedBy
 {
+    public const CROSSREF_API_CITED_BY_URL = 'https://doi.crossref.org/servlet/getForwardLinks';
+    public const CROSSREF_API_CITED_BY_URL_DEV = 'https://test.crossref.org/servlet/getForwardLinks';
     public function __construct(
         protected CrossrefPlugin $plugin,
         protected Context $context

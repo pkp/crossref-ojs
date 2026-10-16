@@ -34,7 +34,6 @@ use Illuminate\Support\Str;
 
 class CrossrefCitedByController extends PKPBaseController
 {
-    private const CROSSREF_API_URL = 'https://doi.crossref.org/servlet/getForwardLinks?usr=%s&pwd=%s&doi=%s';
     private const CONNECTION_TIMEOUT = 5;
     private const TIMEOUT = 15;
 
@@ -140,8 +139,6 @@ class CrossrefCitedByController extends PKPBaseController
             ->unique(fn(string $doi) => strtolower($doi))
             ->all();
 
-        $cPwd = $plugin->getSetting($context->getId(), 'password');
-        $cUser = $plugin->getSetting($context->getId(), 'username');
         $httpClient = Application::get()->getHttpClient();
 
         $results = [];
@@ -151,7 +148,7 @@ class CrossrefCitedByController extends PKPBaseController
             try {
                 $response = $httpClient->request(
                     'GET',
-                    sprintf(self::CROSSREF_API_URL, urlencode($cUser), urlencode($cPwd), urlencode($doi)),
+                    $this->getCitedByUrl($plugin, $context, $doi),
                     [
                         'headers' => [
                             'Accept' => "application/xml",
@@ -309,5 +306,23 @@ class CrossrefCitedByController extends PKPBaseController
         }
 
         return implode(', ', $authors);
+    }
+
+
+    /**
+     * Get the URL for the Crossref Cited-by API.
+     */
+    private function getCitedByUrl(IDoiRegistrationAgency $plugin, Context $context, string $doi){
+        $cPwd = $plugin->getSetting($context->getId(), 'password');
+        $cUser = $plugin->getSetting($context->getId(), 'username');
+        $isTestMode = $plugin->getSetting($context->getId(), 'testMode') == 1;
+
+        // Use a different endpoint for testing and production.
+        return (
+            $isTestMode
+                ? CrossrefCitedBy::CROSSREF_API_CITED_BY_URL_DEV
+                : CrossrefCitedBy::CROSSREF_API_CITED_BY_URL
+            )
+            . '?usr=' . urlencode($cUser) . '&pwd=' . urlencode($cPwd) . '&doi=' . urlencode($doi);
     }
 }
