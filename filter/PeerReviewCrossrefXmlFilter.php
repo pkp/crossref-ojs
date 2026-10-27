@@ -235,23 +235,13 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
         $titlesNode = $doc->createElementNS($deployment->getNamespace(), 'titles');
         $reviewRound = $this->getReviewRound($reviewAssignment->getReviewRoundId());
 
-        /**
-         * Prepare review title below.
-         * This includes:
-         *  - localized publication title
-         *  - Revision Number & Review Number (see https://www.crossref.org/documentation/schema-library/markup-guide-record-types/peer-reviews/#:~:text=Title%20of%20review.,R2%2FRC3)
-         */
-
-        // publication title
-        $publicationTitle = $publication->getLocalizedTitle($locale);
-
-        // Get Revision Number (round of review)
-        $revisionNumber = $reviewRound->getRound();
-
-        /** Get Review Number (position of the review assignment within the round) */
-        // 1 - Get all reviews in the round
-        $allReviewsInRound = $this->allReviewsPerRound->get($reviewRound->getId()) ?? [];
-        $titleText = Repo::reviewAssignment()->getReviewTitle($reviewAssignment, $reviewRound, $allReviewsInRound, $publication, $locale);
+        $titleText = Repo::reviewAssignment()->getReviewTitle(
+            $reviewAssignment,
+            $reviewRound,
+            $this->allReviewsPerRound->get($reviewRound->getId()) ?? [],
+            $publication,
+            $locale
+        );
 
         $titleNode = $doc->createElementNS(
             $deployment->getNamespace(),
