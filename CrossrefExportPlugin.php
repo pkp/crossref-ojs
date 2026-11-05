@@ -24,6 +24,7 @@ use APP\submission\Submission;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
 use PKP\config\Config;
 use PKP\core\DataObject;
 use PKP\doi\Doi;
@@ -323,9 +324,9 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
                     ]
                 ]
             );
-        } catch (RequestException $e) {
+        } catch (TransferException $e) {
             $returnMessage = $e->getMessage();
-            if ($e->hasResponse()) {
+            if ($e instanceof RequestException && $e->hasResponse()) {
                 $eResponseBody = $e->getResponse()->getBody();
                 $eStatusCode = $e->getResponse()->getStatusCode();
                 if ($eStatusCode == static::CROSSREF_API_DEPOSIT_ERROR_FROM_CROSSREF) {
@@ -349,6 +350,9 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
                     $returnMessage = $eResponseBody . ' (' . $eStatusCode . ' ' . $e->getResponse()->getReasonPhrase() . ')';
                     $this->updateDepositStatus($context, $objects, Doi::STATUS_ERROR, null, $returnMessage);
                 }
+            } else {
+                // No answer from Crossref, so the status would stay "Submitted"
+                $this->updateDepositStatus($context, $objects, Doi::STATUS_ERROR, null, $returnMessage);
             }
             return [['plugins.importexport.common.register.error.mdsError', $returnMessage]];
         }
