@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/crossref/tests/CrossrefExportPluginTest.php
  *
- * Copyright (c) 2014-2026 Simon Fraser University
- * Copyright (c) 2003-2026 John Willinsky
+ * Copyright (c) 2026 Simon Fraser University
+ * Copyright (c) 2026 John Willinsky
  * Distributed under The MIT License. For full terms see the file LICENSE.
  *
  * @class CrossrefExportPluginTest
@@ -18,9 +18,10 @@ use APP\journal\Journal;
 use APP\plugins\generic\crossref\CrossrefExportPlugin;
 use APP\submission\Submission;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Mockery;
@@ -61,25 +62,24 @@ class CrossrefExportPluginTest extends PKPTestCase
     }
 
     /**
-     * Make the HTTP client throw the given exception on the deposit request
+     * Make the HTTP client answer the deposit request with the given response or exception
      */
-    protected function mockDepositFailure(\Throwable $exception): void
+    protected function mockDepositResult(Response|\Throwable $result): void
     {
-        $client = Mockery::mock(Client::class)->makePartial();
-        $client->shouldReceive('request')->once()->andThrow($exception);
+        $client = new Client(['handler' => HandlerStack::create(new MockHandler([$result]))]);
         Registry::set(PKPTestCase::MOCKED_GUZZLE_CLIENT_NAME, $client);
     }
 
     /**
-     * Run a deposit that fails with the given exception
+     * Run a deposit that fails with the given response or exception
      *
      * @param string|null $expectedMessage Message expected to be stored with the error, or null to match any
      *
      * @return array|bool The result of depositXML()
      */
-    protected function deposit(\Throwable $exception, ?string $expectedMessage = null): array|bool
+    protected function deposit(Response|\Throwable $result, ?string $expectedMessage = null): array|bool
     {
-        $this->mockDepositFailure($exception);
+        $this->mockDepositResult($result);
 
         $context = Mockery::mock(Journal::class);
         $context->shouldReceive('getId')->andReturn(1);
@@ -122,12 +122,7 @@ class CrossrefExportPluginTest extends PKPTestCase
      */
     public function testErrorResponseRecordsError(): void
     {
-        $request = new Request('POST', 'https://api.crossref.org/v2/deposits');
-        $response = new Response(500, [], 'Internal error');
-        $result = $this->deposit(
-            new ClientException('Server error', $request, $response),
-            'Internal error (500 Internal Server Error)'
-        );
+        $result = $this->deposit(new Response(500, [], 'Internal error'), 'Internal error (500 Internal Server Error)');
 
         $this->assertSame([['plugins.importexport.common.register.error.mdsError', 'Internal error (500 Internal Server Error)']], $result);
     }
@@ -139,9 +134,7 @@ class CrossrefExportPluginTest extends PKPTestCase
     {
         $body = '<doi_batch_diagnostic><submission_id>1</submission_id><batch_id>batch-1</batch_id>'
             . '<failure_count>0</failure_count><warning_count>0</warning_count></doi_batch_diagnostic>';
-        $client = Mockery::mock(Client::class)->makePartial();
-        $client->shouldReceive('request')->once()->andReturn(new Response(200, [], $body));
-        Registry::set(PKPTestCase::MOCKED_GUZZLE_CLIENT_NAME, $client);
+        $this->mockDepositResult(new Response(200, [], $body));
 
         $context = Mockery::mock(Journal::class);
         $context->shouldReceive('getId')->andReturn(1);
