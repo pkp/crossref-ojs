@@ -15,9 +15,7 @@
 namespace APP\plugins\generic\crossref\tests;
 
 use APP\journal\Journal;
-use APP\plugins\generic\crossref\CrossrefCitationDoiHandler;
 use APP\plugins\generic\crossref\CrossrefExportPlugin;
-use APP\plugins\generic\crossref\CrossrefPlugin;
 use APP\submission\Submission;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -155,14 +153,6 @@ class CrossrefExportPluginTest extends PKPTestCase
         $plugin->shouldReceive('updateDepositStatus')
             ->once()
             ->with($context, $objects, Doi::STATUS_REGISTERED, 'batch-1', null, Mockery::type('string'));
-
-        // Newer branches hand the response to the agency plugin's citation handler
-        if (property_exists(CrossrefExportPlugin::class, 'agencyPlugin')) {
-            $agency = Mockery::mock(CrossrefPlugin::class);
-            $handler = Mockery::mock(CrossrefCitationDoiHandler::class)->shouldIgnoreMissing();
-            $agency->shouldReceive('getCitationDoiHandler')->andReturn($handler);
-            (new \ReflectionProperty(CrossrefExportPlugin::class, 'agencyPlugin'))->setValue($plugin, $agency);
-        }
 
         $this->assertTrue($plugin->depositXML($objects, $context, $this->filename));
     }
