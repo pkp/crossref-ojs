@@ -144,9 +144,9 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
                     ]
                 ]
             );
-        } catch (RequestException $e) {
+        } catch (TransferException $e) {
             $returnMessage = $e->getMessage();
-            if ($e->hasResponse()) {
+            if ($e instanceof RequestException && $e->hasResponse()) {
                 $returnMessage = $e->getResponse()->getBody() . ' (' . $e->getResponse()->getStatusCode() . ' ' . $e->getResponse()->getReasonPhrase() . ')';
             }
             return __('plugins.importexport.common.register.error.mdsError', ['param' => $returnMessage]);
