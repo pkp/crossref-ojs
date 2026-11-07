@@ -302,6 +302,18 @@ class CrossrefExportPlugin extends DOIPubIdExportPlugin
     }
 
     /**
+     * @copydoc PubObjectsExportPlugin::exportXML()
+     *
+     * The Crossref 5.5.0 schema is XSD 1.1 and not supported in libxml. 
+     * Therefore disable the local validation for now.
+     * Crossref should be returning to XSD 1.0 in the future, so this is a temporary solution.
+     */
+    public function exportXML($objects, $filter, $context, $noValidation = null, &$outputErrors = null)
+    {
+        return parent::exportXML($objects, $filter, $context, true, $outputErrors);
+    }
+
+    /**
      * @param mixed $objects
      * @param Journal $context
      * @param string $filename Export XML filename
