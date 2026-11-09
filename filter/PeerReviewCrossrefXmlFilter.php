@@ -182,10 +182,8 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
                 $personNameNode->appendChild($affiliationsNode);
             }
 
-            if ($reviewer->getData('orcid')) {
-                $orcidNode = $doc->createElementNS($deployment->getNamespace(), 'ORCID', $reviewer->getData('orcid'));
-                $orcidAuthenticated = $reviewer->getData('orcidIsVerified') ? 'true' : 'false';
-                $orcidNode->setAttribute('authenticated', $orcidAuthenticated);
+            $orcidNode = $this->createOrcidNode($doc, $reviewer->getData('orcid'), (bool) $reviewer->getData('orcidIsVerified'));
+            if ($orcidNode) {
                 $personNameNode->appendChild($orcidNode);
             }
 
