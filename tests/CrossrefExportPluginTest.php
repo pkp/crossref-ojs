@@ -14,10 +14,12 @@
 
 namespace APP\plugins\generic\crossref\tests;
 
+use APP\core\Request as AppRequest;
 use APP\journal\Journal;
 use APP\plugins\generic\crossref\CrossrefCitationDoiHandler;
 use APP\plugins\generic\crossref\CrossrefExportPlugin;
 use APP\plugins\generic\crossref\CrossrefPlugin;
+use APP\submission\Repository as SubmissionRepository;
 use APP\submission\Submission;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
@@ -156,5 +158,58 @@ class CrossrefExportPluginTest extends PKPTestCase
         (new \ReflectionProperty(CrossrefExportPlugin::class, 'agencyPlugin'))->setValue($plugin, $agency);
 
         $this->assertTrue($plugin->depositXML($objects, $context, $this->filename));
+    }
+
+    /**
+     * Get the status message when the status request is answered with the given response or exception
+     */
+    protected function getStatusMessage(Response|\Throwable $result): ?string
+    {
+        $this->mockDepositResult($result);
+
+        // A submission whose DOI has no stored failure message, so Crossref is asked for the status
+        $submission = new Submission();
+        $submission->setData('doiObject', new Doi());
+        $submissionRepository = Mockery::mock(SubmissionRepository::class);
+        $submissionRepository->shouldReceive('get')->andReturn($submission);
+        app()->instance(SubmissionRepository::class, $submissionRepository);
+
+        $context = Mockery::mock(Journal::class);
+        $context->shouldReceive('getId')->andReturn(1);
+        $request = Mockery::mock(AppRequest::class);
+        $request->shouldReceive('getUserVar')->andReturn('1');
+        $request->shouldReceive('getContext')->andReturn($context);
+
+        $plugin = Mockery::mock(CrossrefExportPlugin::class)->makePartial();
+        $plugin->shouldReceive('getSetting')->andReturn('');
+        $plugin->shouldReceive('isTestMode')->andReturn(false);
+        $plugin->shouldReceive('getFailedMsgSettingName')->andReturn('crossref_failedMsg');
+
+        try {
+            return $plugin->getStatusMessage($request);
+        } finally {
+            app()->forgetInstance(SubmissionRepository::class);
+        }
+    }
+
+    /**
+     * A status request that cannot connect returns the connection error
+     */
+    public function testStatusConnectionFailureReturnsError(): void
+    {
+        $message = 'cURL error 7: Failed to connect to doi.crossref.org port 443';
+        $result = $this->getStatusMessage(new ConnectException($message, new Request('POST', 'https://doi.crossref.org/servlet/submissionDownload')));
+
+        $this->assertSame(__('plugins.importexport.common.register.error.mdsError', ['param' => $message]), $result);
+    }
+
+    /**
+     * A status request that Crossref answers with an error returns the response in the error
+     */
+    public function testStatusErrorResponseReturnsError(): void
+    {
+        $result = $this->getStatusMessage(new Response(500, [], 'Internal error'));
+
+        $this->assertSame(__('plugins.importexport.common.register.error.mdsError', ['param' => 'Internal error (500 Internal Server Error)']), $result);
     }
 }

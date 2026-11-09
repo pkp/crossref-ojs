@@ -267,7 +267,7 @@ class CrossrefCitationDoiHandler
         $httpClient = Application::get()->getHttpClient();
         try {
             $response = $httpClient->request('POST', $url);
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
+        } catch (\GuzzleHttp\Exception\TransferException $e) {
             error_log('Crossref getResolvedRefs failed for DOI ' . $doi . ': ' . $e->getMessage());
             return null;
         }
