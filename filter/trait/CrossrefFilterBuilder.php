@@ -95,9 +95,6 @@ trait CrossrefFilterBuilder
 
     /**
      * Append stored HTML (e.g. a publication title) to a node, keeping the tags Crossref accepts as face markup.
-     *
-     * A line break becomes a space. Unsafe HTML is removed first, and any other tag is dropped and its text kept.
-     * Text is decoded by the HTML parser and escaped once when the document is written.
      */
     public function appendFaceMarkup(DOMDocument $doc, DOMElement $parent, string $html): void
     {
