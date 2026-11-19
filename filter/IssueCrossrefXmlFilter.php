@@ -16,7 +16,10 @@ namespace APP\plugins\generic\crossref\filter;
 
 use APP\core\Application;
 use APP\plugins\generic\crossref\CrossrefExportDeployment;
+use DOMDocument;
+use DOMElement;
 use PKP\core\PKPApplication;
+use PKP\core\PKPString;
 
 class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\NativeExportFilter
 {
@@ -271,5 +274,49 @@ class IssueCrossrefXmlFilter extends \PKP\plugins\importexport\native\filter\Nat
         }
 
         return $dispatcher;
+    }
+
+    /**
+     * Append stored HTML (e.g. a publication title) to a node, keeping the tags Crossref accepts as face markup.
+     */
+    public function appendFaceMarkup(DOMDocument $doc, DOMElement $parent, string $html): void
+    {
+        if ($html === '') {
+            return;
+        }
+        $source = new DOMDocument();
+        $previous = libxml_use_internal_errors(true);
+        $source->loadHTML('<?xml encoding="UTF-8"><body>' . PKPString::stripUnsafeHtml($html) . '</body>', LIBXML_NONET);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
+        $body = $source->getElementsByTagName('body')->item(0);
+        if ($body) {
+            $this->copyFaceMarkup($doc, $parent, $body);
+        }
+    }
+
+    /**
+     * Copy the children of an HTML node into a Crossref node: face markup is kept, other tags are dropped and their text kept.
+     */
+    private function copyFaceMarkup(DOMDocument $doc, DOMElement $parent, \DOMNode $from): void
+    {
+        /** @var CrossrefExportDeployment $deployment */
+        $deployment = $this->getDeployment();
+        $faces = ['b', 'strong', 'i', 'em', 'u', 'sup', 'sub'];
+        foreach ($from->childNodes as $child) {
+            if ($child instanceof \DOMText) {
+                $parent->appendChild($doc->createTextNode($child->nodeValue));
+            } elseif ($child instanceof DOMElement) {
+                $name = strtolower($child->nodeName);
+                if ($name === 'br') {
+                    $parent->appendChild($doc->createTextNode(' '));
+                } elseif (in_array($name, $faces)) {
+                    $parent->appendChild($node = $doc->createElementNS($deployment->getNamespace(), $name));
+                    $this->copyFaceMarkup($doc, $node, $child);
+                } else {
+                    $this->copyFaceMarkup($doc, $parent, $child);
+                }
+            }
+        }
     }
 }
