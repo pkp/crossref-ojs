@@ -262,13 +262,18 @@ class CrossrefCitationDoiHandler
         $isTestMode = $this->plugin->getSetting($contextId, 'testMode') == 1;
         $endpoint = ($isTestMode ? CrossrefPlugin::CROSSREF_API_REFS_URL_DEV : CrossrefPlugin::CROSSREF_API_REFS_URL);
 
-        $url = $endpoint . '?doi=' . urlencode($doi) . '&usr=' . urlencode($username) . '&pwd=' . urlencode($password);
-
         $httpClient = Application::get()->getHttpClient();
         try {
-            $response = $httpClient->request('POST', $url);
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
-            error_log('Crossref getResolvedRefs failed for DOI ' . $doi . ': ' . $e->getMessage());
+            // The credentials are sent as form fields, not in the address, which the HTTP client quotes in its error messages
+            $response = $httpClient->request('POST', $endpoint, [
+                'form_params' => [
+                    'doi' => $doi,
+                    'usr' => $username,
+                    'pwd' => $password,
+                ],
+            ]);
+        } catch (\GuzzleHttp\Exception\TransferException $e) {
+            error_log('Crossref getResolvedRefs failed for DOI ' . $doi . ': ' . preg_replace('/([?&](?:usr|pwd)=)[^&]*/', '$1*****', $e->getMessage()));
             return null;
         }
 
