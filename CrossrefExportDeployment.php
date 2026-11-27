@@ -22,10 +22,10 @@ use PKP\context\Context;
 class CrossrefExportDeployment
 {
     // XML attributes
-    public const CROSSREF_XMLNS = 'http://www.crossref.org/schema/5.4.0';
+    public const CROSSREF_XMLNS = 'http://www.crossref.org/schema/5.5.0';
     public const CROSSREF_XMLNS_XSI = 'http://www.w3.org/2001/XMLSchema-instance';
-    public const CROSSREF_XSI_SCHEMAVERSION = '5.4.0';
-    public const CROSSREF_XSI_SCHEMALOCATION = 'https://www.crossref.org/schemas/crossref5.4.0.xsd';
+    public const CROSSREF_XSI_SCHEMAVERSION = '5.5.0';
+    public const CROSSREF_XSI_SCHEMALOCATION = 'https://www.crossref.org/schemas/crossref5.5.0.xsd';
     public const CROSSREF_XMLNS_JATS = 'http://www.ncbi.nlm.nih.gov/JATS1';
     public const CROSSREF_XMLNS_AI = 'http://www.crossref.org/AccessIndicators.xsd';
     public const CROSSREF_XMLNS_XML = 'http://www.w3.org/XML/1998/namespace';
