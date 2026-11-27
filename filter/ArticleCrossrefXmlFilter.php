@@ -996,8 +996,8 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             $doiUrl = $reviewAssignment->getData('doiObject')?->getResolvingUrl();
             $publicationId = $publicationIdsByRound->get($reviewAssignment->getReviewRoundId());
             $submission = $submissionsById->get($reviewAssignment->getSubmissionId());
-            $reviewPublication = $submission->getData('publications')->first(fn (Publication $p) => $p->getId() === $publicationId);
-            if (!$doiUrl || !$reviewPublication) {
+            $reviewPublication = $submission?->getData('publications')->first(fn (Publication $p) => $p->getId() === $publicationId);
+            if (!$doiUrl || !$submission || !$reviewPublication) {
                 continue;
             }
 
@@ -1005,7 +1005,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
                 'reviewerId' => $reviewAssignment->getReviewerId(),
                 'publicationId' => $publicationId,
                 'dateCompleted' => $reviewAssignment->getDateCompleted(),
-                'assertionName' => 'referee-response-' . $reviewAssignment->getId(),
+                'assertionName' => 'review-report-' . $reviewAssignment->getId(),
                 'doiUrl' => $doiUrl,
                 'value' => $this->getReviewAssertionValue(
                     $reviewAssignment,
@@ -1059,28 +1059,35 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         foreach ($submission->getData('publications') as $submissionPublication) {
             $positions[$submissionPublication->getId()] = count($positions);
         }
-        $publicationPosition = $positions[$publication->getId()];
+        $publicationPosition = $positions[$publication->getId()] ?? null;
+        if ($publicationPosition === null) {
+            return;
+        }
 
         $latestReviews = collect($reviews)
             ->filter(fn (array $review) => isset($positions[$review['publicationId']]) && $positions[$review['publicationId']] <= $publicationPosition)
             ->sort(fn (array $a, array $b) => [$positions[$a['publicationId']], $a['dateCompleted']] <=> [$positions[$b['publicationId']], $b['dateCompleted']])
             // keyBy keeps the last, i.e. the latest review of each reviewer
             ->keyBy('reviewerId')
-            ->sort(fn (array $a, array $b) => [$positions[$b['publicationId']], $a['dateCompleted']] <=> [$positions[$a['publicationId']], $b['dateCompleted']]);
+            ->sort(fn (array $a, array $b) => [$positions[$b['publicationId']], $b['dateCompleted']] <=> [$positions[$a['publicationId']], $a['dateCompleted']]);
         if ($latestReviews->isEmpty()) {
             return;
         }
 
         /** @var CrossrefExportDeployment $deployment */
         $deployment = $this->getDeployment();
+        $context = $deployment->getContext();
         $request = Application::get()->getRequest();
+        // getBestId(): ArticleHandler redirects a non-current urlPath and drops the tab query parameter
         $peerReviewRecordUrl = $this->_getDispatcher($request)->url(
             $request,
             PKPApplication::ROUTE_PAGE,
-            $deployment->getContext()->getPath(),
+            $context->getPath(),
             'article',
             'view',
-            [$publication->getData('urlPath') ?? $submission->getId()],
+            $context->getData(Context::SETTING_DOI_VERSIONING)
+                ? [$submission->getBestId(), 'version', $publication->getId()]
+                : [$submission->getBestId()],
             ['tab' => 'peer-review-record'],
             null,
             true,
@@ -1101,7 +1108,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
         $appendAssertion('peer-review-record', 'Peer Review Record', $peerReviewRecordUrl, $peerReviewRecordUrl);
         foreach ($latestReviews as $review) {
-            $appendAssertion($review['assertionName'], 'Referee Report', $review['doiUrl'], $review['value']);
+            $appendAssertion($review['assertionName'], 'Review Report', $review['doiUrl'], $review['value']);
         }
     }
 

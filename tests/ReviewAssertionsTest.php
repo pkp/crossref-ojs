@@ -26,6 +26,7 @@ use DOMElement;
 use Mockery;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PKP\context\Context;
 use PKP\services\PKPSchemaService;
 use PKP\submission\reviewAssignment\ReviewAssignment;
 use PKP\submission\reviewer\recommendation\enums\ReviewerRecommendationType;
@@ -36,6 +37,7 @@ use PKP\user\User;
 class ReviewAssertionsTest extends PKPTestCase
 {
     private ArticleCrossrefXmlFilter $filter;
+    private Journal $journal;
     private Submission $submission;
     private DOMDocument $doc;
 
@@ -47,10 +49,10 @@ class ReviewAssertionsTest extends PKPTestCase
         parent::setUp();
         $this->mockRequest();
 
-        $journal = new Journal();
-        $journal->setPath('test');
+        $this->journal = new Journal();
+        $this->journal->setPath('test');
         $deployment = Mockery::mock(CrossrefExportDeployment::class);
-        $deployment->shouldReceive('getContext')->andReturn($journal);
+        $deployment->shouldReceive('getContext')->andReturn($this->journal);
         $deployment->shouldReceive('getNamespace')->andReturn(CrossrefExportDeployment::CROSSREF_XMLNS);
 
         $this->filter = $this->getMockBuilder(ArticleCrossrefXmlFilter::class)
@@ -80,7 +82,7 @@ class ReviewAssertionsTest extends PKPTestCase
             'reviewerId' => ord($reviewer),
             'publicationId' => $this->publications[$version]->getId(),
             'dateCompleted' => "{$date} 10:00:00",
-            'assertionName' => "referee-response-{$id}",
+            'assertionName' => "review-report-{$id}",
             'doiUrl' => "https://doi.org/10.1234/review.{$id}",
             'value' => "{$version}, Reviewer {$reviewer}, {$date}, https://doi.org/10.1234/review.{$id}",
         ];
@@ -118,7 +120,7 @@ class ReviewAssertionsTest extends PKPTestCase
 
         // B's PMUR 2 review is replaced by B's VoR 1 review; D's VoR 2 review comes later
         $this->assertSame(
-            ['peer-review-record', 'referee-response-507', 'referee-response-501', 'referee-response-502', 'referee-response-488'],
+            ['peer-review-record', 'review-report-507', 'review-report-502', 'review-report-501', 'review-report-488'],
             array_map(fn (DOMElement $assertion) => $assertion->getAttribute('name'), $assertions)
         );
         $this->assertSame(['0', '1', '2', '3', '4'], array_map(fn (DOMElement $assertion) => $assertion->getAttribute('order'), $assertions));
@@ -133,7 +135,7 @@ class ReviewAssertionsTest extends PKPTestCase
         $this->assertSame($record->getAttribute('href'), $record->textContent);
 
         $report = $assertions[1];
-        $this->assertSame('Referee Report', $report->getAttribute('label'));
+        $this->assertSame('Review Report', $report->getAttribute('label'));
         $this->assertSame('https://doi.org/10.1234/review.507', $report->getAttribute('href'));
         $this->assertSame('VoR1, Reviewer B, 2026-04-20, https://doi.org/10.1234/review.507', $report->textContent);
     }
@@ -145,7 +147,32 @@ class ReviewAssertionsTest extends PKPTestCase
         $names = array_map(fn (DOMElement $assertion) => $assertion->getAttribute('name'), $this->getAssertions($this->publications['PMUR2']));
 
         // C did not review PMUR 2, so C's PMUR 1 review is listed
-        $this->assertSame(['peer-review-record', 'referee-response-501', 'referee-response-503', 'referee-response-502', 'referee-response-488'], $names);
+        $this->assertSame(['peer-review-record', 'review-report-502', 'review-report-503', 'review-report-501', 'review-report-488'], $names);
+    }
+
+    public static function peerReviewRecordUrlProvider(): array
+    {
+        return [
+            'DOI versioning links the deposited version' => [true, '/article/view/current-path/version/3?tab=peer-review-record'],
+            'without DOI versioning the current version is deposited' => [false, '/article/view/current-path?tab=peer-review-record'],
+        ];
+    }
+
+    /**
+     * The current urlPath, because ArticleHandler redirects any other one and drops the tab
+     */
+    #[DataProvider('peerReviewRecordUrlProvider')]
+    public function testPeerReviewRecordUrl(bool $doiVersioning, string $expectedPath): void
+    {
+        $this->setExampleReviews();
+        $this->journal->setData(Context::SETTING_DOI_VERSIONING, $doiVersioning);
+        $this->publications['VoR1']->setData('urlPath', 'old-path');
+        $this->publications['VoR2']->setData('urlPath', 'current-path');
+        $this->submission->setData('currentPublicationId', $this->publications['VoR2']->getId());
+
+        $href = $this->getAssertions($this->publications['VoR1'])[0]->getAttribute('href');
+
+        $this->assertStringEndsWith($expectedPath, $href);
     }
 
     public function testNoAssertionsWithoutReviews(): void
