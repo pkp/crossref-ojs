@@ -38,11 +38,23 @@ use PKP\filter\FilterGroup;
 use PKP\i18n\LocaleConversion;
 use PKP\publication\PKPPublication;
 use PKP\submission\GenreDAO;
+use PKP\submission\reviewAssignment\ReviewAssignment;
+use PKP\submission\reviewer\recommendation\ReviewerRecommendation;
+use PKP\submission\reviewRound\ReviewRoundDAO;
+use PKP\user\Collector as UserCollector;
+use PKP\user\User;
 
 class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 {
     // DOIs of already-processed publication versions
     protected array $versionsDois = [];
+
+    /**
+     * Reviews to list in the Crossmark, keyed by submission ID
+     *
+     * @var array<int, array<array{reviewerId: int, publicationId: int, dateCompleted: string, assertionName: string, doiUrl: string, value: string}>>
+     */
+    protected array $crossmarkReviews = [];
 
     /**
      * Constructor
@@ -83,6 +95,10 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         // Create and append the 'body' node that contains everything
         $bodyNode = $doc->createElementNS($deployment->getNamespace(), 'body');
         $rootNode->appendChild($bodyNode);
+
+        if ($this->usesCrossmark()) {
+            $this->loadCrossmarkReviews($pubObjects);
+        }
 
         foreach ($pubObjects as $pubObject) {
             if (!$context->getData(Context::SETTING_DOI_VERSIONING)) {
@@ -162,7 +178,6 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
         $deployment = $this->getDeployment();
         $context = $deployment->getContext();
         $request = Application::get()->getRequest();
-        $plugin = $deployment->getPlugin();
 
         $locale = $publication->getData('locale');
 
@@ -248,7 +263,7 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             $journalArticleNode->appendChild($publisherItemNode);
         }
 
-        if ($context->getData(Context::SETTING_DOI_VERSIONING) || $plugin->getSetting($context->getId(), 'crossmark')) {
+        if ($this->usesCrossmark()) {
             // crossmark
             $this->appendCrossmarkNode($doc, $journalArticleNode, $this->versionsDois, $publication, $submission);
         } else {
@@ -893,6 +908,8 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
             $customMetadataNode->appendChild($assertionFundingStatementNode);
         }
 
+        $this->appendReviewAssertions($doc, $customMetadataNode, $publication, $submission);
+
         // fr:program (FundRef)
         $this->appendFundrefNode($doc, $customMetadataNode, $submission);
 
@@ -901,6 +918,198 @@ class ArticleCrossrefXmlFilter extends IssueCrossrefXmlFilter
 
         $crossmarkNode->appendChild($customMetadataNode);
         $parentNode->appendChild($crossmarkNode);
+    }
+
+    /**
+     * Whether the crossmark element is used: Crossmark enabled, or DOI versioning, whose version updates are in it
+     */
+    protected function usesCrossmark(): bool
+    {
+        /** @var CrossrefExportDeployment $deployment */
+        $deployment = $this->getDeployment();
+        $context = $deployment->getContext();
+        return $context->getData(Context::SETTING_DOI_VERSIONING) || $deployment->getPlugin()->getSetting($context->getId(), 'crossmark');
+    }
+
+    /**
+     * Load the reviews to list in the Crossmark of the given submissions.
+     *
+     * Only reviews whose DOI can be deposited, so that the links resolve.
+     *
+     * @param Submission[] $submissions
+     */
+    public function loadCrossmarkReviews(array $submissions): void
+    {
+        $this->crossmarkReviews = [];
+        $context = $this->getDeployment()->getContext();
+        if (empty($submissions) || !$context->isDoiTypeEnabled(Repo::doi()::TYPE_PEER_REVIEW)) {
+            return;
+        }
+        $submissionIds = array_map(fn (Submission $submission) => $submission->getId(), $submissions);
+
+        $depositableReviewIds = Repo::reviewAssignment()->getExportableDOIsPeerReviewIds(
+            $context->getId(),
+            (bool) $context->getData(Context::SETTING_DOI_VERSIONING),
+            $submissionIds
+        );
+        if (empty($depositableReviewIds)) {
+            return;
+        }
+
+        $reviewAssignments = Repo::reviewAssignment()->getCollector()
+            ->filterBySubmissionIds($submissionIds)
+            ->filterByIsConfirmedByEditor(true)
+            ->filterByIsPubliclyVisible(true)
+            ->getMany()
+            ->collect()
+            ->filter(fn (ReviewAssignment $reviewAssignment) => in_array($reviewAssignment->getId(), $depositableReviewIds))
+            ->values();
+
+        /** @var ReviewRoundDAO $reviewRoundDao */
+        $reviewRoundDao = DAORegistry::getDAO('ReviewRoundDAO');
+        $publicationIdsByRound = collect($reviewRoundDao->getByReviewRoundIds(
+            $reviewAssignments->map(fn (ReviewAssignment $reviewAssignment) => $reviewAssignment->getReviewRoundId())->unique()->all()
+        )->toArray())
+            ->mapWithKeys(fn ($reviewRound) => [$reviewRound->getId() => $reviewRound->getPublicationId()]);
+
+        $openReviewerIds = $reviewAssignments
+            ->filter(fn (ReviewAssignment $reviewAssignment) => $reviewAssignment->getReviewMethod() === ReviewAssignment::SUBMISSION_REVIEW_METHOD_OPEN)
+            ->map(fn (ReviewAssignment $reviewAssignment) => $reviewAssignment->getReviewerId())
+            ->unique()
+            ->all();
+        $reviewers = empty($openReviewerIds)
+            ? collect()
+            : Repo::user()->getCollector()
+                ->filterByUserIds($openReviewerIds)
+                ->filterByStatus(UserCollector::STATUS_ALL)
+                ->getMany()
+                ->collect()
+                ->keyBy(fn ($user) => $user->getId());
+
+        $recommendationTypes = ReviewerRecommendation::query()
+            ->withContextId($context->getId())
+            ->get()
+            ->mapWithKeys(fn (ReviewerRecommendation $recommendation) => [$recommendation->getKey() => (int) $recommendation->type]);
+
+        $submissionsById = collect($submissions)->keyBy(fn (Submission $submission) => $submission->getId());
+        foreach ($reviewAssignments as $reviewAssignment) {
+            $doiUrl = $reviewAssignment->getData('doiObject')?->getResolvingUrl();
+            $publicationId = $publicationIdsByRound->get($reviewAssignment->getReviewRoundId());
+            $submission = $submissionsById->get($reviewAssignment->getSubmissionId());
+            $reviewPublication = $submission?->getData('publications')->first(fn (Publication $p) => $p->getId() === $publicationId);
+            if (!$doiUrl || !$submission || !$reviewPublication) {
+                continue;
+            }
+
+            $this->crossmarkReviews[$submission->getId()][] = [
+                'reviewerId' => $reviewAssignment->getReviewerId(),
+                'publicationId' => $publicationId,
+                'dateCompleted' => $reviewAssignment->getDateCompleted(),
+                'assertionName' => 'review-report-' . $reviewAssignment->getId(),
+                'doiUrl' => $doiUrl,
+                'value' => $this->getReviewAssertionValue(
+                    $reviewAssignment,
+                    $reviewPublication,
+                    $reviewers->get($reviewAssignment->getReviewerId()),
+                    $recommendationTypes->get($reviewAssignment->getReviewerRecommendationId()),
+                    $doiUrl,
+                    $submission->getData('locale')
+                ),
+            ];
+        }
+    }
+
+    /**
+     * Get the value of a review assertion: "<version>, <recommendation>, <reviewer name>, <date completed>, <DOI URL>".
+     *
+     * The reviewer name is only included for the open review method.
+     */
+    public function getReviewAssertionValue(ReviewAssignment $reviewAssignment, Publication $reviewPublication, ?User $reviewer, ?int $recommendationType, string $doiUrl, string $locale): string
+    {
+        $versionStage = $reviewPublication->getData('versionStage');
+        $isOpenReview = $reviewAssignment->getReviewMethod() === ReviewAssignment::SUBMISSION_REVIEW_METHOD_OPEN;
+        // Crossmark labels are in English, as are the other labels here
+        $recommendationTypeLabels = Repo::reviewerRecommendation()->getRecommendationTypeLabels('en');
+
+        return implode(', ', array_filter([
+            $versionStage ? "{$versionStage} {$reviewPublication->getData('versionMajor')}.{$reviewPublication->getData('versionMinor')}" : null,
+            $recommendationTypeLabels[$recommendationType] ?? null,
+            $isOpenReview ? $reviewer?->getFullName(false, false, $locale) : null,
+            Carbon::parse($reviewAssignment->getDateCompleted())->format('Y-m-d'),
+            $doiUrl,
+        ]));
+    }
+
+    /**
+     * Append the peer review assertions: a link to the peer review record and
+     * the latest review of each reviewer up to the given publication.
+     *
+     * Earlier versions are included because a version is often not reviewed itself,
+     * e.g. a VoR is accepted based on the reviews of the PMUR.
+     */
+    public function appendReviewAssertions(DOMDocument $doc, DOMElement $customMetadataNode, Publication $publication, Submission $submission): void
+    {
+        $reviews = $this->crossmarkReviews[$submission->getId()] ?? [];
+        if (empty($reviews)) {
+            return;
+        }
+
+        // Positions in version order, see Collector::orderByVersion()
+        $positions = [];
+        foreach ($submission->getData('publications') as $submissionPublication) {
+            $positions[$submissionPublication->getId()] = count($positions);
+        }
+        $publicationPosition = $positions[$publication->getId()] ?? null;
+        if ($publicationPosition === null) {
+            return;
+        }
+
+        $latestReviews = collect($reviews)
+            ->filter(fn (array $review) => isset($positions[$review['publicationId']]) && $positions[$review['publicationId']] <= $publicationPosition)
+            ->sort(fn (array $a, array $b) => [$positions[$a['publicationId']], $a['dateCompleted']] <=> [$positions[$b['publicationId']], $b['dateCompleted']])
+            // keyBy keeps the last, i.e. the latest review of each reviewer
+            ->keyBy('reviewerId')
+            ->sort(fn (array $a, array $b) => [$positions[$b['publicationId']], $b['dateCompleted']] <=> [$positions[$a['publicationId']], $a['dateCompleted']]);
+        if ($latestReviews->isEmpty()) {
+            return;
+        }
+
+        /** @var CrossrefExportDeployment $deployment */
+        $deployment = $this->getDeployment();
+        $context = $deployment->getContext();
+        $request = Application::get()->getRequest();
+        // getBestId(): ArticleHandler redirects a non-current urlPath and drops the tab query parameter
+        $peerReviewRecordUrl = $this->_getDispatcher($request)->url(
+            $request,
+            PKPApplication::ROUTE_PAGE,
+            $context->getPath(),
+            'article',
+            'view',
+            $context->getData(Context::SETTING_DOI_VERSIONING)
+                ? [$submission->getBestId(), 'version', $publication->getId()]
+                : [$submission->getBestId()],
+            ['tab' => 'peer-review-record'],
+            null,
+            true,
+            ''
+        );
+
+        $order = 0;
+        $appendAssertion = function (string $name, string $label, string $href, string $value) use ($doc, $customMetadataNode, $deployment, &$order) {
+            $assertionNode = $doc->createElementNS($deployment->getNamespace(), 'assertion', htmlspecialchars($value, ENT_COMPAT, 'UTF-8'));
+            $assertionNode->setAttribute('name', $name);
+            $assertionNode->setAttribute('label', $label);
+            $assertionNode->setAttribute('group_name', 'article-reports');
+            $assertionNode->setAttribute('group_label', 'Latest Review of Each Reviewer');
+            $assertionNode->setAttribute('order', (string) $order++);
+            $assertionNode->setAttribute('href', $href);
+            $customMetadataNode->appendChild($assertionNode);
+        };
+
+        $appendAssertion('peer-review-record', 'Peer Review Record', $peerReviewRecordUrl, $peerReviewRecordUrl);
+        foreach ($latestReviews as $review) {
+            $appendAssertion($review['assertionName'], 'Review Report', $review['doiUrl'], $review['value']);
+        }
     }
 
     /**

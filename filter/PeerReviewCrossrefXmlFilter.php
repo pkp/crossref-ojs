@@ -106,8 +106,8 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
             $peerReviewNode->appendChild($this->createTitlesNode($doc, $reviewAssignment));
             $peerReviewNode->appendChild($this->createReviewDateNode($doc, $reviewAssignment));
 
-            if ($reviewAssignment->getCompetingInterests()) {
-                $peerReviewNode->appendChild($this->createCompetingInterestNode($doc, $reviewAssignment));
+            if ($competingInterestNode = $this->createCompetingInterestNode($doc, $reviewAssignment)) {
+                $peerReviewNode->appendChild($competingInterestNode);
             }
 
             $peerReviewNode->appendChild($this->createRunningNumberNode($doc, $reviewAssignment));
@@ -292,11 +292,18 @@ class PeerReviewCrossrefXmlFilter extends NativeExportFilter
     }
 
     /**
-     * Create the competing interest node.
+     * Create the competing interest node, only for open reviews:
+     * a free-text statement could reveal an anonymous reviewer, so the public peer review record withholds it too.
      * @throws \DOMException
      */
-    private function createCompetingInterestNode(DOMDocument $doc, ReviewAssignment $reviewAssignment): DOMElement
+    public function createCompetingInterestNode(DOMDocument $doc, ReviewAssignment $reviewAssignment): ?DOMElement
     {
+        if (
+            !$reviewAssignment->getCompetingInterests()
+            || $reviewAssignment->getReviewMethod() !== ReviewAssignment::SUBMISSION_REVIEW_METHOD_OPEN
+        ) {
+            return null;
+        }
         $deployment = $this->getDeployment();
         return $doc->createElementNS($deployment->getNamespace(), 'competing_interest_statement', htmlspecialchars($reviewAssignment->getCompetingInterests(), ENT_COMPAT, 'UTF-8'));
     }
